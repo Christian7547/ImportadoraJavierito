@@ -1,0 +1,40 @@
+package com.javierito.javierito_importer.infrastructure.entities;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "Client", schema = "public")
+@Data
+public class ClientEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
+
+    @Column(name = "secondLastName", nullable = true)
+    private String secondLastName;
+
+    @Column(name = "ci", nullable = false)
+    private String ci;
+
+    @Column(name = "status", nullable = false)
+    private short status;
+
+    @Column(name = "registerDate")
+    private LocalDateTime registerDate;
+
+    @Column(name = "lastUpdate")
+    private LocalDateTime lastUpdate;
+
+    @Column(name = "userID", nullable = false)
+    private long userId;
+}
