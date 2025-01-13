@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Employee", schema = "public")
+@Table(name = "Employee")
 @Data
 public class EmployeeEntity {
 
@@ -44,13 +44,11 @@ public class EmployeeEntity {
     @Column(name = "userID", nullable = false)
     private long userId;
 
-    public EmployeeEntity(String name, String lastName, String secondLastName, String ci, String phoneNumber, int branchOfficeId, long userId) {
-        this.name = name;
-        this.lastName = lastName;
-        this.secondLastName = secondLastName;
-        this.ci = ci;
-        this.phoneNumber = phoneNumber;
-        this.branchOfficeId = branchOfficeId;
-        this.userId = userId;
+    @PrePersist
+    private void onCreate(){
+        if (this.registerDate == null) {
+            this.registerDate = LocalDateTime.now();
+        }
+        this.status = 1;
     }
 }

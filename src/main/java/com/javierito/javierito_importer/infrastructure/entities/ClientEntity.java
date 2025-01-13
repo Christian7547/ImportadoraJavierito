@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Client", schema = "public")
+@Table(name = "Client")
 @Data
 public class ClientEntity {
 
@@ -37,4 +37,12 @@ public class ClientEntity {
 
     @Column(name = "userID", nullable = false)
     private long userId;
+
+    @PrePersist
+    private void onCreate(){
+        if (this.registerDate == null) {
+            this.registerDate = LocalDateTime.now();
+        }
+        this.status = 1;
+    }
 }
