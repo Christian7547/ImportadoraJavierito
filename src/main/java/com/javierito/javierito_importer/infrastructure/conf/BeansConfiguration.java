@@ -7,11 +7,21 @@ import com.javierito.javierito_importer.application.services.interfaces.IAuthSer
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.application.services.interfaces.IUserService;
 import com.javierito.javierito_importer.domain.ports.*;
+import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IAuthRepository;
+import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IUserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
+@RequiredArgsConstructor
 public class BeansConfiguration {
+
+    private final IAuthRepository authRepository;
+
     @Bean
     IItemSerivce itemBeanService(IItemDomainRepository iItemDomainRepository){
         return new ItemService(iItemDomainRepository);
@@ -27,5 +37,16 @@ public class BeansConfiguration {
     @Bean
     IAuthService authBeanService(IAuthDomainRepository authDomainRepository){
         return new AuthService(authDomainRepository);
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(){
+        return username -> authRepository.findByUserName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }

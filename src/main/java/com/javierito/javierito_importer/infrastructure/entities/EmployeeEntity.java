@@ -20,7 +20,7 @@ public class EmployeeEntity {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @Column(name = "secondLastName", nullable = true)
+    @Column(name = "secondLastName")
     private String secondLastName;
 
     @Column(name = "ci", nullable = false)
@@ -35,7 +35,7 @@ public class EmployeeEntity {
     @Column(name = "status", nullable = false)
     private short status;
 
-    @Column(name = "registerDate")
+    @Column(name = "registerDate", nullable = false)
     private LocalDateTime registerDate;
 
     @Column(name = "lastUpdate")

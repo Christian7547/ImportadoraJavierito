@@ -47,4 +47,9 @@ public class ItemController {
     public ResponseEntity<ArrayList<Item>> getItems(){
         return new ResponseEntity<>(itemSerivce.getItems(), HttpStatus.OK);
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test(){
+        return ResponseEntity.ok("OK");
+    }
 }
