@@ -23,6 +23,7 @@ public class InsertItemDTO {
     private BigDecimal weight;
     private String dateManufacture;
     private Short itemAddressID;
+    private Long userID;
 
     // Item Image
     private String pathItem;
