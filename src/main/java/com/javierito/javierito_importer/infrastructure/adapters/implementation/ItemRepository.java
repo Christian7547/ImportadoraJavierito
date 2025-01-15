@@ -38,8 +38,8 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public Item editItem(Long itemId, Item item) {
-        var itemEntity = itemRepository.findById(itemId);
+    public Item editItem(Item item) {
+        var itemEntity = itemRepository.findById(item.getId());
         itemMapper.saveChanges(itemEntity.get(), itemMapper.toItemEntity(item));
         var updatedItem = itemRepository.save(itemEntity.get());
         return itemMapper.toItem(updatedItem);
@@ -47,7 +47,7 @@ public class ItemRepository implements IItemDomainRepository {
 
     @Override
     public void removeItem(Item item) {
-        var itemEntity = itemRepository.findById(item.id);
+        var itemEntity = itemRepository.findById(item.getId());
         itemMapper.saveChanges(itemEntity.get(), itemMapper.toItemEntity(item));
         itemRepository.save(itemEntity.get());
     }

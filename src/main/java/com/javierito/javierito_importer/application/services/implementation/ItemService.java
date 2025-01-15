@@ -2,32 +2,42 @@ package com.javierito.javierito_importer.application.services.implementation;
 
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
+import com.javierito.javierito_importer.domain.models.ItemImage;
+import com.javierito.javierito_importer.domain.models.Stock;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
-
-import java.util.ArrayList;
+import com.javierito.javierito_importer.domain.ports.IItemImageDomainRepository;
+import com.javierito.javierito_importer.domain.ports.IStockDomainRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ItemService implements IItemSerivce {
 
     private final IItemDomainRepository itemDomainRepository;
+    private final IItemImageDomainRepository ItemImageDomainRepository;
+    private final IStockDomainRepository stockDomainRepository;
 
-    public ItemService(IItemDomainRepository itemDomainRepository) {this.itemDomainRepository = itemDomainRepository;}
+    public ItemService(IItemDomainRepository itemDomainRepository,
+                       IItemImageDomainRepository ItemImageDomainRepository,
+                       IStockDomainRepository stockDomainRepository) {
 
+        this.itemDomainRepository = itemDomainRepository;
+        this.ItemImageDomainRepository = ItemImageDomainRepository;
+        this.stockDomainRepository = stockDomainRepository;
+    }
+
+    @Transactional
     @Override
-    public Item createItem(Item item){return itemDomainRepository.createItem(item);}
+    public Item createItem(Item item, ItemImage itemImage, Stock stock) {
 
-    @Override
-    public ArrayList<Item> getItems(){return  itemDomainRepository.getItems();}
+        var itemCreated = itemDomainRepository.createItem(item);
+        long itemId = itemCreated.getId();
 
-    @Override
-    public Item getItem(Long itemId){return  itemDomainRepository.getItem(itemId);}
+        itemImage.setItemID(itemId);
+        var itemImageCrated = ItemImageDomainRepository.createItemImage(itemImage);
 
-    @Override
-    public Item editItem(Long itemId, Item item){return  itemDomainRepository.editItem(itemId, item);}
+        stock.setItemID(itemId);
+        var stockCreated = stockDomainRepository.createStock(stock);
 
-    @Override
-    public void removeItem(Item item){
-        item.status = 0;
-        itemDomainRepository.removeItem(item);
+        return itemCreated;
     }
 
 }

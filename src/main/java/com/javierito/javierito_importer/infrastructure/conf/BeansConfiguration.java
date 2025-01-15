@@ -13,8 +13,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeansConfiguration {
     @Bean
-    IItemSerivce itemBeanService(IItemDomainRepository iItemDomainRepository){
-        return new ItemService(iItemDomainRepository);
+    IItemSerivce itemBeanService(IItemDomainRepository iItemDomainRepository,
+                                 IItemImageDomainRepository iItemImageDomainRepository,
+                                 IStockDomainRepository stockDomainRepository){
+        return new ItemService(iItemDomainRepository, iItemImageDomainRepository, stockDomainRepository);
     }
 
     @Bean
