@@ -26,6 +26,6 @@ public class Item {
     private LocalDateTime registerDate;
     private LocalDateTime  lastUpdate;
     private short  itemAddressID;
-
+    private long userID;
 
 }

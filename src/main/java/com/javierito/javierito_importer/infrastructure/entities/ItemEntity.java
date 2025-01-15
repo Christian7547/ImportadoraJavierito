@@ -62,6 +62,9 @@ public class ItemEntity {
     @Column(name = "itemAddressID")
     public short  itemAddressID;
 
+    @Column(name = "userID")
+    public long userID;
+
     @PrePersist
     private void onCreate(){
         if (this.registerDate == null) {
