@@ -23,8 +23,10 @@ public class BeansConfiguration {
     private final IAuthRepository authRepository;
 
     @Bean
-    IItemSerivce itemBeanService(IItemDomainRepository iItemDomainRepository){
-        return new ItemService(iItemDomainRepository);
+    IItemSerivce itemBeanService(IItemDomainRepository iItemDomainRepository,
+                                 IItemImageDomainRepository iItemImageDomainRepository,
+                                 IStockDomainRepository stockDomainRepository){
+        return new ItemService(iItemDomainRepository, iItemImageDomainRepository, stockDomainRepository);
     }
 
     @Bean

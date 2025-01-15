@@ -5,11 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "Item")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 
 public class ItemEntity {
     @Id
@@ -19,7 +20,53 @@ public class ItemEntity {
     @Column(name = "name")
     public String name;
 
+    @Column(name = "alias")
+    public String alias;
+
+    @Column(name = "description")
+    public String description;
+
+    @Column(name = "model")
+    public String model;
+
+    @Column(name = "price")
+    public BigDecimal price;
+
+    @Column(name = "wholesalePrice")
+    public BigDecimal wholesalePrice;
+
+    @Column(name = "barePrice")
+    public BigDecimal barePrice;
+
+    @Column(name = "brandID")
+    public int brandID;
+
+    @Column(name = "subCategoryID")
+    public short subCategoryID;
+
+    @Column(name = "weight")
+    public BigDecimal weight;
+
+    @Column(name = "dateManufacture")
+    public String dateManufacture;
+
     @Column(name = "status")
     public short status;
 
+    @Column(name = "registerDate")
+    public LocalDateTime registerDate;
+
+    @Column(name = "lastUpdate")
+    public LocalDateTime  lastUpdate;
+
+    @Column(name = "itemAddressID")
+    public short  itemAddressID;
+
+    @PrePersist
+    private void onCreate(){
+        if (this.registerDate == null) {
+            this.registerDate = LocalDateTime.now();
+        }
+        this.status = 1;
+    }
 }

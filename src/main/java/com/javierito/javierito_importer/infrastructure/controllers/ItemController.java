@@ -3,7 +3,9 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
-import com.javierito.javierito_importer.infrastructure.dtos.ItemDTO;
+import com.javierito.javierito_importer.domain.models.ItemImage;
+import com.javierito.javierito_importer.domain.models.Stock;
+import com.javierito.javierito_importer.infrastructure.dtos.InsertItemDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,39 +15,42 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/api/items")
 public class ItemController {
+
     private final IItemSerivce itemSerivce;
-    public ItemController(IItemSerivce itemSerivce){this.itemSerivce = itemSerivce;}
 
-    @PostMapping("/createItem")
-    public ResponseEntity<?> createItem(@RequestBody ItemDTO request){
-        Item item = new Item();
-        item.name = request.name;
-        item.status = request.status;
-        itemSerivce.createItem(item);
-        return new ResponseEntity<>(item, HttpStatus.CREATED);
-    }
-    @PatchMapping("/editItem")
-    public ResponseEntity<?> editItem(@PathVariable Long id, @RequestBody ItemDTO request){
-        Item item = new Item();
-        item.name = request.name;
-        item.status = request.status;
-        itemSerivce.createItem(item);
-        return new ResponseEntity<>(itemSerivce.editItem(id, item), HttpStatus.NO_CONTENT);
-    }
-    @PatchMapping("/deleteItem")
-    public ResponseEntity<?> deleteItem(@RequestBody Item item){
-        itemSerivce.removeItem(item);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    public ItemController(IItemSerivce itemSerivce) {this.itemSerivce = itemSerivce;}
 
-    @GetMapping("/getItem")
-    public ResponseEntity<Item> getItem(@RequestBody Long id){
-        return new ResponseEntity<>(itemSerivce.getItem(id), HttpStatus.OK);
-    }
+    @PostMapping("/insertItem")
+    public ResponseEntity<Item> insertItemAsync(@RequestBody InsertItemDTO insertItemDTO){
+        Item item = Item.builder()
+                .name(insertItemDTO.getName())
+                .alias(insertItemDTO.getAlias())
+                .description(insertItemDTO.getDescription())
+                .model(insertItemDTO.getModel())
+                .price(insertItemDTO.getPrice())
+                .wholesalePrice(insertItemDTO.getWholesalePrice())
+                .barePrice(insertItemDTO.getBarePrice())
+                .brandID(insertItemDTO.getBrandID())
+                .subCategoryID(insertItemDTO.getSubCategoryID())
+                .weight(insertItemDTO.getWeight())
+                .dateManufacture(insertItemDTO.getDateManufacture())
+                .itemAddressID(insertItemDTO.getItemAddressID())
+                .build();
 
-    @GetMapping("/getAllItems")
-    public ResponseEntity<ArrayList<Item>> getItems(){
-        return new ResponseEntity<>(itemSerivce.getItems(), HttpStatus.OK);
+        ItemImage itemImage = ItemImage.builder()
+                .pathImage(insertItemDTO.getPathItem())
+                .build();
+
+        Stock stock = Stock.builder()
+                .branchOfficeID(insertItemDTO.getBranchOfficeID())
+                .quantity(insertItemDTO.getQuantity())
+                .build();
+
+        var created = itemSerivce.createItem(item, itemImage, stock);
+
+        if(created != null)
+            return new ResponseEntity<>(created,HttpStatus.CREATED);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/test")
