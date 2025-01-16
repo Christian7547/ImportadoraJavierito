@@ -9,7 +9,7 @@ public interface IItemDomainRepository {
     Item createItem(Item item);
     ArrayList<Item> getItems();
     Item getItem(Long itemId);
-    Item editItem(Long itemId, Item item);
+    Item editItem(Item item);
     void removeItem(Item item);
 
 }
