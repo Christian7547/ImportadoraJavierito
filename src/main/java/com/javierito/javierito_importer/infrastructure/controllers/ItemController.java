@@ -38,7 +38,7 @@ public class ItemController {
                 .itemAddressID(insertItemDTO.getItemAddressID())
                 .userID(insertItemDTO.getUserID())
                 .build();
-        System.out.println(item);
+
         ItemImage itemImage = ItemImage.builder()
                 .pathImage(insertItemDTO.getPathItem())
                 .build();

@@ -1,9 +1,11 @@
 package com.javierito.javierito_importer.infrastructure.conf;
 
 import com.javierito.javierito_importer.application.services.implementation.AuthService;
+import com.javierito.javierito_importer.application.services.implementation.ItemAuditService;
 import com.javierito.javierito_importer.application.services.implementation.ItemService;
 import com.javierito.javierito_importer.application.services.implementation.UserService;
 import com.javierito.javierito_importer.application.services.interfaces.IAuthService;
+import com.javierito.javierito_importer.application.services.interfaces.IItemAuditService;
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.application.services.interfaces.IUserService;
 import com.javierito.javierito_importer.domain.ports.*;
@@ -29,5 +31,10 @@ public class BeansConfiguration {
     @Bean
     IAuthService authBeanService(IAuthDomainRepository authDomainRepository){
         return new AuthService(authDomainRepository);
+    }
+
+    @Bean
+    IItemAuditService itemAuditService(IItemAuditDomainRepository itemAuditDomainRepository){
+        return new ItemAuditService(itemAuditDomainRepository);
     }
 }
