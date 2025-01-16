@@ -3,7 +3,7 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.domain.ports.IUserDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IUserRepository;
-import com.javierito.javierito_importer.infrastructure.mappers.UserMapper;
+import com.javierito.javierito_importer.infrastructure.mappers.User.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;

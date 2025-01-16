@@ -17,9 +17,4 @@ public class AuthService implements IAuthService {
     public User authenticate(String username, String password) {
         return authDomainRepository.authenticate(username, password);
     }
-
-    @Override
-    public String generateToken(User user) {
-        return "";
-    }
 }
