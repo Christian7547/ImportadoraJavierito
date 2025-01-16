@@ -22,10 +22,15 @@ public class ItemAuditRepository implements IItemAuditDomainRepository {
 
     @Override
     public ArrayList<ItemAudit> recycleBin() {
+        return this.itemAuditMapper.toItemAudits(this.itemAuditRepository.findAll());
+    }
+
+    /*    @Override
+    public ArrayList<ItemAudit> recycleBin() {
         return this.itemAuditMapper.toItemAudits(this.itemAuditRepository.findAll())
                 .stream()
                 .filter(itemAudit -> "INSERT".equals(itemAudit.getActionType()))
                 .collect(Collectors.toCollection(ArrayList::new));
-    }
+    }*/
 }
 
