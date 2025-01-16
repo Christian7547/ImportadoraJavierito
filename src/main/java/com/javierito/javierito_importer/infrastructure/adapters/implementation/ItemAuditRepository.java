@@ -2,8 +2,8 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 import com.javierito.javierito_importer.domain.models.ItemAudit;
 import com.javierito.javierito_importer.domain.ports.IItemAuditDomainRepository;
-import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemAuditRepository;
+import com.javierito.javierito_importer.infrastructure.dtos.ExcelReportsDTO;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemAuditMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,12 +25,21 @@ public class ItemAuditRepository implements IItemAuditDomainRepository {
         return this.itemAuditMapper.toItemAudits(this.itemAuditRepository.findAll());
     }
 
-    /*    @Override
-    public ArrayList<ItemAudit> recycleBin() {
+    @Override
+    public ArrayList<ItemAudit> excelReports(ExcelReportsDTO excelReportsDTO) {
+        System.out.println(excelReportsDTO);
         return this.itemAuditMapper.toItemAudits(this.itemAuditRepository.findAll())
                 .stream()
                 .filter(itemAudit -> "INSERT".equals(itemAudit.getActionType()))
+                .filter(itemAudit -> {
+
+                    if (excelReportsDTO.getStartDate() != null && excelReportsDTO.getEndDate() != null) {
+                        return !itemAudit.getActionDate().isBefore(excelReportsDTO.getStartDate()) &&
+                                !itemAudit.getActionDate().isAfter(excelReportsDTO.getEndDate());
+                    }
+                    return true;
+                })
                 .collect(Collectors.toCollection(ArrayList::new));
-    }*/
+    }
 }
 
