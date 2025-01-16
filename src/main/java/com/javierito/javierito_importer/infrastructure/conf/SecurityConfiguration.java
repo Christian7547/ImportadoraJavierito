@@ -31,7 +31,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/users/**").permitAll()
-                        .requestMatchers("/api/items/**").hasAnyRole("Admin"))
+                        .requestMatchers("/api/items/**").permitAll()/*hasAnyRole("Admin"))*/
+                        .requestMatchers("/api/itemAudits/**").permitAll())
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(
