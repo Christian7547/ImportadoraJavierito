@@ -1,9 +1,8 @@
 package com.javierito.javierito_importer.infrastructure.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -61,6 +60,9 @@ public class ItemEntity {
 
     @Column(name = "itemAddressID")
     public short  itemAddressID;
+
+    @Column(name = "userID")
+    public long userID;
 
     @PrePersist
     private void onCreate(){

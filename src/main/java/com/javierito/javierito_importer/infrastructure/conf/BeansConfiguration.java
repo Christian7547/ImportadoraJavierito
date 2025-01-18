@@ -1,14 +1,15 @@
 package com.javierito.javierito_importer.infrastructure.conf;
 
 import com.javierito.javierito_importer.application.services.implementation.AuthService;
+import com.javierito.javierito_importer.application.services.implementation.ItemAuditService;
 import com.javierito.javierito_importer.application.services.implementation.ItemService;
 import com.javierito.javierito_importer.application.services.implementation.UserService;
 import com.javierito.javierito_importer.application.services.interfaces.IAuthService;
+import com.javierito.javierito_importer.application.services.interfaces.IItemAuditService;
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.application.services.interfaces.IUserService;
 import com.javierito.javierito_importer.domain.ports.*;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IAuthRepository;
-import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,5 +51,10 @@ public class BeansConfiguration {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    IItemAuditService itemAuditService(IItemAuditDomainRepository itemAuditDomainRepository){
+        return new ItemAuditService(itemAuditDomainRepository);
     }
 }

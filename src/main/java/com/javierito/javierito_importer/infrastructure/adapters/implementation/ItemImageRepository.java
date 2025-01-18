@@ -22,8 +22,8 @@ public class ItemImageRepository implements IItemImageDomainRepository {
     @Override
     public ItemImage createItemImage(ItemImage itemImage) {
         var toItemImageEntity = itemImageMapper.toItemImageEntity(itemImage);
-        //toItemImageEntity.setPathItem(itemImage.getPathImage());
-        //toItemImageEntity.setItemID(itemImage.getItemID());
+        toItemImageEntity.setPathItem(itemImage.getPathImage());
+        toItemImageEntity.setItemID(itemImage.getItemID());
         var itemImageCreated = itemImageRepository.save(toItemImageEntity);
         return itemImageMapper.toItemImage(itemImageCreated);
     }

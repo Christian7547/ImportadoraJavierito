@@ -31,8 +31,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/users/**").permitAll()
-                        .requestMatchers("/api/items/**").hasAnyRole("Admin")
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api/items/**").permitAll()/*hasAnyRole("Admin"))*/
+                        .requestMatchers("/api/itemAudits/**").permitAll())
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(
@@ -41,7 +41,6 @@ public class SecurityConfiguration {
                                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
                         )
                 )
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -64,5 +63,4 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
-
 }

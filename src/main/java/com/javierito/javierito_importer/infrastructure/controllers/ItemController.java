@@ -22,6 +22,7 @@ public class ItemController {
 
     @PostMapping("/insertItem")
     public ResponseEntity<Item> insertItemAsync(@RequestBody InsertItemDTO insertItemDTO){
+
         Item item = Item.builder()
                 .name(insertItemDTO.getName())
                 .alias(insertItemDTO.getAlias())
@@ -35,6 +36,7 @@ public class ItemController {
                 .weight(insertItemDTO.getWeight())
                 .dateManufacture(insertItemDTO.getDateManufacture())
                 .itemAddressID(insertItemDTO.getItemAddressID())
+                .userID(insertItemDTO.getUserID())
                 .build();
 
         ItemImage itemImage = ItemImage.builder()

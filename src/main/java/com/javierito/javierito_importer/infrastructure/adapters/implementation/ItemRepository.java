@@ -22,6 +22,7 @@ public class ItemRepository implements IItemDomainRepository {
     @Override
     public Item createItem(Item item) {
         var toItemEntity = itemMapper.toItemEntity(item);
+        toItemEntity.userID = item.getUserID();
         var itemCreated = itemRepository.save(toItemEntity);
         return itemMapper.toItem(itemCreated);
     }
