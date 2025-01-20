@@ -9,6 +9,7 @@ import com.javierito.javierito_importer.application.services.interfaces.IItemAud
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.application.services.interfaces.IUserService;
 import com.javierito.javierito_importer.domain.ports.*;
+import com.javierito.javierito_importer.domain.ports.output.IEmailServer;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IAuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -33,8 +34,9 @@ public class BeansConfiguration {
     @Bean
     IUserService userBeanService(IUserDomainRepository userRepository,
                                  IEmployeeDomainRepository employeeDomainRepository,
-                                 IClientDomainRepository clientDomainRepository){
-        return new UserService(userRepository, employeeDomainRepository, clientDomainRepository);
+                                 IClientDomainRepository clientDomainRepository,
+                                 IEmailServer emailServer){
+        return new UserService(userRepository, employeeDomainRepository, clientDomainRepository, emailServer);
     }
 
     @Bean

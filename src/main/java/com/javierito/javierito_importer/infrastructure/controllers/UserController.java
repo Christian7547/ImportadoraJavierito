@@ -55,6 +55,7 @@ public class UserController {
                 .secondLastName(userDTO.getSecondLastName())
                 .ci(userDTO.getCi())
                 .build();
+
         var created = userService.createClientUser(user, client);
         if(created != null)
             return new ResponseEntity<>(created,HttpStatus.CREATED);

@@ -7,19 +7,27 @@ import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.domain.ports.IClientDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IEmployeeDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IUserDomainRepository;
+import com.javierito.javierito_importer.domain.ports.output.IEmailServer;
+import org.springframework.beans.factory.annotation.Value;
 
 public class UserService implements IUserService {
 
     private final IUserDomainRepository userDomainRepository;
     private final IEmployeeDomainRepository employeeDomainRepository;
     private final IClientDomainRepository clientDomainRepository;
+    private final IEmailServer emailServer;
+
+    @Value("${spring.mail.username}")
+    private String email;
 
     public UserService(IUserDomainRepository userDomainRepository,
                        IEmployeeDomainRepository employeeDomainRepository,
-                       IClientDomainRepository clientDomainRepository) {
+                       IClientDomainRepository clientDomainRepository,
+                       IEmailServer emailServer) {
         this.userDomainRepository = userDomainRepository;
         this.employeeDomainRepository = employeeDomainRepository;
         this.clientDomainRepository = clientDomainRepository;
+        this.emailServer = emailServer;
     }
 
     @Override
@@ -28,7 +36,11 @@ public class UserService implements IUserService {
         long userId = userCreated.getId();
         employee.setUserId(userId);
         var employeeCreated = employeeDomainRepository.createEmployee(employee);
-        return userCreated;
+        if(userCreated != null){
+            emailServer.sendEmail(user.getEmail(), email, "<h1>Hola desde spring</h1>");
+            return userCreated;
+        }
+        return null;
     }
 
     @Override
@@ -36,7 +48,8 @@ public class UserService implements IUserService {
         var userCreated = userDomainRepository.createUser(user);
         long userId = userCreated.getId();
         client.setUserId(userId);
-        var clientCreated = clientDomainRepository.createClient(client);
+        var userC = clientDomainRepository.createClient(client);
+
         return userCreated;
     }
 
