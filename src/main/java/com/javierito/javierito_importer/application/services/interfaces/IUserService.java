@@ -6,6 +6,5 @@ import com.javierito.javierito_importer.domain.models.User;
 
 public interface IUserService {
     User createEmployeeUser(User user, Employee employee);
-    User createClientUser(User user, Client client);
     void removeUser(User user);
 }

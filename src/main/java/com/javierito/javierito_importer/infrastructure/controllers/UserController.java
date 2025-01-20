@@ -40,25 +40,4 @@ public class UserController {
             return new ResponseEntity<>(created,HttpStatus.CREATED);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
-
-    @PostMapping("/createClientUser")
-    public ResponseEntity<User> createClientAsync(@RequestBody UserDTO userDTO){
-        User user = User.builder()
-                .userName(userDTO.getUserName())
-                .password(userDTO.getPassword())
-                .email(userDTO.getEmail())
-                .role(userDTO.getRole())
-                .build();
-        Client client = Client.builder()
-                .name(userDTO.getName())
-                .lastName(userDTO.getLastName())
-                .secondLastName(userDTO.getSecondLastName())
-                .ci(userDTO.getCi())
-                .build();
-
-        var created = userService.createClientUser(user, client);
-        if(created != null)
-            return new ResponseEntity<>(created,HttpStatus.CREATED);
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-    }
 }

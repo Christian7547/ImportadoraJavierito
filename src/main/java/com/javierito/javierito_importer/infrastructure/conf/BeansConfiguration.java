@@ -34,9 +34,8 @@ public class BeansConfiguration {
     @Bean
     IUserService userBeanService(IUserDomainRepository userRepository,
                                  IEmployeeDomainRepository employeeDomainRepository,
-                                 IClientDomainRepository clientDomainRepository,
                                  IEmailServer emailServer){
-        return new UserService(userRepository, employeeDomainRepository, clientDomainRepository, emailServer);
+        return new UserService(userRepository, employeeDomainRepository, emailServer);
     }
 
     @Bean
