@@ -1,13 +1,7 @@
 package com.javierito.javierito_importer.infrastructure.conf;
 
-import com.javierito.javierito_importer.application.services.implementation.AuthService;
-import com.javierito.javierito_importer.application.services.implementation.ItemAuditService;
-import com.javierito.javierito_importer.application.services.implementation.ItemService;
-import com.javierito.javierito_importer.application.services.implementation.UserService;
-import com.javierito.javierito_importer.application.services.interfaces.IAuthService;
-import com.javierito.javierito_importer.application.services.interfaces.IItemAuditService;
-import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
-import com.javierito.javierito_importer.application.services.interfaces.IUserService;
+import com.javierito.javierito_importer.application.services.implementation.*;
+import com.javierito.javierito_importer.application.services.interfaces.*;
 import com.javierito.javierito_importer.domain.ports.*;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IAuthRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +50,16 @@ public class BeansConfiguration {
     @Bean
     IItemAuditService itemAuditService(IItemAuditDomainRepository itemAuditDomainRepository){
         return new ItemAuditService(itemAuditDomainRepository);
+    }
+
+    @Bean
+    IBranchOfficeService branchOfficeService(IBranchOfficeDomainRepository branchOfficeDomainRepository,
+                                             IBranchOfficeImageDomainRepository branchOfficeImageDomainRepository){
+        return new BranchOfficeService(branchOfficeDomainRepository, branchOfficeImageDomainRepository);
+    }
+
+    @Bean
+    IBranchOfficeImageService branchOfficeImageService(IBranchOfficeImageDomainRepository branchOfficeImageDomainRepository){
+        return new BranchOfficeImageService(branchOfficeImageDomainRepository);
     }
 }

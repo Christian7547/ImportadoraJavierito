@@ -32,15 +32,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User createClientUser(User user, Client client) {
-        var userCreated = userDomainRepository.createUser(user);
-        long userId = userCreated.getId();
-        client.setUserId(userId);
-        var clientCreated = clientDomainRepository.createClient(client);
-        return userCreated;
-    }
-
-    @Override
     public void removeUser(User user) {
         user.setStatus((short)0);
         userDomainRepository.removeUser(user);

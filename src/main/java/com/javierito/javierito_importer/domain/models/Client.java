@@ -13,8 +13,5 @@ public class Client {
     private String lastName;
     private String secondLastName;
     private String ci;
-    private short status;
-    private LocalDateTime registerDate;
-    private LocalDateTime lastUpdate;
-    private long userId;
+    private String phoneNumber;
 }
