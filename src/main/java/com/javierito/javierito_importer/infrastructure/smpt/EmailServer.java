@@ -17,6 +17,7 @@ public class EmailServer implements IEmailServer {
 
     public void sendEmail(String to, String subject, String body) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
+
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
             helper.setTo(to);
