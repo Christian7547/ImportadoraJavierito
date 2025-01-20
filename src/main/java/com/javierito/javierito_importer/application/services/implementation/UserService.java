@@ -1,8 +1,10 @@
 package com.javierito.javierito_importer.application.services.implementation;
 
 import com.javierito.javierito_importer.application.services.interfaces.IUserService;
+import com.javierito.javierito_importer.domain.models.Client;
 import com.javierito.javierito_importer.domain.models.Employee;
 import com.javierito.javierito_importer.domain.models.User;
+import com.javierito.javierito_importer.domain.ports.IClientDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IEmployeeDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IUserDomainRepository;
 import com.javierito.javierito_importer.domain.ports.output.IEmailServer;
