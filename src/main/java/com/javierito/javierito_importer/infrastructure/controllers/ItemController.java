@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
@@ -37,21 +39,27 @@ public class ItemController {
                 .dateManufacture(insertItemDTO.getDateManufacture())
                 .itemAddressID(insertItemDTO.getItemAddressID())
                 .userID(insertItemDTO.getUserID())
+                .barcode(insertItemDTO.getBarcode())
                 .build();
 
-        ItemImage itemImage = ItemImage.builder()
-                .pathImage(insertItemDTO.getPathItem())
-                .build();
+        List<ItemImage> itemImages = Arrays.asList(
+                ItemImage.builder().pathImage(insertItemDTO.getPathItem()).build(),
+                ItemImage.builder().pathImage(insertItemDTO.getPathItem2()).build(),
+                ItemImage.builder().pathImage(insertItemDTO.getPathItem3()).build(),
+                ItemImage.builder().pathImage(insertItemDTO.getPathItem4()).build(),
+                ItemImage.builder().pathImage(insertItemDTO.getPathItem5()).build()
+        );
 
         Stock stock = Stock.builder()
                 .branchOfficeID(insertItemDTO.getBranchOfficeID())
                 .quantity(insertItemDTO.getQuantity())
                 .build();
 
-        var created = itemSerivce.createItem(item, itemImage, stock);
+        var created = itemSerivce.createItem(item, itemImages, stock);
 
         if(created != null)
             return new ResponseEntity<>(created,HttpStatus.CREATED);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
+
 }

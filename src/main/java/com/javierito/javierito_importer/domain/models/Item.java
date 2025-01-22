@@ -27,5 +27,6 @@ public class Item {
     private LocalDateTime  lastUpdate;
     private short  itemAddressID;
     private long userID;
+    private String barcode;
 
 }

@@ -24,9 +24,15 @@ public class InsertItemDTO {
     private String dateManufacture;
     private Short itemAddressID;
     private Long userID;
+    public String barcode;
 
     // Item Image
     private String pathItem;
+    private String pathItem2;
+    private String pathItem3;
+    private String pathItem4;
+    private String pathItem5;
+
 
     // Stock
     private Integer branchOfficeID;
