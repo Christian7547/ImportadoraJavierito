@@ -1,7 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.services.interfaces.IUserService;
-import com.javierito.javierito_importer.domain.models.Client;
 import com.javierito.javierito_importer.domain.models.Employee;
 import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.infrastructure.dtos.UserDTO;
