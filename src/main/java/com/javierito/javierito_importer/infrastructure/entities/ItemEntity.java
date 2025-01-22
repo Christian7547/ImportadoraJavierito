@@ -64,6 +64,9 @@ public class ItemEntity {
     @Column(name = "userID")
     public long userID;
 
+    @Column(name = "barcode")
+    public String barcode;
+
     @PrePersist
     private void onCreate(){
         if (this.registerDate == null) {

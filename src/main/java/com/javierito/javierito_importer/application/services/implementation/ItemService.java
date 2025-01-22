@@ -9,6 +9,8 @@ import com.javierito.javierito_importer.domain.ports.IItemImageDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IStockDomainRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public class ItemService implements IItemSerivce {
 
     private final IItemDomainRepository itemDomainRepository;
@@ -26,13 +28,17 @@ public class ItemService implements IItemSerivce {
 
     @Transactional
     @Override
-    public Item createItem(Item item, ItemImage itemImage, Stock stock) {
+    public Item createItem(Item item, List<ItemImage> itemImages, Stock stock) {
 
         var itemCreated = itemDomainRepository.createItem(item);
         long itemId = itemCreated.getId();
 
-        itemImage.setItemID(itemId);
-        var itemImageCrated = ItemImageDomainRepository.createItemImage(itemImage);
+        for (ItemImage itemImage : itemImages) {
+            itemImage.setItemID(itemId);
+            ItemImageDomainRepository.createItemImage(itemImage);
+        }
+        /*itemImage.setItemID(itemId);
+        var itemImageCrated = ItemImageDomainRepository.createItemImage(itemImage);*/
 
         stock.setItemID(itemId);
         var stockCreated = stockDomainRepository.createStock(stock);
