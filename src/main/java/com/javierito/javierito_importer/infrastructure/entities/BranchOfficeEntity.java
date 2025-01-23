@@ -42,4 +42,12 @@ public class BranchOfficeEntity {
         }
         this.status = 1;
     }
+
+    public BranchOfficeEntity(int id, String name, String address, String latitude, String longitude) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }

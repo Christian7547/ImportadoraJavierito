@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
@@ -16,6 +19,21 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
     private BranchOfficeMapper branchOfficeMapper;
 
     private final IBranchOfficeRepository branchOfficeRepository;
+
+    @Override
+    public List<BranchOffice> getAll() {
+        var branchOffices = branchOfficeRepository.getAll();
+        if(branchOffices.isEmpty()){
+            return new ArrayList<>();
+        }
+        return branchOfficeMapper.toBranchOffices(branchOffices);
+    }
+
+    @Override
+    public BranchOffice getById(int id) {
+        var branchOfficeEntity = branchOfficeRepository.getBranchOfficeById(id);
+        return branchOfficeMapper.toBranchOffice(branchOfficeEntity);
+    }
 
     @Override
     public BranchOffice createBranchOffice(BranchOffice branchOffice) {

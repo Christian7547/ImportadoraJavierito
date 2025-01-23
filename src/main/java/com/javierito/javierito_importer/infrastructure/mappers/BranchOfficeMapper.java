@@ -5,8 +5,12 @@ import com.javierito.javierito_importer.infrastructure.entities.BranchOfficeEnti
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface BranchOfficeMapper {
+    List<BranchOffice> toBranchOffices(List<BranchOfficeEntity> target);
+    List<BranchOfficeEntity> toBranchOfficeEntities(List<BranchOffice> target);
     BranchOffice toBranchOffice(BranchOfficeEntity target);
     BranchOfficeEntity toBranchOfficeEntity(BranchOffice target);
     void saveChanges(@MappingTarget BranchOfficeEntity target, BranchOfficeEntity source);

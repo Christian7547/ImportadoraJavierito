@@ -17,6 +17,16 @@ public class BranchOfficeService implements IBranchOfficeService {
     private final IBranchOfficeDomainRepository branchOfficeDomainRepository;
     private final IBranchOfficeImageDomainRepository branchOfficeImageDomainRepository;
 
+    @Override
+    public ArrayList<BranchOffice> getAll() {
+        return (ArrayList<BranchOffice>) branchOfficeDomainRepository.getAll();
+    }
+
+    @Override
+    public BranchOffice getById(int id) {
+        return branchOfficeDomainRepository.getById(id);
+    }
+
     @Transactional
     @Override
     public BranchOffice createBranchOffice(BranchOffice branchOffice, ArrayList<String> pathImages) {

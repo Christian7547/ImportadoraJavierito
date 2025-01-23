@@ -6,9 +6,9 @@ import com.javierito.javierito_importer.infrastructure.dtos.NewBranchOfficeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/branchOffice")
@@ -17,7 +17,25 @@ public class BranchOfficeController {
 
     private final IBranchOfficeService branchOfficeService;
 
-    @RequestMapping("/createBranchOffice")
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getBranchOfficesAsync(){
+        ArrayList<BranchOffice> offices = branchOfficeService.getAll();
+        if(offices != null){
+            return new ResponseEntity<>(offices, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Could not get branch offices", HttpStatus.OK);
+    }
+
+    @GetMapping("/getBranchOffice/{branchOfficeId}")
+    public ResponseEntity<?> getBranchOfficeAsync(@PathVariable int branchOfficeId){
+        var branchOffice = branchOfficeService.getById(branchOfficeId);
+        if(branchOffice != null){
+            return new ResponseEntity<>(branchOffice, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Could not get branch office", HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/createBranchOffice")
     public ResponseEntity<?> createBranchOfficeAsync(@RequestBody NewBranchOfficeDTO newBranchOfficeDTO) {
         BranchOffice branchOffice = BranchOffice.builder()
                 .name(newBranchOfficeDTO.getName())
