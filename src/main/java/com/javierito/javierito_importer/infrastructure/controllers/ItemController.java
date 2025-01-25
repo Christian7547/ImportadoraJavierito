@@ -2,17 +2,11 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
-import com.javierito.javierito_importer.domain.models.Item;
-import com.javierito.javierito_importer.domain.models.ItemImage;
-import com.javierito.javierito_importer.domain.models.Stock;
 import com.javierito.javierito_importer.infrastructure.dtos.InsertItemDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
@@ -22,7 +16,7 @@ public class ItemController {
 
     public ItemController(IItemSerivce itemSerivce) {this.itemSerivce = itemSerivce;}
 
-    @PostMapping("/insertItem")
+    /*@PostMapping("/insertItem")
     public ResponseEntity<Item> insertItemAsync(@RequestBody InsertItemDTO insertItemDTO){
 
         Item item = Item.builder()
@@ -60,6 +54,16 @@ public class ItemController {
         if(created != null)
             return new ResponseEntity<>(created,HttpStatus.CREATED);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }*/
+
+    @PostMapping("/insertItem")
+    public ResponseEntity<Integer> insertItem(@RequestBody InsertItemDTO item) {
+        
+        var result = itemSerivce.insertItem(item);
+        if(result != 0)
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        else
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
 }
