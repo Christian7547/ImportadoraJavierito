@@ -1,5 +1,6 @@
 package com.javierito.javierito_importer.application.services.implementation;
 
+import com.javierito.javierito_importer.application.services.Utils.BarcodeGenerator;
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemImage;
@@ -7,8 +8,10 @@ import com.javierito.javierito_importer.domain.models.Stock;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IItemImageDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IStockDomainRepository;
+import com.javierito.javierito_importer.infrastructure.dtos.InsertItemDTO;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemService implements IItemSerivce {
@@ -26,24 +29,35 @@ public class ItemService implements IItemSerivce {
         this.stockDomainRepository = stockDomainRepository;
     }
 
-    @Transactional
-    @Override
-    public Item createItem(Item item, List<ItemImage> itemImages, Stock stock) {
+    private BarcodeGenerator barcodeGenerator = new BarcodeGenerator();
+    /*@Transactional
+@Override
+public Item createItem(Item item, List<ItemImage> itemImages, Stock stock) {
 
-        var itemCreated = itemDomainRepository.createItem(item);
-        long itemId = itemCreated.getId();
+    var itemCreated = itemDomainRepository.createItem(item);
+    long itemId = itemCreated.getId();
 
-        for (ItemImage itemImage : itemImages) {
-            itemImage.setItemID(itemId);
-            ItemImageDomainRepository.createItemImage(itemImage);
-        }
-        /*itemImage.setItemID(itemId);
-        var itemImageCrated = ItemImageDomainRepository.createItemImage(itemImage);*/
-
-        stock.setItemID(itemId);
-        var stockCreated = stockDomainRepository.createStock(stock);
-
-        return itemCreated;
+    for (ItemImage itemImage : itemImages) {
+        itemImage.setItemID(itemId);
+        ItemImageDomainRepository.createItemImage(itemImage);
     }
+    /*itemImage.setItemID(itemId);
+    var itemImageCrated = ItemImageDomainRepository.createItemImage(itemImage);-*-/
+
+    stock.setItemID(itemId);
+    var stockCreated = stockDomainRepository.createStock(stock);
+
+    return itemCreated;
+}*/
+    @Override
+    public int insertItem(InsertItemDTO insertItemDTO) {
+
+        String[] barcodes = barcodeGenerator.generateBarcode(insertItemDTO.getAcronym(), insertItemDTO.getQuantity());
+        insertItemDTO.setBarcodes(barcodes);
+        return itemDomainRepository.insertItem(insertItemDTO);
+
+    }
+
+
 
 }

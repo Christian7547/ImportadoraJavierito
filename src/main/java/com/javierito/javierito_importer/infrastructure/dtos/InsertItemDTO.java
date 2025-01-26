@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 @Data
 @NoArgsConstructor
@@ -24,17 +25,17 @@ public class InsertItemDTO {
     private String dateManufacture;
     private Short itemAddressID;
     private Long userID;
-    public String barcode;
 
     // Item Image
-    private String pathItem;
-    private String pathItem2;
-    private String pathItem3;
-    private String pathItem4;
-    private String pathItem5;
-
+    private String[] pathItems;
 
     // Stock
     private Integer branchOfficeID;
     private Integer quantity;
+
+    // Barcode
+    private String[] barcodes;
+
+    // Essential
+    private String acronym;
 }
