@@ -2,8 +2,10 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.services.interfaces.IBranchOfficeService;
 import com.javierito.javierito_importer.domain.models.BranchOffice;
-import com.javierito.javierito_importer.infrastructure.dtos.NewBranchOfficeDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.NewBranchOfficeDTO;
+import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +17,17 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class BranchOfficeController {
 
+    @Autowired
+    private BranchOfficeMapper branchOfficeMapper;
+
     private final IBranchOfficeService branchOfficeService;
 
     @GetMapping("/getAll")
     public ResponseEntity<?> getBranchOfficesAsync(){
         ArrayList<BranchOffice> offices = branchOfficeService.getAll();
         if(offices != null){
-            return new ResponseEntity<>(offices, HttpStatus.OK);
+            var data = branchOfficeMapper.toBranchOfficesDTO(offices);
+            return new ResponseEntity<>(data, HttpStatus.OK);
         }
         return new ResponseEntity<>("Could not get branch offices", HttpStatus.OK);
     }

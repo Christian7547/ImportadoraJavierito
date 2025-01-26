@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface IBranchOfficeRepository extends JpaRepository<BranchOfficeEntity, Integer> {
-    @Query("SELECT new BranchOfficeEntity(b.id, b.name, b.address, b.latitude, b.longitude) FROM BranchOfficeEntity b WHERE b.status = 1")
+    @Query("SELECT new BranchOfficeEntity(b.id, b.name, b.address, b.latitude, b.longitude, b.registerDate) FROM BranchOfficeEntity b WHERE b.status = 1")
     List<BranchOfficeEntity> getAll();
 
-    @Query("SELECT new BranchOfficeEntity(b.id, b.name, b.address, b.latitude, b.longitude) FROM BranchOfficeEntity b WHERE b.id = :id")
+    @Query("SELECT new BranchOfficeEntity(b.id, b.name, b.address, b.latitude, b.longitude, b.registerDate) FROM BranchOfficeEntity b WHERE b.id = :id")
     BranchOfficeEntity getBranchOfficeById(int id);
 }
