@@ -17,16 +17,10 @@ import java.util.List;
 public class ItemService implements IItemSerivce {
 
     private final IItemDomainRepository itemDomainRepository;
-    private final IItemImageDomainRepository ItemImageDomainRepository;
-    private final IStockDomainRepository stockDomainRepository;
 
-    public ItemService(IItemDomainRepository itemDomainRepository,
-                       IItemImageDomainRepository ItemImageDomainRepository,
-                       IStockDomainRepository stockDomainRepository) {
+    public ItemService(IItemDomainRepository itemDomainRepository) {
 
         this.itemDomainRepository = itemDomainRepository;
-        this.ItemImageDomainRepository = ItemImageDomainRepository;
-        this.stockDomainRepository = stockDomainRepository;
     }
 
     private BarcodeGenerator barcodeGenerator = new BarcodeGenerator();

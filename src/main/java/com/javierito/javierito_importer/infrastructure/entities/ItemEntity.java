@@ -14,58 +14,55 @@ import java.time.LocalDateTime;
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
+    private long id;
 
     @Column(name = "name")
-    public String name;
+    private String name;
 
     @Column(name = "alias")
-    public String alias;
+    private String alias;
 
     @Column(name = "description")
-    public String description;
+    private String description;
 
     @Column(name = "model")
-    public String model;
+    private String model;
 
     @Column(name = "price")
-    public BigDecimal price;
+    private BigDecimal price;
 
     @Column(name = "wholesalePrice")
-    public BigDecimal wholesalePrice;
+    private BigDecimal wholesalePrice;
 
     @Column(name = "barePrice")
-    public BigDecimal barePrice;
+    private BigDecimal barePrice;
 
     @Column(name = "brandID")
-    public int brandID;
+    private int brandID;
 
     @Column(name = "subCategoryID")
-    public short subCategoryID;
+    private short subCategoryID;
 
     @Column(name = "weight")
-    public BigDecimal weight;
+    private BigDecimal weight;
 
     @Column(name = "dateManufacture")
-    public String dateManufacture;
+    private String dateManufacture;
 
     @Column(name = "status")
-    public short status;
+    private short status;
 
     @Column(name = "registerDate")
-    public LocalDateTime registerDate;
+    private LocalDateTime registerDate;
 
     @Column(name = "lastUpdate")
-    public LocalDateTime  lastUpdate;
+    private LocalDateTime  lastUpdate;
 
     @Column(name = "itemAddressID")
-    public short  itemAddressID;
+    private short  itemAddressID;
 
     @Column(name = "userID")
-    public long userID;
-
-    @Column(name = "barcode")
-    public String barcode;
+    private long userID;
 
     @PrePersist
     private void onCreate(){

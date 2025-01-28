@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.services.implementation.ItemAuditService;
 import com.javierito.javierito_importer.application.services.interfaces.IItemAuditService;
+import com.javierito.javierito_importer.domain.models.BranchOffice;
 import com.javierito.javierito_importer.domain.models.ItemAudit;
 import com.javierito.javierito_importer.infrastructure.dtos.ExcelReportsDTO;
 import org.springframework.http.HttpStatus;
@@ -20,12 +21,24 @@ public class ItemAuditController {
     public ItemAuditController(IItemAuditService itemAuditService) {this.itemAuditService = itemAuditService;}
 
     @GetMapping("/recycleBin")
-    public ResponseEntity<ArrayList<ItemAudit>> getItemAudits() {
-        return new ResponseEntity<>(itemAuditService.recycleBin(), HttpStatus.OK);
+    public ResponseEntity<?> getItemAudits() {
+
+        ArrayList<ItemAudit> recycleBin = itemAuditService.recycleBin();
+
+        if(recycleBin != null){
+            return new ResponseEntity<>(recycleBin, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Could not get Recycle Bin", HttpStatus.OK);
     }
 
     @PostMapping("/excelReports")
-    public ResponseEntity<ArrayList<ItemAudit>> getItemAuditsExcel(@RequestBody ExcelReportsDTO excelReportsDTO) {
-        return new ResponseEntity<>(itemAuditService.excelReports(excelReportsDTO), HttpStatus.OK);
+    public ResponseEntity<?> getItemAuditsExcel(@RequestBody ExcelReportsDTO excelReportsDTO) {
+
+        ArrayList<ItemAudit> excelReports = itemAuditService.excelReports(excelReportsDTO);
+
+        if(excelReports != null){
+            return new ResponseEntity<>(excelReports, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Could not get excel report", HttpStatus.OK);
     }
 }

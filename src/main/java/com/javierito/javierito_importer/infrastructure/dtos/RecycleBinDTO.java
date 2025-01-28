@@ -1,7 +1,12 @@
 package com.javierito.javierito_importer.infrastructure.dtos;
 
+import lombok.Builder;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
+@Builder
 public class RecycleBinDTO {
 
     private Long itemID;

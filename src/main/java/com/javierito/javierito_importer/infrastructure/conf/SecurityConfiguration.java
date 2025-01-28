@@ -38,7 +38,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/api/items/**").permitAll()/*hasAnyRole("Admin"))*/
                         .requestMatchers("/api/itemAudits/**").permitAll()
-                        .requestMatchers("/api/branchOffice/**").permitAll())
+                        .requestMatchers("/api/branchOffice/**").permitAll()
+                        .requestMatchers("/api/brand/**").permitAll()
+                        .requestMatchers("/api/subCategory/**").permitAll())
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(

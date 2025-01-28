@@ -19,10 +19,8 @@ public class BeansConfiguration {
     private final IAuthRepository authRepository;
 
     @Bean
-    IItemSerivce itemBeanService(IItemDomainRepository iItemDomainRepository,
-                                 IItemImageDomainRepository iItemImageDomainRepository,
-                                 IStockDomainRepository stockDomainRepository){
-        return new ItemService(iItemDomainRepository, iItemImageDomainRepository, stockDomainRepository);
+    IItemSerivce itemBeanService(IItemDomainRepository iItemDomainRepository){
+        return new ItemService(iItemDomainRepository);
     }
 
     @Bean
@@ -62,5 +60,15 @@ public class BeansConfiguration {
     @Bean
     IBranchOfficeImageService branchOfficeImageService(IBranchOfficeImageDomainRepository branchOfficeImageDomainRepository){
         return new BranchOfficeImageService(branchOfficeImageDomainRepository);
+    }
+
+    @Bean
+    IBrandService brandService(IBrandDomainRepository brandDomainRepository){
+        return new BrandService(brandDomainRepository);
+    }
+
+    @Bean
+    ISubCategoryService subCategoryService(ISubCategoryDomainRepository subCategoryDomainRepository){
+        return new SubCategoryService(subCategoryDomainRepository);
     }
 }
