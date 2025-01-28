@@ -1,7 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.services.interfaces.IBrandService;
-import com.javierito.javierito_importer.domain.models.BranchOffice;
 import com.javierito.javierito_importer.domain.models.Brand;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/brand")
+@RequestMapping("/api/brands")
 public class BrandController {
 
     private final IBrandService brandService;

@@ -71,4 +71,9 @@ public class BeansConfiguration {
     ISubCategoryService subCategoryService(ISubCategoryDomainRepository subCategoryDomainRepository){
         return new SubCategoryService(subCategoryDomainRepository);
     }
+
+    @Bean
+    ItemAddressService itemAddressService(IItemAddressDomainRepository itemAddressDomainRepository){
+        return new ItemAddressService(itemAddressDomainRepository);
+    }
 }

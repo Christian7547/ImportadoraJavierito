@@ -1,11 +1,8 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
-import com.javierito.javierito_importer.application.services.interfaces.IBrandService;
 import com.javierito.javierito_importer.application.services.interfaces.ISubCategoryService;
-import com.javierito.javierito_importer.domain.models.Brand;
 import com.javierito.javierito_importer.domain.models.SubCategory;
 import com.javierito.javierito_importer.infrastructure.dtos.SubCategoryDTO;
-import com.javierito.javierito_importer.infrastructure.entities.SubCategoryEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +14,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/api/subCategory")
+@RequestMapping("/api/subCategories")
 public class SubCategoryController {
 
     private final ISubCategoryService subCategoryService;

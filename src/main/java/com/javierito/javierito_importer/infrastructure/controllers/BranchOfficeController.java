@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/branchOffice")
+@RequestMapping("/api/branchOffices")
 @RequiredArgsConstructor
 public class BranchOfficeController {
 

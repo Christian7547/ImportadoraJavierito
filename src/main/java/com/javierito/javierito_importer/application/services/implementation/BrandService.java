@@ -14,8 +14,6 @@ public class BrandService implements IBrandService {
 
     @Override
     public ArrayList<Brand> getAllBrands() {
-
         return brandDomainRepository.getBrands();
-
     }
 }
