@@ -1,4 +1,4 @@
-package com.javierito.javierito_importer.infrastructure.dtos;
+package com.javierito.javierito_importer.infrastructure.dtos.BranchOffice;
 
 import lombok.Builder;
 import lombok.Data;
