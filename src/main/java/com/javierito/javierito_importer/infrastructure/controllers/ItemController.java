@@ -34,7 +34,7 @@ public class ItemController {
 
         var result = itemSerivce.getAllItems();
 
-        if (result != null || result.isEmpty())
+        if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get items", HttpStatus.OK);
 
