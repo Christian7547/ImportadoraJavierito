@@ -2,9 +2,12 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.infrastructure.dtos.InsertItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.ItemDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -15,54 +18,25 @@ public class ItemController {
 
     public ItemController(IItemSerivce itemSerivce) {this.itemSerivce = itemSerivce;}
 
-    /*@PostMapping("/insertItem")
-    public ResponseEntity<Item> insertItemAsync(@RequestBody InsertItemDTO insertItemDTO){
-
-        Item item = Item.builder()
-                .name(insertItemDTO.getName())
-                .alias(insertItemDTO.getAlias())
-                .description(insertItemDTO.getDescription())
-                .model(insertItemDTO.getModel())
-                .price(insertItemDTO.getPrice())
-                .wholesalePrice(insertItemDTO.getWholesalePrice())
-                .barePrice(insertItemDTO.getBarePrice())
-                .brandID(insertItemDTO.getBrandID())
-                .subCategoryID(insertItemDTO.getSubCategoryID())
-                .weight(insertItemDTO.getWeight())
-                .dateManufacture(insertItemDTO.getDateManufacture())
-                .itemAddressID(insertItemDTO.getItemAddressID())
-                .userID(insertItemDTO.getUserID())
-                .barcode(insertItemDTO.getBarcode())
-                .build();
-
-        List<ItemImage> itemImages = Arrays.asList(
-                ItemImage.builder().pathImage(insertItemDTO.getPathItem()).build(),
-                ItemImage.builder().pathImage(insertItemDTO.getPathItem2()).build(),
-                ItemImage.builder().pathImage(insertItemDTO.getPathItem3()).build(),
-                ItemImage.builder().pathImage(insertItemDTO.getPathItem4()).build(),
-                ItemImage.builder().pathImage(insertItemDTO.getPathItem5()).build()
-        );
-
-        Stock stock = Stock.builder()
-                .branchOfficeID(insertItemDTO.getBranchOfficeID())
-                .quantity(insertItemDTO.getQuantity())
-                .build();
-
-        var created = itemSerivce.createItem(item, itemImages, stock);
-
-        if(created != null)
-            return new ResponseEntity<>(created,HttpStatus.CREATED);
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-    }*/
-
     @PostMapping("/insertItem")
     public ResponseEntity<Integer> insertItem(@RequestBody InsertItemDTO item) {
         
         var result = itemSerivce.insertItem(item);
+
         if(result != 0)
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         else
             return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/getAllItems")
+    public ResponseEntity<?> getAllItems() {
+
+        var result = itemSerivce.getAllItems();
+
+        if (result != null || result.isEmpty())
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>("Could not get items", HttpStatus.OK);
+
+    }
 }

@@ -9,6 +9,7 @@ import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IItemImageDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IStockDomainRepository;
 import com.javierito.javierito_importer.infrastructure.dtos.InsertItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.ItemDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -17,32 +18,13 @@ import java.util.List;
 public class ItemService implements IItemSerivce {
 
     private final IItemDomainRepository itemDomainRepository;
+    private BarcodeGenerator barcodeGenerator = new BarcodeGenerator();
 
     public ItemService(IItemDomainRepository itemDomainRepository) {
 
         this.itemDomainRepository = itemDomainRepository;
     }
 
-    private BarcodeGenerator barcodeGenerator = new BarcodeGenerator();
-    /*@Transactional
-@Override
-public Item createItem(Item item, List<ItemImage> itemImages, Stock stock) {
-
-    var itemCreated = itemDomainRepository.createItem(item);
-    long itemId = itemCreated.getId();
-
-    for (ItemImage itemImage : itemImages) {
-        itemImage.setItemID(itemId);
-        ItemImageDomainRepository.createItemImage(itemImage);
-    }
-    /*itemImage.setItemID(itemId);
-    var itemImageCrated = ItemImageDomainRepository.createItemImage(itemImage);-*-/
-
-    stock.setItemID(itemId);
-    var stockCreated = stockDomainRepository.createStock(stock);
-
-    return itemCreated;
-}*/
     @Override
     public int insertItem(InsertItemDTO insertItemDTO) {
 
@@ -52,6 +34,9 @@ public Item createItem(Item item, List<ItemImage> itemImages, Stock stock) {
 
     }
 
-
+    @Override
+    public List<ItemDTO> getAllItems() {
+        return itemDomainRepository.getAllItems();
+    }
 
 }
