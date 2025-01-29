@@ -1,16 +1,13 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
-import com.javierito.javierito_importer.application.services.implementation.ItemAuditService;
 import com.javierito.javierito_importer.application.services.interfaces.IItemAuditService;
-import com.javierito.javierito_importer.domain.models.BranchOffice;
 import com.javierito.javierito_importer.domain.models.ItemAudit;
-import com.javierito.javierito_importer.infrastructure.dtos.ExcelReportsDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.ItemAudit.ExcelReportsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/itemAudits")

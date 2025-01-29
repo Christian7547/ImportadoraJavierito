@@ -1,13 +1,10 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
-import com.javierito.javierito_importer.infrastructure.dtos.InsertItemDTO;
-import com.javierito.javierito_importer.infrastructure.dtos.ItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController

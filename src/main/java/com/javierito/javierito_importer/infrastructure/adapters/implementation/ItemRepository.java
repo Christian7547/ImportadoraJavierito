@@ -3,8 +3,8 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
-import com.javierito.javierito_importer.infrastructure.dtos.InsertItemDTO;
-import com.javierito.javierito_importer.infrastructure.dtos.ItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemsDTO;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
@@ -95,14 +95,14 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public List<ItemDTO> getAllItems() {
+    public List<ItemsDTO> getAllItems() {
         String sql = "SELECT * FROM ufc_get_items()";
 
         List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
-        List<ItemDTO> items = new ArrayList<>();
+        List<ItemsDTO> items = new ArrayList<>();
 
         for (Object[] row : results) {
-            ItemDTO item = new ItemDTO();
+            ItemsDTO item = new ItemsDTO();
             item.setItemID(((Long) row[0]));
             item.setName((String) row[1]);
             item.setDescription((String) row[2]);
