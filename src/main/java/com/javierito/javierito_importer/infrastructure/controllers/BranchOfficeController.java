@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/branchOffices")
+@RequestMapping("/api/branchOffice")
 @RequiredArgsConstructor
 public class BranchOfficeController {
 
@@ -23,7 +23,7 @@ public class BranchOfficeController {
     private final IBranchOfficeService branchOfficeService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<?> getBranchOfficesAsync(){
+    public ResponseEntity<?> getBranchOffices(){
         ArrayList<BranchOffice> offices = branchOfficeService.getAll();
         if(offices != null){
             var data = branchOfficeMapper.toBranchOfficesDTO(offices);
@@ -33,7 +33,7 @@ public class BranchOfficeController {
     }
 
     @GetMapping("/getBranchOffice/{branchOfficeId}")
-    public ResponseEntity<?> getBranchOfficeAsync(@PathVariable int branchOfficeId){
+    public ResponseEntity<?> getBranchOffice(@PathVariable int branchOfficeId){
         var branchOffice = branchOfficeService.getById(branchOfficeId);
         if(branchOffice != null){
             return new ResponseEntity<>(branchOffice, HttpStatus.OK);
@@ -42,7 +42,7 @@ public class BranchOfficeController {
     }
 
     @PostMapping("/createBranchOffice")
-    public ResponseEntity<?> createBranchOfficeAsync(@RequestBody NewBranchOfficeDTO newBranchOfficeDTO) {
+    public ResponseEntity<?> createBranchOffice(@RequestBody NewBranchOfficeDTO newBranchOfficeDTO) {
         BranchOffice branchOffice = BranchOffice.builder()
                 .name(newBranchOfficeDTO.getName())
                 .address(newBranchOfficeDTO.getAddress())

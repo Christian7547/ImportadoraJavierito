@@ -1,5 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.jwt;
 
+import com.javierito.javierito_importer.infrastructure.entities.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -34,7 +35,11 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> extraClaims = new HashMap<>();
+        if(userDetails instanceof UserEntity userEntity){
+            extraClaims.put("id", userEntity.getId());
+        }
+        return generateToken(extraClaims, userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
