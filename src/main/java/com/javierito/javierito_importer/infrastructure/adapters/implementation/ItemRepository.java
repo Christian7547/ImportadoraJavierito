@@ -1,12 +1,11 @@
 package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 
+import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
-import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
-import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
-import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemsDTO;
-import com.javierito.javierito_importer.infrastructure.dtos.Item.UpdateItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.*;
+import com.javierito.javierito_importer.infrastructure.entities.ItemEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
@@ -30,6 +29,7 @@ public class ItemRepository implements IItemDomainRepository {
     private final IItemRepository itemRepository;
 
     public ItemRepository(IItemRepository itemRepository){this.itemRepository = itemRepository;}
+
 
     @Override
     public int insertItem(InsertItemDTO insertItemDTO){
@@ -202,5 +202,16 @@ public class ItemRepository implements IItemDomainRepository {
         updatedItem.setItemImages((String[]) result[14]); // Actualiza las imágenes
 
         return updatedItem;
+    }
+
+    public ItemEntity deleteItem(ItemEntity item) {
+
+        return itemRepository.save(item);
+
+    }
+
+    @Override
+    public ItemEntity getItem(Long id) {
+        return itemRepository.getById(id);
     }
 }

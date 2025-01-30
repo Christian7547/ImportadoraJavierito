@@ -38,10 +38,10 @@ public class ItemEntity {
     private BigDecimal barePrice;
 
     @Column(name = "brandID")
-    private int brandID;
+    private Integer brandID;
 
     @Column(name = "subCategoryID")
-    private short subCategoryID;
+    private Short subCategoryID;
 
     @Column(name = "weight")
     private BigDecimal weight;
@@ -50,7 +50,7 @@ public class ItemEntity {
     private String dateManufacture;
 
     @Column(name = "status")
-    private short status;
+    private Short status;
 
     @Column(name = "registerDate")
     private LocalDateTime registerDate;
@@ -59,10 +59,10 @@ public class ItemEntity {
     private LocalDateTime  lastUpdate;
 
     @Column(name = "itemAddressID")
-    private short  itemAddressID;
+    private Short  itemAddressID;
 
     @Column(name = "userID")
-    private long userID;
+    private Long userID;
 
     @PrePersist
     private void onCreate(){
