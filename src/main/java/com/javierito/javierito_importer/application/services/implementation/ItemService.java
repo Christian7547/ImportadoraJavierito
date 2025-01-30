@@ -4,6 +4,7 @@ import com.javierito.javierito_importer.application.services.Utils.BarcodeGenera
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemsDTO;
 
 import java.util.List;
@@ -30,6 +31,11 @@ public class ItemService implements IItemSerivce {
     @Override
     public List<ItemsDTO> getAllItems() {
         return itemDomainRepository.getAllItems();
+    }
+
+    @Override
+    public ItemDTO getItemById(Long id) {
+        return itemDomainRepository.getItemById(id);
     }
 
 }

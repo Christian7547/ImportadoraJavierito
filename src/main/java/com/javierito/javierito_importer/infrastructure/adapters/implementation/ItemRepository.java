@@ -4,6 +4,7 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemsDTO;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.EntityManager;
@@ -120,5 +121,37 @@ public class ItemRepository implements IItemDomainRepository {
             items.add(item);
         }
         return items;
+    }
+
+    @Override
+    public ItemDTO getItemById(Long itemID) {
+        String sql = "SELECT * FROM ufc_get_item_by_id(?)";
+
+        Object[] result = (Object[]) entityManager.createNativeQuery(sql)
+                .setParameter(1, itemID)
+                .getSingleResult();
+
+        if (result == null) {
+            return null;
+        }
+
+        ItemDTO item = new ItemDTO();
+        item.setItemID((Long) result[0]);
+        item.setName((String) result[1]);
+        item.setAlias((String) result[2]);
+        item.setDescription((String) result[3]);
+        item.setModel((String) result[4]);
+        item.setPrice((BigDecimal) result[5]);
+        item.setWholesalePrice((BigDecimal) result[6]);
+        item.setBarePrice((BigDecimal) result[7]);
+        item.setBrandID((Integer) result[8]);
+        item.setSubCategoryID((Short) result[9]);
+        item.setWeight((BigDecimal) result[10]);
+        item.setDateManufacture((String) result[11]);
+        item.setItemAddressID((Short) result[12]);
+        item.setUserID((Long) result[13]);
+        item.setItemImages((String[]) result[14]);
+
+        return item;
     }
 }
