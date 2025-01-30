@@ -40,8 +40,8 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
-    public UpdateItemDTO updateItemById(Long id) {
-        return itemDomainRepository.updateItemById(id);
+    public UpdateItemDTO updateItemById(UpdateItemDTO updateItemDTO) {
+        return itemDomainRepository.updateItemById(updateItemDTO);
     }
 
 }

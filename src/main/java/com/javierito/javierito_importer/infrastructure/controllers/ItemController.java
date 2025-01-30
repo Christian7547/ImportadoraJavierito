@@ -35,7 +35,7 @@ public class ItemController {
 
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
-        return new ResponseEntity<>("Could not get items", HttpStatus.OK);
+        return new ResponseEntity<>("Could not get items", HttpStatus.NO_CONTENT);
 
     }
 
@@ -46,16 +46,16 @@ public class ItemController {
 
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
-        return new ResponseEntity<>("Could not get item", HttpStatus.OK);
+        return new ResponseEntity<>("Could not get item", HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/UpdateItem")
-    public ResponseEntity<?> updateItem(@RequestBody UpdateItemDTO itemDTO) {
+    public ResponseEntity<?> updateItem(@RequestBody UpdateItemDTO updateItemDTO) {
 
-        var result = itemSerivce.updateItemById(itemDTO.getItemID());
+        var result = itemSerivce.updateItemById(updateItemDTO);
 
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
-        return new ResponseEntity<>("Could not update item", HttpStatus.OK);
+        return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
     }
 }

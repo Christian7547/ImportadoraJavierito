@@ -13,6 +13,6 @@ public interface IItemDomainRepository {
     int insertItem(InsertItemDTO insertItemDTO);
     List<ItemsDTO> getAllItems();
     ItemDTO getItemById(Long itemID);
-    UpdateItemDTO updateItemById(Long itemID);
+    UpdateItemDTO updateItemById(UpdateItemDTO updateItemDTO);
 
 }

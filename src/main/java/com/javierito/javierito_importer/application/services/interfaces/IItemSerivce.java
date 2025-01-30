@@ -14,6 +14,6 @@ public interface IItemSerivce {
     int insertItem(InsertItemDTO insertItemDTO);
     List<ItemsDTO> getAllItems();
     ItemDTO getItemById(Long id);
-    UpdateItemDTO updateItemById(Long id);
+    UpdateItemDTO updateItemById(UpdateItemDTO updateItemById);
 
 }
