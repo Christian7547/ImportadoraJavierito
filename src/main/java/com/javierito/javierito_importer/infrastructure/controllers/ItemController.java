@@ -3,6 +3,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.UpdateItemDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,15 @@ public class ItemController {
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get item", HttpStatus.OK);
+    }
+
+    @PatchMapping("/UpdateItem")
+    public ResponseEntity<?> updateItem(@RequestBody UpdateItemDTO itemDTO) {
+
+        var result = itemSerivce.updateItemById(itemDTO.getItemID());
+
+        if (result != null)
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>("Could not update item", HttpStatus.OK);
     }
 }

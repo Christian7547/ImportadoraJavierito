@@ -6,6 +6,7 @@ import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItem
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemsDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.UpdateItemDTO;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
@@ -125,6 +126,7 @@ public class ItemRepository implements IItemDomainRepository {
 
     @Override
     public ItemDTO getItemById(Long itemID) {
+
         String sql = "SELECT * FROM ufc_get_item_by_id(?)";
 
         Object[] result = (Object[]) entityManager.createNativeQuery(sql)
@@ -153,5 +155,39 @@ public class ItemRepository implements IItemDomainRepository {
         item.setItemImages((String[]) result[14]);
 
         return item;
+    }
+
+    @Override
+    public UpdateItemDTO updateItemById(Long itemID) {
+
+        String sql = "SELECT * FROM ufc_update_item_by_id(?)";
+
+        Object[] result = (Object[]) entityManager.createNativeQuery(sql)
+                .setParameter(1, itemID)
+                .getSingleResult();
+
+        if (result == null) {
+            return null;
+        }
+
+        UpdateItemDTO item = new UpdateItemDTO();
+        item.setItemID((Long) result[0]);
+        item.setName((String) result[1]);
+        item.setAlias((String) result[2]);
+        item.setDescription((String) result[3]);
+        item.setModel((String) result[4]);
+        item.setPrice((BigDecimal) result[5]);
+        item.setWholesalePrice((BigDecimal) result[6]);
+        item.setBarePrice((BigDecimal) result[7]);
+        item.setBrandID((Integer) result[8]);
+        item.setSubCategoryID((Short) result[9]);
+        item.setWeight((BigDecimal) result[10]);
+        item.setDateManufacture((String) result[11]);
+        item.setItemAddressID((Short) result[12]);
+        item.setUserID((Long) result[13]);
+        item.setItemImages((String[]) result[14]);
+
+        return item;
+
     }
 }

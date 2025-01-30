@@ -6,6 +6,7 @@ import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemsDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.UpdateItemDTO;
 
 import java.util.List;
 
@@ -36,6 +37,11 @@ public class ItemService implements IItemSerivce {
     @Override
     public ItemDTO getItemById(Long id) {
         return itemDomainRepository.getItemById(id);
+    }
+
+    @Override
+    public UpdateItemDTO updateItemById(Long id) {
+        return itemDomainRepository.updateItemById(id);
     }
 
 }
