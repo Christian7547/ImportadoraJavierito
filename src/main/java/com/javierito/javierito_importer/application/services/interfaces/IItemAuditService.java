@@ -1,7 +1,7 @@
 package com.javierito.javierito_importer.application.services.interfaces;
 
 import com.javierito.javierito_importer.domain.models.ItemAudit;
-import com.javierito.javierito_importer.infrastructure.dtos.ExcelReportsDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.ItemAudit.ExcelReportsDTO;
 
 import java.util.ArrayList;
 

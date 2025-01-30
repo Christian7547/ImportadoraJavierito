@@ -1,17 +1,19 @@
-package com.javierito.javierito_importer.infrastructure.dtos;
+package com.javierito.javierito_importer.infrastructure.dtos.Item;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class InsertItemDTO {
-    // Item
+
+public class UpdateItemDTO {
+
+    private Long itemID;
     private String name;
     private String alias;
     private String description;
@@ -25,17 +27,6 @@ public class InsertItemDTO {
     private String dateManufacture;
     private Short itemAddressID;
     private Long userID;
+    private String[] itemImages;
 
-    // Item Image
-    private String[] pathItems;
-
-    // Stock
-    private Integer branchOfficeID;
-    private Integer quantity;
-
-    // Barcode
-    private String[] barcodes;
-
-    // Essential
-    private String acronym;
 }

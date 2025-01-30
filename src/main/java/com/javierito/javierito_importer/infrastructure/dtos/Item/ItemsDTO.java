@@ -1,4 +1,4 @@
-package com.javierito.javierito_importer.infrastructure.dtos;
+package com.javierito.javierito_importer.infrastructure.dtos.Item;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemDTO
+public class ItemsDTO
 {
     public Long itemID;
     public String name;
