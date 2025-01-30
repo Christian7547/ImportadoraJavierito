@@ -1,5 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.entities;
 
+import com.javierito.javierito_importer.domain.models.Item;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "Item")
 @Data
 
-public class ItemEntity {
+public class ItemEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

@@ -5,7 +5,6 @@ import com.javierito.javierito_importer.application.services.interfaces.IItemSer
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.*;
-import com.javierito.javierito_importer.infrastructure.entities.ItemEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,10 +45,9 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
-    public ItemEntity deleteItem(DeleteItemDTO itemDto) {
+    public Item deleteItem(DeleteItemDTO itemDto) {
 
-        ItemEntity item = itemDomainRepository.getItem(itemDto.getItemID());
-
+        Item item = itemDomainRepository.getItem(itemDto.getItemID());
         if (item == null) {
             return null;
         }

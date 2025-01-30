@@ -204,14 +204,13 @@ public class ItemRepository implements IItemDomainRepository {
         return updatedItem;
     }
 
-    public ItemEntity deleteItem(ItemEntity item) {
-
-        return itemRepository.save(item);
-
+    @Override
+    public Item deleteItem(Item item) {
+        return itemMapper.toItem(itemRepository.save(itemMapper.toItemEntity(item)));
     }
 
     @Override
-    public ItemEntity getItem(Long id) {
-        return itemRepository.getById(id);
+    public Item getItem(Long id) {
+        return itemMapper.toItem(itemRepository.getById(id)) ;
     }
 }

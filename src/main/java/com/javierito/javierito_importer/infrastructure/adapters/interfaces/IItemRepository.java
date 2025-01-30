@@ -1,5 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.adapters.interfaces;
 
+import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.infrastructure.entities.ItemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

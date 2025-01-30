@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface IItemDomainRepository {
 
-    ItemEntity deleteItem(ItemEntity item);
-    ItemEntity getItem(Long id);
+    Item deleteItem(Item item);
+    Item getItem(Long id);
 
     // Stored Procedures - Functions
     int insertItem(InsertItemDTO insertItemDTO);

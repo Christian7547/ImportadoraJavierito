@@ -65,7 +65,7 @@ public class ItemController {
     @DeleteMapping("/removeItem")
     public ResponseEntity<?> removeItem (@RequestBody DeleteItemDTO item) {
 
-        ItemEntity result = itemSerivce.deleteItem(item);
+        var result = itemSerivce.deleteItem(item);
 
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
