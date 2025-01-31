@@ -44,4 +44,10 @@ public class BranchOfficeService implements IBranchOfficeService {
         }
         return branchOfficeCreated;
     }
+
+    @Override
+    public boolean removeBranchOffice(short branchOfficeId) {
+        BranchOffice removed = branchOfficeDomainRepository.removeBranchOffice(branchOfficeId);
+        return removed != null;
+    }
 }

@@ -55,4 +55,13 @@ public class BranchOfficeController {
         }
         return new ResponseEntity<>("Could not save changes", HttpStatus.BAD_REQUEST);
     }
+
+    @DeleteMapping("/removeBranchOffice/{id}")
+    public ResponseEntity<?> removeBranchOffice(@PathVariable short id){
+        boolean success = branchOfficeService.removeBranchOffice(id);
+        if(success) {
+            return new ResponseEntity<>("Branch office removed", HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>("Branch office removed", HttpStatus.BAD_REQUEST);
+    }
 }
