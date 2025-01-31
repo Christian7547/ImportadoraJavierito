@@ -45,13 +45,9 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
     }
 
     @Override
-    public BranchOffice removeBranchOffice(short branchOfficeId) {
-        Optional<BranchOfficeEntity> getOffice = branchOfficeRepository.getBranchOfficeById(branchOfficeId);
-        if(getOffice.isPresent()){
-            getOffice.get().setStatus((short)0);
-            BranchOfficeEntity removed = branchOfficeRepository.save(getOffice.get());
-            return branchOfficeMapper.toBranchOffice(removed);
-        }
-        return null;
+    public BranchOffice removeBranchOffice(BranchOffice branchOffice) {
+        BranchOfficeEntity toEntity = branchOfficeMapper.toBranchOfficeEntity(branchOffice);
+        BranchOfficeEntity saved = branchOfficeRepository.save(toEntity);
+        return branchOfficeMapper.toBranchOffice(saved);
     }
 }

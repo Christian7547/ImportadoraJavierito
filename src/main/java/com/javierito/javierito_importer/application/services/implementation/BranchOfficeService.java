@@ -8,6 +8,7 @@ import com.javierito.javierito_importer.domain.ports.IBranchOfficeImageDomainRep
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +47,14 @@ public class BranchOfficeService implements IBranchOfficeService {
     }
 
     @Override
-    public boolean removeBranchOffice(short branchOfficeId) {
-        BranchOffice removed = branchOfficeDomainRepository.removeBranchOffice(branchOfficeId);
-        return removed != null;
+    public boolean removeBranchOffice(BranchOffice branchOffice) {
+        BranchOffice getOffice = getById(branchOffice.getId());
+        if(getOffice != null) {
+            getOffice.setStatus((short) 0);
+            getOffice.setLastUpdate(LocalDateTime.now());
+            branchOfficeDomainRepository.removeBranchOffice(getOffice);
+            return true;
+        }
+        return false;
     }
 }

@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.services.interfaces.IBranchOfficeService;
 import com.javierito.javierito_importer.domain.models.BranchOffice;
+import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.DeleteBranchOfficeDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.NewBranchOfficeDTO;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,10 @@ public class BranchOfficeController {
 
     @DeleteMapping("/removeBranchOffice/{id}")
     public ResponseEntity<?> removeBranchOffice(@PathVariable short id){
-        boolean success = branchOfficeService.removeBranchOffice(id);
+        BranchOffice office = BranchOffice.builder()
+                .id(id)
+                .build();
+        boolean success = branchOfficeService.removeBranchOffice(office);
         if(success) {
             return new ResponseEntity<>("Branch office removed", HttpStatus.NO_CONTENT);
         }
