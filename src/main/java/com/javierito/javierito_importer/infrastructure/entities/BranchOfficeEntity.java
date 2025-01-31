@@ -2,12 +2,14 @@ package com.javierito.javierito_importer.infrastructure.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "BranchOffice")
 @Data
+@NoArgsConstructor
 public class BranchOfficeEntity {
 
     @Id
