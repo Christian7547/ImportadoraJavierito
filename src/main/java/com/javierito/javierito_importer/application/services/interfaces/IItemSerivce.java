@@ -13,7 +13,7 @@ public interface IItemSerivce {
 
     //Stored Procedures - Functions
     int insertItem(InsertItemDTO insertItemDTO);
-    List<ItemsDTO> getAllItems(int offset, int limit);
+    List<ItemsDTO> getAllItems(int offset, int limit, String param);
     ItemDTO getItemById(Long id);
     UpdateItemDTO updateItemById(UpdateItemDTO updateItemById);
 
