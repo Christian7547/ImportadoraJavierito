@@ -2,11 +2,9 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
-import com.javierito.javierito_importer.infrastructure.dtos.Item.DeleteItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.UpdateItemDTO;
-import com.javierito.javierito_importer.infrastructure.entities.ItemEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +61,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/removeItem")
-    public ResponseEntity<?> removeItem (@RequestBody DeleteItemDTO item) {
+    public ResponseEntity<?> removeItem (@RequestBody Item item) {
 
         var result = itemSerivce.deleteItem(item);
 

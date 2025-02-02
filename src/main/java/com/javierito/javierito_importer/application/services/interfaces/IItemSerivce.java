@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IItemSerivce {
 
-    Item deleteItem(DeleteItemDTO itemDto);
+    Item deleteItem(Item item);
 
     //Stored Procedures - Functions
     int insertItem(InsertItemDTO insertItemDTO);
