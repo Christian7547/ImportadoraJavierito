@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface IAuthRepository extends JpaRepository<UserEntity, Long> {
 
-    @Query("SELECT u FROM UserEntity u WHERE u.userName = :username AND u.status = 1")
+    @Query("SELECT u FROM UserEntity u WHERE u.userName_ = :username AND u.status = 1")
     Optional<UserEntity> findByUserName(@Param("username") String username);
 }

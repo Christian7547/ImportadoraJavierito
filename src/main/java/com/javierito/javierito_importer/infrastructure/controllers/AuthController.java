@@ -4,7 +4,7 @@ import com.javierito.javierito_importer.application.services.interfaces.IAuthSer
 import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.infrastructure.dtos.LoginDTO;
 import com.javierito.javierito_importer.infrastructure.jwt.JwtService;
-import com.javierito.javierito_importer.infrastructure.mappers.User.UserMapper;
+import com.javierito.javierito_importer.infrastructure.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -20,7 +20,7 @@ public class UserEntity implements UserDetails {
     private long id;
 
     @Column(name = "userName", nullable = false)
-    private String userName;
+    private String userName_;
 
     @Column(name = "password", nullable = false)
     @JsonIgnore
@@ -56,6 +56,6 @@ public class UserEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return userName_;
     }
 }

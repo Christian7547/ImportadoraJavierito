@@ -42,11 +42,6 @@ public class BeansConfiguration {
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     IItemAuditService itemAuditService(IItemAuditDomainRepository itemAuditDomainRepository){
         return new ItemAuditService(itemAuditDomainRepository);
     }
