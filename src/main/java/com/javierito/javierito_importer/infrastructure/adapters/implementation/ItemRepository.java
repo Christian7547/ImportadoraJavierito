@@ -180,7 +180,7 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter(12, itemDTO.getDateManufacture())
                 .setParameter(13, itemDTO.getItemAddressID())
                 .setParameter(14, itemDTO.getUserID())
-                .setParameter(15, itemDTO.getItemImages()) // Para actualizar las imágenes
+                .setParameter(15, itemDTO.getItemImages())
                 .getSingleResult();
 
         if (result == null) {
@@ -202,7 +202,7 @@ public class ItemRepository implements IItemDomainRepository {
         updatedItem.setDateManufacture((String) result[11]);
         updatedItem.setItemAddressID((Short) result[12]);
         updatedItem.setUserID((Long) result[13]);
-        updatedItem.setItemImages((String[]) result[14]); // Actualiza las imágenes
+        updatedItem.setItemImages((String[]) result[14]);
 
         return updatedItem;
     }
