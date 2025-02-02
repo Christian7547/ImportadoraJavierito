@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,8 @@ import java.util.List;
 public interface ItemImageMapper {
 
     ItemImage toItemImage(ItemImageEntity target);
-
     @Mapping(source = "pathImage", target = "pathItem")
     ItemImageEntity toItemImageEntity(ItemImage target);
     ArrayList<ItemImage> toItemImages(List<ItemImageEntity> target);
+    void saveChanges(@MappingTarget ItemImageEntity target, ItemImageEntity source);
 }

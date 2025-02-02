@@ -14,7 +14,7 @@ public interface IItemDomainRepository {
 
     // Stored Procedures - Functions
     int insertItem(InsertItemDTO insertItemDTO);
-    List<ItemsDTO> getAllItems(int offset, int limit);
+    List<ItemsDTO> getAllItems(int offset, int limit, String param);
     ItemDTO getItemById(Long itemID);
     UpdateItemDTO updateItemById(UpdateItemDTO updateItemDTO);
 
