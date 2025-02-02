@@ -12,7 +12,7 @@ public class BranchOfficeImageEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "pathItem")
+    @Column(name = "pathBranchOffice")
     private String pathBranchOffice;
 
     @Column(name = "branchOfficeID")
