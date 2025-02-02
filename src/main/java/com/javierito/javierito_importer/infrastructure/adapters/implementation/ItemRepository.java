@@ -97,10 +97,13 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public List<ItemsDTO> getAllItems() {
-        String sql = "SELECT * FROM ufc_get_items()";
+    public List<ItemsDTO> getAllItems(int offset, int limit) {
+        String sql = "SELECT * FROM ufc_get_items(?, ?)";
 
-        List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
+        List<Object[]> results = entityManager.createNativeQuery(sql)
+                .setParameter(1, limit)
+                .setParameter(2, offset)
+                .getResultList();
         List<ItemsDTO> items = new ArrayList<>();
 
         for (Object[] row : results) {

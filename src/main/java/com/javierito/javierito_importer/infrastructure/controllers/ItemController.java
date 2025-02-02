@@ -32,9 +32,9 @@ public class ItemController {
     }
 
     @GetMapping("/getAllItems")
-    public ResponseEntity<?> getAllItems() {
+    public ResponseEntity<?> getAllItems(@RequestParam(required = false) int offset, int limit) {
 
-        var result = itemSerivce.getAllItems();
+        var result = itemSerivce.getAllItems(offset, limit);
 
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);

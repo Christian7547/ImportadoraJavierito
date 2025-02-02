@@ -30,8 +30,8 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
-    public List<ItemsDTO> getAllItems() {
-        return itemDomainRepository.getAllItems();
+    public List<ItemsDTO> getAllItems(int offset, int limit) {
+        return itemDomainRepository.getAllItems(offset, limit);
     }
 
     @Override
