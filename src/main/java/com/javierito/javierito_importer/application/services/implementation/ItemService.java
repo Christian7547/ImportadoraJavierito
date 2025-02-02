@@ -45,9 +45,9 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
-    public Item deleteItem(DeleteItemDTO itemDto) {
+    public Item deleteItem(Item itemDto) {
 
-        Item item = itemDomainRepository.getItem(itemDto.getItemID());
+        Item item = itemDomainRepository.getItem(itemDto.getId());
         if (item == null) {
             return null;
         }
