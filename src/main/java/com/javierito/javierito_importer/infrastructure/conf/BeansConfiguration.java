@@ -31,8 +31,9 @@ public class BeansConfiguration {
     }
 
     @Bean
-    IAuthService authBeanService(IAuthDomainRepository authDomainRepository){
-        return new AuthService(authDomainRepository);
+    IAuthService authBeanService(IAuthDomainRepository authDomainRepository,
+                                 IUserDomainRepository userDomainRepository){
+        return new AuthService(authDomainRepository, userDomainRepository);
     }
 
     @Bean

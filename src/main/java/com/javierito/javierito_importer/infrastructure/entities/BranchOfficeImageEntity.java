@@ -17,4 +17,9 @@ public class BranchOfficeImageEntity {
 
     @Column(name = "branchOfficeID")
     private int branchOfficeID;
+
+    public BranchOfficeImageEntity(int id, String pathBranchOffice) {
+        this.id = id;
+        this.pathBranchOffice = pathBranchOffice;
+    }
 }
