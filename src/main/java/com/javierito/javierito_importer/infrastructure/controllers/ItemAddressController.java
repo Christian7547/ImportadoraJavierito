@@ -1,6 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
-import com.javierito.javierito_importer.application.services.interfaces.IItemAddressService;
+import com.javierito.javierito_importer.application.Services.interfaces.IItemAddressService;
 import com.javierito.javierito_importer.domain.models.ItemAddress;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

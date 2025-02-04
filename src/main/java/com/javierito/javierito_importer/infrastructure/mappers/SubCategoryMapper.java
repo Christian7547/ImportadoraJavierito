@@ -11,6 +11,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface SubCategoryMapper {
 
+    SubCategory toSubCategory(SubCategoryEntity entity);
+    SubCategoryEntity toSubCategoryEntity(SubCategory subCategory);
     ArrayList<SubCategory> toSubCategories(List<SubCategoryEntity> target);
 
 }

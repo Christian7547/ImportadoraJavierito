@@ -1,9 +1,8 @@
-package com.javierito.javierito_importer.application.services.implementation;
+package com.javierito.javierito_importer.application.Services.implementation;
 
-import com.javierito.javierito_importer.application.services.interfaces.IAuthService;
+import com.javierito.javierito_importer.application.Services.interfaces.IAuthService;
 import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.domain.ports.IAuthDomainRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class AuthService implements IAuthService {
 

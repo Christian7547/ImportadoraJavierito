@@ -9,6 +9,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ItemAddressMapper {
 
+    ItemAddress toItemAddress(ItemAddressEntity entity);
+
+    ItemAddressEntity toItemAddressEntity(ItemAddress itemAddress);
+
     ArrayList<ItemAddress> toItemAdreses(List<ItemAddressEntity> target);
 
 }

@@ -11,6 +11,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BrandMapper {
 
+    Brand toBrand(BrandEntity entity);
+
+    BrandEntity toBrandEntity(Brand brand);
+
     ArrayList<Brand> toBrands(List<BrandEntity> target);
 
 }

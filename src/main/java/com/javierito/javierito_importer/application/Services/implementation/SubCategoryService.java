@@ -1,9 +1,8 @@
-package com.javierito.javierito_importer.application.services.implementation;
+package com.javierito.javierito_importer.application.Services.implementation;
 
-import com.javierito.javierito_importer.application.services.interfaces.ISubCategoryService;
+import com.javierito.javierito_importer.application.Services.interfaces.ISubCategoryService;
 import com.javierito.javierito_importer.domain.models.SubCategory;
 import com.javierito.javierito_importer.domain.ports.ISubCategoryDomainRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 

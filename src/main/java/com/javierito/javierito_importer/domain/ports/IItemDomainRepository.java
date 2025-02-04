@@ -2,7 +2,6 @@ package com.javierito.javierito_importer.domain.ports;
 
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.*;
-import com.javierito.javierito_importer.infrastructure.entities.ItemEntity;
 
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
-import com.javierito.javierito_importer.application.services.interfaces.IItemSerivce;
+import com.javierito.javierito_importer.application.Services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
