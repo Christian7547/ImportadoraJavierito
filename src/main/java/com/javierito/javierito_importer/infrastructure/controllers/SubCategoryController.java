@@ -1,6 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
-import com.javierito.javierito_importer.application.services.interfaces.ISubCategoryService;
+import com.javierito.javierito_importer.application.Services.interfaces.ISubCategoryService;
 import com.javierito.javierito_importer.domain.models.SubCategory;
 import com.javierito.javierito_importer.infrastructure.dtos.SubCategoryDTO;
 import org.springframework.http.HttpStatus;

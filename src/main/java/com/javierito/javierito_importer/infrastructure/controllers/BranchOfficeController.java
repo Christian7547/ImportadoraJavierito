@@ -1,7 +1,7 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
-import com.javierito.javierito_importer.application.services.interfaces.IBranchOfficeImageService;
-import com.javierito.javierito_importer.application.services.interfaces.IBranchOfficeService;
+import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeImageService;
+import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeService;
 import com.javierito.javierito_importer.domain.models.BranchOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
 import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.BranchOfficeEditableDTO;

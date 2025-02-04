@@ -1,7 +1,7 @@
 package com.javierito.javierito_importer.infrastructure.conf;
 
-import com.javierito.javierito_importer.application.services.implementation.*;
-import com.javierito.javierito_importer.application.services.interfaces.*;
+import com.javierito.javierito_importer.application.Services.implementation.*;
+import com.javierito.javierito_importer.application.Services.interfaces.*;
 import com.javierito.javierito_importer.domain.ports.*;
 import com.javierito.javierito_importer.domain.ports.output.IEmailServer;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IAuthRepository;
@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor

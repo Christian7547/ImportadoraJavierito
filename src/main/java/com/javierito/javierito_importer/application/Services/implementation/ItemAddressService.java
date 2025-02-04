@@ -1,6 +1,6 @@
-package com.javierito.javierito_importer.application.services.implementation;
+package com.javierito.javierito_importer.application.Services.implementation;
 
-import com.javierito.javierito_importer.application.services.interfaces.IItemAddressService;
+import com.javierito.javierito_importer.application.Services.interfaces.IItemAddressService;
 import com.javierito.javierito_importer.domain.models.ItemAddress;
 import com.javierito.javierito_importer.domain.ports.IItemAddressDomainRepository;
 

@@ -1,6 +1,6 @@
-package com.javierito.javierito_importer.application.services.implementation;
+package com.javierito.javierito_importer.application.Services.implementation;
 
-import com.javierito.javierito_importer.application.services.interfaces.IBranchOfficeImageService;
+import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeImageService;
 import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeImageDomainRepository;
 import lombok.RequiredArgsConstructor;

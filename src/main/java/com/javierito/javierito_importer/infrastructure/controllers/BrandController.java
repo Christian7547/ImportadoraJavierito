@@ -1,6 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
-import com.javierito.javierito_importer.application.services.interfaces.IBrandService;
+import com.javierito.javierito_importer.application.Services.interfaces.IBrandService;
 import com.javierito.javierito_importer.domain.models.Brand;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
