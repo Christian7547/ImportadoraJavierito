@@ -14,7 +14,7 @@ public class ItemService implements IItemSerivce {
     private final IItemDomainRepository itemDomainRepository;
     private BarcodeGenerator barcodeGenerator = new BarcodeGenerator();
 
-    public ItemService(IItemDomainRepository itemDomainRepository, IBrandDomainRepository brandDomainRepository, IItemAddressDomainRepository iItemAddressDomainRepository, IItemImageDomainRepository iItemImageDomainRepository, IStockDomainRepository stockDomainRepository, ISubCategoryDomainRepository subCategoryDomainRepository) {
+    public ItemService(IItemDomainRepository itemDomainRepository) {
 
         this.itemDomainRepository = itemDomainRepository;
     }
