@@ -18,8 +18,17 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PostMapping("/getByEmail")
+    public ResponseEntity<?> getUserByEmail(@RequestBody String email){
+        User user = userService.getByEmail(email);
+        if(user != null){
+            return ResponseEntity.noContent().build();
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @PostMapping("/createEmployeeUser")
-    public ResponseEntity<User> createUserAsync(@RequestBody UserDTO userDTO){
+    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO){
         User user = User.builder()
                 .userName(userDTO.getUserName())
                 .password(userDTO.getPassword())
@@ -36,7 +45,7 @@ public class UserController {
                 .build();
         var created = userService.createEmployeeUser(user, employee);
         if(created != null)
-            return new ResponseEntity<>(created,HttpStatus.CREATED);
+            return new ResponseEntity<>(created, HttpStatus.CREATED);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }

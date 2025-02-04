@@ -1,26 +1,32 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
+import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeImageService;
 import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeService;
 import com.javierito.javierito_importer.domain.models.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
+import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.BranchOfficeEditableDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.NewBranchOfficeDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.OfficeImageEditableDTO;
+import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeImageMapper;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/branchOffice")
 @RequiredArgsConstructor
 public class BranchOfficeController {
 
-    @Autowired
-    private BranchOfficeMapper branchOfficeMapper;
+    private final BranchOfficeMapper branchOfficeMapper;
+    private final BranchOfficeImageMapper officeImageMapper;
 
     private final IBranchOfficeService branchOfficeService;
+    private final IBranchOfficeImageService imageService;
 
     @GetMapping("/getAll")
     public ResponseEntity<?> getBranchOffices(){
@@ -32,11 +38,22 @@ public class BranchOfficeController {
         return new ResponseEntity<>("Could not get branch offices", HttpStatus.OK);
     }
 
-    @GetMapping("/getBranchOffice/{branchOfficeId}")
+    @GetMapping("/getBranchOfficeDetails/{branchOfficeId}")
     public ResponseEntity<?> getBranchOffice(@PathVariable int branchOfficeId){
-        var branchOffice = branchOfficeService.getById(branchOfficeId);
+        BranchOffice branchOffice = branchOfficeService.getById(branchOfficeId);
         if(branchOffice != null){
-            return new ResponseEntity<>(branchOffice, HttpStatus.OK);
+            List<BranchOfficeImage> source = imageService.getImagesByBranchOfficeId(branchOffice.getId());
+            ArrayList<OfficeImageEditableDTO> target = (ArrayList<OfficeImageEditableDTO>) officeImageMapper.toOfficeImagesDTO(source);
+            BranchOfficeEditableDTO editableDTO = BranchOfficeEditableDTO
+                    .builder()
+                    .id(branchOffice.getId())
+                    .name(branchOffice.getName())
+                    .address(branchOffice.getAddress())
+                    .latitude(branchOffice.getLatitude())
+                    .longitude(branchOffice.getLongitude())
+                    .images(target)
+                    .build();
+            return new ResponseEntity<>(editableDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>("Could not get branch office", HttpStatus.BAD_REQUEST);
     }

@@ -1,6 +1,7 @@
 package com.javierito.javierito_importer.application.Services.implementation;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IUserService;
+import com.javierito.javierito_importer.application.Utils.*;
 import com.javierito.javierito_importer.domain.models.Employee;
 import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.domain.ports.IEmployeeDomainRepository;
@@ -35,6 +36,17 @@ public class UserService implements IUserService {
             emailServer.sendEmail(user.getEmail(), email, "<h1>Hola desde spring<h1/>");
         }
         return userCreated;
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        User user = userDomainRepository.getByEmail(email);
+        if(user != null){
+            String code = Generator.GenerateRecoveryCode();
+            emailServer.sendEmail(user.getEmail(), this.email, "Código de recuperación: " + code);
+            return user;
+        }
+        return null;
     }
 
     @Override
