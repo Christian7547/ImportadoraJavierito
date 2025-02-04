@@ -66,7 +66,7 @@ public class ItemController {
         var result = itemSerivce.deleteItem(item);
 
         if (result != null)
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
 
     }
