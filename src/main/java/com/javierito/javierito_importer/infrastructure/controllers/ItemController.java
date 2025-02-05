@@ -2,6 +2,8 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
+import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
+import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.UpdateItemDTO;
@@ -20,8 +22,29 @@ public class ItemController {
 
     @PostMapping("/insertItem")
     public ResponseEntity<Integer> insertItem(@RequestBody InsertItemDTO item) {
-        
-        var result = itemSerivce.insertItem(item);
+
+        NewItem newitem = NewItem.builder()
+                .name(item.getName())
+                .alias(item.getAlias())
+                .description(item.getDescription())
+                .model(item.getModel())
+                .price(item.getPrice())
+                .wholesalePrice(item.getWholesalePrice())
+                .barePrice(item.getBarePrice())
+                .brandID(item.getBrandID())
+                .subCategoryID(item.getSubCategoryID())
+                .weight(item.getWeight())
+                .dateManufacture(item.getDateManufacture())
+                .itemAddressID(item.getItemAddressID())
+                .userID(item.getUserID())
+                .pathItems(item.getPathItems())
+                .branchOfficeID(item.getBranchOfficeID())
+                .quantity(item.getQuantity())
+                .barcodes(item.getBarcodes())
+                .acronym(item.getAcronym())
+                .build();
+
+        var result = itemSerivce.insertItem(newitem);
 
         if(result != 0)
             return new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -45,6 +68,7 @@ public class ItemController {
 
         var result = itemSerivce.getItemById(itemDTO.getItemID());
 
+
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
@@ -53,7 +77,24 @@ public class ItemController {
     @PatchMapping("/UpdateItem")
     public ResponseEntity<?> updateItem(@RequestBody UpdateItemDTO updateItemDTO) {
 
-        var result = itemSerivce.updateItemById(updateItemDTO);
+        ItemUpdate updated = ItemUpdate.builder()
+                .itemID(updateItemDTO.getItemID())
+                .name(updateItemDTO.getName())
+                .alias(updateItemDTO.getAlias())
+                .description(updateItemDTO.getDescription())
+                .model(updateItemDTO.getModel())
+                .price(updateItemDTO.getPrice())
+                .wholesalePrice(updateItemDTO.getWholesalePrice())
+                .barePrice(updateItemDTO.getBarePrice())
+                .brandID(updateItemDTO.getBrandID())
+                .subCategoryID(updateItemDTO.getSubCategoryID())
+                .weight(updateItemDTO.getWeight())
+                .dateManufacture(updateItemDTO.getDateManufacture())
+                .itemAddressID(updateItemDTO.getItemAddressID())
+                .userID(updateItemDTO.getUserID())
+                .itemImages(updateItemDTO.getItemImages())
+                .build();
+        var result = itemSerivce.updateItemById(updated);
 
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);

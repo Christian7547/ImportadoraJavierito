@@ -3,8 +3,11 @@ package com.javierito.javierito_importer.application.Services.implementation;
 import com.javierito.javierito_importer.application.Utils.BarcodeGenerator;
 import com.javierito.javierito_importer.application.Services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
+import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
+import com.javierito.javierito_importer.domain.models.ItemModels.ItemWithImages;
+import com.javierito.javierito_importer.domain.models.ItemModels.ListItems;
+import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
 import com.javierito.javierito_importer.domain.ports.*;
-import com.javierito.javierito_importer.infrastructure.dtos.Item.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,27 +24,27 @@ public class ItemService implements IItemSerivce {
 
 
     @Override
-    public int insertItem(InsertItemDTO insertItemDTO) {
+    public int insertItem(NewItem NewItem) {
 
-        String[] barcodes = barcodeGenerator.generateBarcode(insertItemDTO.getAcronym(), insertItemDTO.getQuantity());
-        insertItemDTO.setBarcodes(barcodes);
-        return itemDomainRepository.insertItem(insertItemDTO);
+        String[] barcodes = barcodeGenerator.generateBarcode(NewItem.getAcronym(), NewItem.getQuantity());
+        NewItem.setBarcodes(barcodes);
+        return itemDomainRepository.insertItem(NewItem);
 
     }
 
     @Override
-    public List<ItemsDTO> getAllItems(int offset, int limit, String param) {
+    public List<ListItems> getAllItems(int offset, int limit, String param) {
         return itemDomainRepository.getAllItems(offset, limit, param);
     }
 
     @Override
-    public ItemDTO getItemById(Long id) {
+    public ItemWithImages getItemById(Long id) {
         return itemDomainRepository.getItemById(id);
     }
 
     @Override
-    public UpdateItemDTO updateItemById(UpdateItemDTO updateItemDTO) {
-        return itemDomainRepository.updateItemById(updateItemDTO);
+    public ItemUpdate updateItemById(ItemUpdate itemUpdate) {
+        return itemDomainRepository.updateItemById(itemUpdate);
     }
 
     @Override

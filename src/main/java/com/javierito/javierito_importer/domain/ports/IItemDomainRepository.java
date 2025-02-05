@@ -1,7 +1,11 @@
 package com.javierito.javierito_importer.domain.ports;
 
 import com.javierito.javierito_importer.domain.models.Item;
-import com.javierito.javierito_importer.infrastructure.dtos.Item.*;
+import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
+import com.javierito.javierito_importer.domain.models.ItemModels.ItemWithImages;
+import com.javierito.javierito_importer.domain.models.ItemModels.ListItems;
+import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
+
 
 
 import java.util.List;
@@ -11,10 +15,9 @@ public interface IItemDomainRepository {
     Item deleteItem(Item item);
     Item getItem(Long id);
 
-    // Stored Procedures - Functions
-    int insertItem(InsertItemDTO insertItemDTO);
-    List<ItemsDTO> getAllItems(int offset, int limit, String param);
-    ItemDTO getItemById(Long itemID);
-    UpdateItemDTO updateItemById(UpdateItemDTO updateItemDTO);
+    int insertItem(NewItem newItem);
+    List<ListItems> getAllItems(int offset, int limit, String param);
+    ItemWithImages getItemById(Long itemID);
+    ItemUpdate updateItemById(ItemUpdate update);
 
 }

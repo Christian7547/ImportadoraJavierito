@@ -2,6 +2,10 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 
 import com.javierito.javierito_importer.domain.models.Item;
+import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
+import com.javierito.javierito_importer.domain.models.ItemModels.ItemWithImages;
+import com.javierito.javierito_importer.domain.models.ItemModels.ListItems;
+import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.*;
@@ -31,7 +35,7 @@ public class ItemRepository implements IItemDomainRepository {
 
 
     @Override
-    public int insertItem(InsertItemDTO insertItemDTO){
+    public int insertItem(NewItem insertItemDTO){
 
         int value = 0;
 
@@ -96,7 +100,7 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public List<ItemsDTO> getAllItems(int offset, int limit, String param) {
+    public List<ListItems> getAllItems(int offset, int limit, String param) {
         String sql = "SELECT * FROM ufc_get_items(?, ?, ?)";
 
         List<Object[]> results = entityManager.createNativeQuery(sql)
@@ -104,10 +108,10 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter(2, offset)
                 .setParameter(3, param)
                 .getResultList();
-        List<ItemsDTO> items = new ArrayList<>();
+        List<ListItems> items = new ArrayList<>();
 
         for (Object[] row : results) {
-            ItemsDTO item = new ItemsDTO();
+            ListItems item = new ListItems();
             item.setItemID(((Long) row[0]));
             item.setName((String) row[1]);
             item.setDescription((String) row[2]);
@@ -128,7 +132,7 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public ItemDTO getItemById(Long itemID) {
+    public ItemWithImages getItemById(Long itemID) {
 
         String sql = "SELECT * FROM ufc_get_item_by_id(?)";
 
@@ -140,7 +144,7 @@ public class ItemRepository implements IItemDomainRepository {
             return null;
         }
 
-        ItemDTO item = new ItemDTO();
+        ItemWithImages item = new ItemWithImages();
         item.setItemID((Long) result[0]);
         item.setName((String) result[1]);
         item.setAlias((String) result[2]);
@@ -161,7 +165,7 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public UpdateItemDTO updateItemById(UpdateItemDTO itemDTO) {
+    public ItemUpdate updateItemById(ItemUpdate itemDTO) {
 
         String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -187,7 +191,7 @@ public class ItemRepository implements IItemDomainRepository {
             return null;
         }
 
-        UpdateItemDTO updatedItem = new UpdateItemDTO();
+        ItemUpdate updatedItem = new ItemUpdate();
         updatedItem.setItemID((Long) result[0]);
         updatedItem.setName((String) result[1]);
         updatedItem.setAlias((String) result[2]);
