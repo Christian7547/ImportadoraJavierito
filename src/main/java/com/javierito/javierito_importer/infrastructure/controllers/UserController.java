@@ -44,8 +44,9 @@ public class UserController {
                 .branchOfficeId(userDTO.getBranchOfficeId())
                 .build();
         var created = userService.createEmployeeUser(user, employee);
-        if(created != null)
+        if(created != null){
             return new ResponseEntity<>(created, HttpStatus.CREATED);
+        }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }

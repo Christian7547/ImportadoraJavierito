@@ -15,9 +15,6 @@ public class UserService implements IUserService {
     private final IEmployeeDomainRepository employeeDomainRepository;
     private final IEmailServer emailServer;
 
-    @Value("${spring.mail.username}")
-    private String email;
-
     public UserService(IUserDomainRepository userDomainRepository,
                        IEmployeeDomainRepository employeeDomainRepository,
                        IEmailServer emailServer) {
@@ -33,7 +30,7 @@ public class UserService implements IUserService {
         employee.setUserId(userId);
         var employeeCreated = employeeDomainRepository.createEmployee(employee);
         if(userCreated != null){
-            emailServer.sendEmail(user.getEmail(), email, "<h1>Hola desde spring<h1/>");
+            emailServer.sendCredentials(user.getEmail(), employee.getName(), employee.getLastName(), user.getUserName(), user.getPassword());
         }
         return userCreated;
     }
@@ -43,7 +40,7 @@ public class UserService implements IUserService {
         User user = userDomainRepository.getByEmail(email);
         if(user != null){
             String code = Generator.GenerateRecoveryCode();
-            emailServer.sendEmail(user.getEmail(), this.email, "Código de recuperación: " + code);
+            emailServer.sendEmail(user.getEmail(), "Código de recuperación: " + code);
             return user;
         }
         return null;
