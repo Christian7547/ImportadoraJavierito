@@ -68,7 +68,7 @@ public class BeansConfiguration {
     }
 
     @Bean
-    ItemAddressService itemAddressService(IItemAddressDomainRepository itemAddressDomainRepository){
+    IItemAddressService itemAddressService(IItemAddressDomainRepository itemAddressDomainRepository){
         return new ItemAddressService(itemAddressDomainRepository);
     }
 }
