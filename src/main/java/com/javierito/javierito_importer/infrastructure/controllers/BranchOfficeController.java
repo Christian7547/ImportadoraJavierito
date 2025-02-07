@@ -43,7 +43,7 @@ public class BranchOfficeController {
         BranchOffice branchOffice = branchOfficeService.getById(branchOfficeId);
         if(branchOffice != null){
             List<BranchOfficeImage> source = imageService.getImagesByBranchOfficeId(branchOffice.getId());
-            ArrayList<OfficeImageEditableDTO> target = (ArrayList<OfficeImageEditableDTO>) officeImageMapper.toOfficeImagesDTO(source);
+            ArrayList<OfficeImageEditableDTO> target = (ArrayList<OfficeImageEditableDTO>) officeImageMapper.toOfficeImageEditableDTOList(source);
             BranchOfficeEditableDTO editableDTO = BranchOfficeEditableDTO
                     .builder()
                     .id(branchOffice.getId())
@@ -71,6 +71,11 @@ public class BranchOfficeController {
             return new ResponseEntity<>(created, HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Could not save changes", HttpStatus.BAD_REQUEST);
+    }
+
+    @PatchMapping("/editBranchOffice")
+    public ResponseEntity<?> editBranchOffice(@RequestBody BranchOfficeEditableDTO data) {
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/removeBranchOffice/{id}")

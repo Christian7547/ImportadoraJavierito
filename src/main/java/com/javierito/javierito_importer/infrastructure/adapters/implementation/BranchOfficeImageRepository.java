@@ -33,7 +33,8 @@ public class BranchOfficeImageRepository implements IBranchOfficeImageDomainRepo
         if(images.isEmpty()){
             return new ArrayList<>();
         }
-        return branchOfficeImageMapper.toBranchOfficeImages(images);
+        List<BranchOfficeImage> toModels = branchOfficeImageMapper.toBranchOfficeImages(images);
+        return toModels;
     }
 
     @Override

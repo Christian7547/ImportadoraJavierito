@@ -12,14 +12,17 @@ import java.util.List;
 public interface BranchOfficeImageMapper {
 
     @Mapping(source = "pathBranchOffice", target = "pathImage")
-    List<BranchOfficeImage> toBranchOfficeImages(List<BranchOfficeImageEntity> target);
-
-    List<BranchOfficeImageEntity> toBranchOfficeImageEntities(List<BranchOfficeImage> target);
     BranchOfficeImage toBranchOfficeImage(BranchOfficeImageEntity target);
+
+    List<BranchOfficeImage> toBranchOfficeImages(List<BranchOfficeImageEntity> target);
 
     @Mapping(source = "pathImage", target = "pathBranchOffice")
     BranchOfficeImageEntity toBranchOfficeImageEntity(BranchOfficeImage target);
 
+    List<BranchOfficeImageEntity> toBranchOfficeImageEntities(List<BranchOfficeImage> target);
+
     @Mapping(source = "pathImage", target = "path")
-    List<OfficeImageEditableDTO> toOfficeImagesDTO(List<BranchOfficeImage> target);
+    OfficeImageEditableDTO toOfficeImageEditableDTO(BranchOfficeImage branchOfficeImage);
+
+    List<OfficeImageEditableDTO> toOfficeImageEditableDTOList(List<BranchOfficeImage> target);
 }
