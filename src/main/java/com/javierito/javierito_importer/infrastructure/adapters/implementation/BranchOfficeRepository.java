@@ -45,7 +45,7 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
     }
 
     @Override
-    public BranchOffice removeBranchOffice(BranchOffice branchOffice) {
+    public BranchOffice removeOrEditBranchOffice(BranchOffice branchOffice) {
         BranchOfficeEntity toEntity = branchOfficeMapper.toBranchOfficeEntity(branchOffice);
         BranchOfficeEntity saved = branchOfficeRepository.save(toEntity);
         return branchOfficeMapper.toBranchOffice(saved);

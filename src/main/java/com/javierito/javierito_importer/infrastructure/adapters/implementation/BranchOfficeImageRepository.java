@@ -38,7 +38,12 @@ public class BranchOfficeImageRepository implements IBranchOfficeImageDomainRepo
     }
 
     @Override
-    public void removeBranchOfficeImage(BranchOfficeImage branchOfficeImage) {
-        branchOfficeImageRepository.deleteById(branchOfficeImage.getId());
+    public void removeBranchOfficeImage(int imageId) {
+        branchOfficeImageRepository.deleteById(imageId);
+    }
+
+    @Override
+    public boolean existsByPath(String path) {
+        return branchOfficeImageRepository.existsByPathBranchOffice(path);
     }
 }

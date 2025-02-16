@@ -10,4 +10,6 @@ public class BranchOfficeImage {
     private int id;
     private String pathImage;
     private int branchOfficeID;
+
+    private short status;
 }

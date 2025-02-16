@@ -6,4 +6,5 @@ import lombok.Data;
 public class OfficeImageEditableDTO {
     private int id;
     private String path;
+    private short status;
 }

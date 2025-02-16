@@ -7,7 +7,11 @@ import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.domain.ports.IEmployeeDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IUserDomainRepository;
 import com.javierito.javierito_importer.domain.ports.output.IEmailServer;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public class UserService implements IUserService {
 
@@ -24,12 +28,23 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User createEmployeeUser(User user, Employee employee) {
+    public List<User> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userDomainRepository.getAll(pageable);
+    }
+
+    @Transactional
+    @Override
+    public User createUser(User user, Employee employee) {
+        String userNameGenerated = Generator.generateUsername(employee.getName(), employee.getLastName(), employee.getSecondLastName());
+        String passwordGenerated = Generator.generatePassword();
+        user.setPassword(passwordGenerated);
+        user.setUserName(userNameGenerated);
         var userCreated = userDomainRepository.createUser(user);
         long userId = userCreated.getId();
         employee.setUserId(userId);
         var employeeCreated = employeeDomainRepository.createEmployee(employee);
-        if(userCreated != null){
+        if(employeeCreated != null){
             emailServer.sendCredentials(user.getEmail(), employee.getName(), employee.getLastName(), user.getUserName(), user.getPassword());
         }
         return userCreated;
@@ -39,7 +54,7 @@ public class UserService implements IUserService {
     public User getByEmail(String email) {
         User user = userDomainRepository.getByEmail(email);
         if(user != null){
-            String code = Generator.GenerateRecoveryCode();
+            String code = Generator.generateRecoveryCode();
             emailServer.sendEmail(user.getEmail(), "Código de recuperación: " + code);
             return user;
         }

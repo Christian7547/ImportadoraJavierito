@@ -25,4 +25,9 @@ public interface BranchOfficeImageMapper {
     OfficeImageEditableDTO toOfficeImageEditableDTO(BranchOfficeImage branchOfficeImage);
 
     List<OfficeImageEditableDTO> toOfficeImageEditableDTOList(List<BranchOfficeImage> target);
+
+    @Mapping(source = "path", target = "pathImage")
+    BranchOfficeImage toOfficeImageFromEditableDTO(OfficeImageEditableDTO target);
+
+    List<BranchOfficeImage> toOfficeImageFromEditableDTOList(List<OfficeImageEditableDTO> target);
 }

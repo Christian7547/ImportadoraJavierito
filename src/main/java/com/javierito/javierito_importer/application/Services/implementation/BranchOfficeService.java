@@ -47,12 +47,22 @@ public class BranchOfficeService implements IBranchOfficeService {
     }
 
     @Override
+    public BranchOffice updateBranchOffice(BranchOffice branchOffice) {
+        branchOffice.setLastUpdate(LocalDateTime.now());
+        BranchOffice response = branchOfficeDomainRepository.removeOrEditBranchOffice(branchOffice);
+        if(response != null){
+            return response;
+        }
+        throw new RuntimeException();
+    }
+
+    @Override
     public boolean removeBranchOffice(BranchOffice branchOffice) {
         BranchOffice getOffice = getById(branchOffice.getId());
         if(getOffice != null) {
             getOffice.setStatus((short) 0);
             getOffice.setLastUpdate(LocalDateTime.now());
-            branchOfficeDomainRepository.removeBranchOffice(getOffice);
+            branchOfficeDomainRepository.removeOrEditBranchOffice(getOffice);
             return true;
         }
         return false;

@@ -7,5 +7,6 @@ import java.util.List;
 public interface IBranchOfficeImageDomainRepository {
     BranchOfficeImage createBranchOfficeImage(BranchOfficeImage branchOfficeImage);
     List<BranchOfficeImage> getImagesByBranchOfficeId(int branchOfficeId);
-    void removeBranchOfficeImage(BranchOfficeImage branchOfficeImage);
+    void removeBranchOfficeImage(int imageId);
+    boolean existsByPath(String path);
 }

@@ -51,6 +51,7 @@ public class BranchOfficeController {
                     .address(branchOffice.getAddress())
                     .latitude(branchOffice.getLatitude())
                     .longitude(branchOffice.getLongitude())
+                    .registerDate(branchOffice.getRegisterDate())
                     .images(target)
                     .build();
             return new ResponseEntity<>(editableDTO, HttpStatus.OK);
@@ -75,7 +76,18 @@ public class BranchOfficeController {
 
     @PatchMapping("/editBranchOffice")
     public ResponseEntity<?> editBranchOffice(@RequestBody BranchOfficeEditableDTO data) {
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        BranchOffice branchOffice = BranchOffice.builder()
+                .id(data.getId())
+                .name(data.getName())
+                .address(data.getAddress())
+                .latitude(data.getLatitude())
+                .longitude(data.getLongitude())
+                .registerDate(data.getRegisterDate())
+                .build();
+        branchOfficeService.updateBranchOffice(branchOffice);
+        List<BranchOfficeImage> images = officeImageMapper.toOfficeImageFromEditableDTOList(data.getImages());
+        imageService.checkIfImagesStatus(images, branchOffice.getId());
+        return new ResponseEntity<>(images,HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/removeBranchOffice/{id}")

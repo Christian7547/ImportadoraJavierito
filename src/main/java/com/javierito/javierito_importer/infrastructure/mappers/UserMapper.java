@@ -5,6 +5,8 @@ import com.javierito.javierito_importer.infrastructure.entities.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
@@ -13,4 +15,8 @@ public interface UserMapper {
 
     @Mapping(source = "userName", target = "userName_")
     UserEntity toUserEntity(User target);
+
+    List<UserEntity> toUserEntityList(List<User> target);
+
+    List<User> toUsersList(List<UserEntity> target);
 }

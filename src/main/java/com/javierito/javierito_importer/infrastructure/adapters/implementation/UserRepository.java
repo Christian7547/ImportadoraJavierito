@@ -6,9 +6,11 @@ import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IUser
 import com.javierito.javierito_importer.infrastructure.entities.UserEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,6 +23,12 @@ public class UserRepository implements IUserDomainRepository {
 
     public UserRepository(IUserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public List<User> getAll(Pageable pageable) {
+        var entities = userRepository.findAll(pageable);
+        return userMapper.toUsersList(entities.toList());
     }
 
     @Override

@@ -9,5 +9,6 @@ public interface IBranchOfficeService {
     ArrayList<BranchOffice> getAll();
     BranchOffice getById(int id);
     BranchOffice createBranchOffice(BranchOffice branchOffice, ArrayList<String> pathImages);
+    BranchOffice updateBranchOffice(BranchOffice branchOffice);
     boolean removeBranchOffice(BranchOffice branchOffice);
 }

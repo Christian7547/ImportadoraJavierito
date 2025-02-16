@@ -8,5 +8,5 @@ public interface IBranchOfficeDomainRepository {
     List<BranchOffice> getAll();
     BranchOffice getById(int id);
     BranchOffice createBranchOffice(BranchOffice branchOffice);
-    BranchOffice removeBranchOffice(BranchOffice branchOffice);
+    BranchOffice removeOrEditBranchOffice(BranchOffice branchOffice);
 }

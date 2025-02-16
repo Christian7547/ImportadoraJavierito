@@ -10,4 +10,6 @@ import java.util.List;
 public interface IBranchOfficeImageRepository extends JpaRepository<BranchOfficeImageEntity, Integer> {
     @Query("SELECT new BranchOfficeImageEntity(b.id, b.pathBranchOffice) FROM BranchOfficeImageEntity b WHERE b.branchOfficeID = :branchOfficeId")
     List<BranchOfficeImageEntity> getImagesByBranchOfficeId(int branchOfficeId);
+
+    boolean existsByPathBranchOffice(String path);
 }

@@ -4,18 +4,25 @@ import com.javierito.javierito_importer.application.Services.interfaces.IUserSer
 import com.javierito.javierito_importer.domain.models.Employee;
 import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.infrastructure.dtos.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final IUserService userService;
 
-    public UserController(IUserService userService) {
-        this.userService = userService;
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0")int page,
+                                    @RequestParam(defaultValue = "10")int size){
+        List<User> data = userService.getAll(page, size);
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @PostMapping("/getByEmail")
@@ -27,11 +34,9 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/createEmployeeUser")
+    @PostMapping("/createUser")
     public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO){
         User user = User.builder()
-                .userName(userDTO.getUserName())
-                .password(userDTO.getPassword())
                 .email(userDTO.getEmail())
                 .role(userDTO.getRole())
                 .build();
@@ -43,7 +48,7 @@ public class UserController {
                 .phoneNumber(userDTO.getPhoneNumber())
                 .branchOfficeId(userDTO.getBranchOfficeId())
                 .build();
-        var created = userService.createEmployeeUser(user, employee);
+        var created = userService.createUser(user, employee);
         if(created != null){
             return new ResponseEntity<>(created, HttpStatus.CREATED);
         }
