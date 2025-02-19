@@ -23,9 +23,9 @@ public class ItemDTO {
     private BigDecimal barePrice;
     private Integer brandID;
     private Short subCategoryID;
-    private BigDecimal weight;
     private String dateManufacture;
     private Short itemAddressID;
     private Long userID;
+    private String acronym;
     private String[] itemImages;
 }

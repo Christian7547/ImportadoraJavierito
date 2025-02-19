@@ -155,10 +155,10 @@ public class ItemRepository implements IItemDomainRepository {
         item.setBarePrice((BigDecimal) result[7]);
         item.setBrandID((Integer) result[8]);
         item.setSubCategoryID((Short) result[9]);
-        item.setWeight((BigDecimal) result[10]);
-        item.setDateManufacture((String) result[11]);
-        item.setItemAddressID((Short) result[12]);
-        item.setUserID((Long) result[13]);
+        item.setDateManufacture((String) result[10]);
+        item.setItemAddressID((Short) result[11]);
+        item.setUserID((Long) result[12]);
+        item.setAcronym((String) result[13]);
         item.setItemImages((String[]) result[14]);
 
         return item;
