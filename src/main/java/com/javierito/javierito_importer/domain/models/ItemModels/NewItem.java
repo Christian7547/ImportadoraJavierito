@@ -21,7 +21,6 @@ public class NewItem {
     private BigDecimal barePrice;
     private Integer brandID;
     private Short subCategoryID;
-    private BigDecimal weight;
     private String dateManufacture;
     private Short itemAddressID;
     private Long userID;

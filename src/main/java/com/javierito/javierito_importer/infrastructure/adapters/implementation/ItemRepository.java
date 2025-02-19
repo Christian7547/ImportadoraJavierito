@@ -51,10 +51,10 @@ public class ItemRepository implements IItemDomainRepository {
         procedureQuery.registerStoredProcedureParameter("p_item_barePrice", BigDecimal.class, ParameterMode.IN);
         procedureQuery.registerStoredProcedureParameter("p_item_brandID", Integer.class, ParameterMode.IN);
         procedureQuery.registerStoredProcedureParameter("p_item_subcategoryID", Integer.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_weight", BigDecimal.class, ParameterMode.IN);
         procedureQuery.registerStoredProcedureParameter("p_item_dateManufacture", String.class, ParameterMode.IN);
         procedureQuery.registerStoredProcedureParameter("p_item_itemAddressID", Short.class, ParameterMode.IN);
         procedureQuery.registerStoredProcedureParameter("p_item_userID", Long.class, ParameterMode.IN);
+        procedureQuery.registerStoredProcedureParameter("p_item_acronym", String.class, ParameterMode.IN);
 
         // Stock
         procedureQuery.registerStoredProcedureParameter("p_item_branchOfficeID", Long.class, ParameterMode.IN);
@@ -78,10 +78,10 @@ public class ItemRepository implements IItemDomainRepository {
         procedureQuery.setParameter("p_item_barePrice", insertItemDTO.getBarePrice());
         procedureQuery.setParameter("p_item_brandID", insertItemDTO.getBrandID());
         procedureQuery.setParameter("p_item_subcategoryID", insertItemDTO.getSubCategoryID());
-        procedureQuery.setParameter("p_item_weight", insertItemDTO.getWeight());
         procedureQuery.setParameter("p_item_dateManufacture", insertItemDTO.getDateManufacture());
         procedureQuery.setParameter("p_item_itemAddressID", insertItemDTO.getItemAddressID());
         procedureQuery.setParameter("p_item_userID", insertItemDTO.getUserID());
+        procedureQuery.setParameter("p_item_acronym", insertItemDTO.getAcronym());
 
         procedureQuery.setParameter("p_item_branchOfficeID", insertItemDTO.getBranchOfficeID());
         procedureQuery.setParameter("p_quantity", insertItemDTO.getQuantity());

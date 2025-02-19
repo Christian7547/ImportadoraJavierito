@@ -33,15 +33,14 @@ public class ItemController {
                 .barePrice(item.getBarePrice())
                 .brandID(item.getBrandID())
                 .subCategoryID(item.getSubCategoryID())
-                .weight(item.getWeight())
                 .dateManufacture(item.getDateManufacture())
                 .itemAddressID(item.getItemAddressID())
                 .userID(item.getUserID())
+                .acronym(item.getAcronym())
                 .pathItems(item.getPathItems())
                 .branchOfficeID(item.getBranchOfficeID())
                 .quantity(item.getQuantity())
                 .barcodes(item.getBarcodes())
-                .acronym(item.getAcronym())
                 .build();
 
         var result = itemSerivce.insertItem(newitem);

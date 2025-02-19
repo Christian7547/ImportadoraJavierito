@@ -44,9 +44,6 @@ public class ItemEntity{
     @Column(name = "subCategoryID")
     private Short subCategoryID;
 
-    @Column(name = "weight")
-    private BigDecimal weight;
-
     @Column(name = "dateManufacture")
     private String dateManufacture;
 
@@ -64,6 +61,9 @@ public class ItemEntity{
 
     @Column(name = "userID")
     private Long userID;
+
+    @Column(name = "acronym")
+    private BigDecimal acronym;
 
     @PrePersist
     private void onCreate(){
