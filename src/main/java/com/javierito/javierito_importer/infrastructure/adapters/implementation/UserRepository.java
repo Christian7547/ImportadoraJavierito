@@ -51,6 +51,12 @@ public class UserRepository implements IUserDomainRepository {
     }
 
     @Override
+    public User getById(long id) {
+        Optional<UserEntity> entity = userRepository.findById(id);
+        return userMapper.toUser(entity.get());
+    }
+
+    @Override
     public void removeUser(User user) {
 
     }

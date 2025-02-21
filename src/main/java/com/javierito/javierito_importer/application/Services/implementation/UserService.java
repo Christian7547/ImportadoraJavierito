@@ -7,25 +7,19 @@ import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.domain.ports.IEmployeeDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IUserDomainRepository;
 import com.javierito.javierito_importer.domain.ports.output.IEmailServer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class UserService implements IUserService {
 
     private final IUserDomainRepository userDomainRepository;
     private final IEmployeeDomainRepository employeeDomainRepository;
     private final IEmailServer emailServer;
-
-    public UserService(IUserDomainRepository userDomainRepository,
-                       IEmployeeDomainRepository employeeDomainRepository,
-                       IEmailServer emailServer) {
-        this.userDomainRepository = userDomainRepository;
-        this.employeeDomainRepository = employeeDomainRepository;
-        this.emailServer = emailServer;
-    }
 
     @Override
     public List<User> getAll(int page, int size) {
@@ -59,6 +53,11 @@ public class UserService implements IUserService {
             return user;
         }
         return null;
+    }
+
+    @Override
+    public User getById(long id) {
+        return userDomainRepository.getById(id);
     }
 
     @Override

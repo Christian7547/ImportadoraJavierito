@@ -1,4 +1,4 @@
-package com.javierito.javierito_importer.infrastructure.dtos;
+package com.javierito.javierito_importer.infrastructure.dtos.user;
 
 import lombok.Data;
 

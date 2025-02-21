@@ -9,5 +9,6 @@ public interface IUserDomainRepository {
     List<User> getAll(Pageable pageable);
     User createUser(User user);
     User getByEmail(String email);
+    User getById(long id);
     void removeUser(User user);
 }

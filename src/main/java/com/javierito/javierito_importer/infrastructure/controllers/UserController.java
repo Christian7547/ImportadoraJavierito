@@ -1,9 +1,11 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
+import com.javierito.javierito_importer.application.Services.interfaces.IEmployeeService;
 import com.javierito.javierito_importer.application.Services.interfaces.IUserService;
 import com.javierito.javierito_importer.domain.models.Employee;
 import com.javierito.javierito_importer.domain.models.User;
-import com.javierito.javierito_importer.infrastructure.dtos.UserDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.user.AccountDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +19,29 @@ import java.util.List;
 public class UserController {
 
     private final IUserService userService;
+    private final IEmployeeService employeeService;
 
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0")int page,
                                     @RequestParam(defaultValue = "10")int size){
         List<User> data = userService.getAll(page, size);
         return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/getProfile/{id}")
+    public ResponseEntity<?> getAccountById(@PathVariable int id){
+        User user = userService.getById(id);
+        Employee employee = employeeService.getByUserId(user.getId());
+        AccountDTO accountDTO = AccountDTO.builder()
+                .id(user.getId())
+                .name(employee.getName())
+                .lastName(employee.getLastName())
+                .secondLastName(employee.getSecondLastName())
+                .ci(employee.getCi())
+                .phoneNumber(employee.getPhoneNumber())
+                .email(user.getEmail())
+                .build();
+        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 
     @PostMapping("/getByEmail")

@@ -9,5 +9,6 @@ public interface IUserService {
     List<User> getAll(int page, int size);
     User createUser(User user, Employee employee);
     User getByEmail(String email);
+    User getById(long id);
     void removeUser(User user);
 }
