@@ -10,9 +10,12 @@ import com.javierito.javierito_importer.domain.ports.output.IEmailServer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Pair;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class UserService implements IUserService {
@@ -45,12 +48,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getByEmail(String email) {
+    public Pair<User, String> getByEmail(String email) {
         User user = userDomainRepository.getByEmail(email);
         if(user != null){
             String code = Generator.generateRecoveryCode();
             emailServer.sendEmail(user.getEmail(), "Código de recuperación: " + code);
-            return user;
+            return Pair.of(user, code);
         }
         return null;
     }

@@ -7,6 +7,7 @@ import com.javierito.javierito_importer.domain.models.User;
 import com.javierito.javierito_importer.infrastructure.dtos.user.AccountDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.user.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,11 +47,8 @@ public class UserController {
 
     @PostMapping("/getByEmail")
     public ResponseEntity<?> getUserByEmail(@RequestBody String email){
-        User user = userService.getByEmail(email);
-        if(user != null){
-            return ResponseEntity.noContent().build();
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Pair<User, String> data = userService.getByEmail(email);
+        return ResponseEntity.ok(data.getSecond());
     }
 
     @PostMapping("/createUser")

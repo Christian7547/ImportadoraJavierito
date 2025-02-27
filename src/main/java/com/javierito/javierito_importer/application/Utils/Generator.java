@@ -10,7 +10,7 @@ public class Generator {
         StringBuilder recoveryCode = new StringBuilder();
         Random random = new Random();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
             int index = random.nextInt(characters.length());
             recoveryCode.append(characters.charAt(index));
         }
