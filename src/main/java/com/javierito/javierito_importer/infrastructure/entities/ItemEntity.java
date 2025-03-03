@@ -63,7 +63,7 @@ public class ItemEntity{
     private Long userID;
 
     @Column(name = "acronym")
-    private BigDecimal acronym;
+    private String acronym;
 
     @PrePersist
     private void onCreate(){
