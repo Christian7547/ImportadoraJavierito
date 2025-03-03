@@ -180,7 +180,7 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter(8, itemDTO.getBarePrice())
                 .setParameter(9, itemDTO.getBrandID())
                 .setParameter(10, itemDTO.getSubCategoryID())
-                .setParameter(11, itemDTO.getWeight())
+                .setParameter(11, itemDTO.getAcronym())
                 .setParameter(12, itemDTO.getDateManufacture())
                 .setParameter(13, itemDTO.getItemAddressID())
                 .setParameter(14, itemDTO.getUserID())
@@ -202,10 +202,10 @@ public class ItemRepository implements IItemDomainRepository {
         updatedItem.setBarePrice((BigDecimal) result[7]);
         updatedItem.setBrandID((Integer) result[8]);
         updatedItem.setSubCategoryID((Short) result[9]);
-        updatedItem.setWeight((BigDecimal) result[10]);
-        updatedItem.setDateManufacture((String) result[11]);
-        updatedItem.setItemAddressID((Short) result[12]);
-        updatedItem.setUserID((Long) result[13]);
+        updatedItem.setDateManufacture((String) result[10]);
+        updatedItem.setItemAddressID((Short) result[11]);
+        updatedItem.setUserID((Long) result[12]);
+        updatedItem.setAcronym((String) result[13]);
         updatedItem.setItemImages((String[]) result[14]);
 
         return updatedItem;
