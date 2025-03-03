@@ -20,12 +20,12 @@ public class Item {
     private BigDecimal barePrice;
     private int brandID;
     private short subCategoryID;
-    private BigDecimal weight;
     private String dateManufacture;
     private short status;
     private LocalDateTime registerDate;
     private LocalDateTime  lastUpdate;
     private short  itemAddressID;
     private long userID;
+    private String acronym;
 
 }
