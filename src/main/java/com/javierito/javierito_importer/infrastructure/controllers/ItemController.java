@@ -87,10 +87,10 @@ public class ItemController {
                 .barePrice(updateItemDTO.getBarePrice())
                 .brandID(updateItemDTO.getBrandID())
                 .subCategoryID(updateItemDTO.getSubCategoryID())
-                .weight(updateItemDTO.getWeight())
                 .dateManufacture(updateItemDTO.getDateManufacture())
                 .itemAddressID(updateItemDTO.getItemAddressID())
                 .userID(updateItemDTO.getUserID())
+                .acronym(updateItemDTO.getAcronym())
                 .itemImages(updateItemDTO.getItemImages())
                 .build();
         var result = itemSerivce.updateItemById(updated);
