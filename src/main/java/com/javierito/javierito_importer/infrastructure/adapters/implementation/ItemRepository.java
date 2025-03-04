@@ -243,4 +243,13 @@ public class ItemRepository implements IItemDomainRepository {
             return acronym + "-0000000";
         }
     }
+
+    @Override
+    public Integer countAllItems() {
+        int totalItems = itemRepository.countAll();
+        if(totalItems == 0){
+            return 0;
+        }
+        return totalItems;
+    }
 }

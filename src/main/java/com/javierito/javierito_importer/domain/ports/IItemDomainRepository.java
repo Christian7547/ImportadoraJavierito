@@ -20,5 +20,5 @@ public interface IItemDomainRepository {
     ItemWithImages getItemById(Long itemID);
     ItemUpdate updateItemById(ItemUpdate update);
     String findLastBarcodeByAcronym(String acronym);
-
+    Integer countAllItems();
 }

@@ -58,7 +58,7 @@ public class ItemController {
         var result = itemSerivce.getAllItems(offset, limit, param);
 
         if (result != null)
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(new Object(){ public final Object data = result._1(); public final int total = result._2();}, HttpStatus.OK);
         return new ResponseEntity<>("Could not get items", HttpStatus.NO_CONTENT);
 
     }

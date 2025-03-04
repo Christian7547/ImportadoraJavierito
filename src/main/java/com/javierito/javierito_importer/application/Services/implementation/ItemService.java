@@ -8,6 +8,7 @@ import com.javierito.javierito_importer.domain.models.ItemModels.ItemWithImages;
 import com.javierito.javierito_importer.domain.models.ItemModels.ListItems;
 import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
 import com.javierito.javierito_importer.domain.ports.*;
+import org.yaml.snakeyaml.util.Tuple;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,8 +35,11 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
-    public List<ListItems> getAllItems(int offset, int limit, String param) {
-        return itemDomainRepository.getAllItems(offset, limit, param);
+    public Tuple<List<ListItems>, Integer> getAllItems(int offset, int limit, String param) {
+        var result = itemDomainRepository.getAllItems(offset, limit, param);
+        Integer totalCount = itemDomainRepository.countAllItems();
+
+        return new Tuple<List<ListItems>, Integer>(result, totalCount);
     }
 
     @Override
