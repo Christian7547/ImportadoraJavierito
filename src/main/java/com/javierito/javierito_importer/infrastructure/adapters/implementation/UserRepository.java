@@ -41,7 +41,7 @@ public class UserRepository implements IUserDomainRepository {
     }
 
     @Override
-    public User createUser(User user) {
+    public User saveUser(User user) {
         var toEntity = userMapper.toUserEntity(user);
         var hash = new BCryptPasswordEncoder().encode(toEntity.getPassword());
         toEntity.setPassword(hash);
@@ -64,6 +64,11 @@ public class UserRepository implements IUserDomainRepository {
         Optional<UserEntity> entity = userRepository.findById(id);
         User model = userMapper.toUser(entity.get());
         return model;
+    }
+
+    @Override
+    public long countUsers() {
+        return userRepository.count();
     }
 
     @Override

@@ -23,7 +23,7 @@ public class EmployeeRepository implements IEmployeeDomainRepository {
     }
 
     @Override
-    public Employee createEmployee(Employee employee) {
+    public Employee saveEmployee(Employee employee) {
         var toEntity = employeeMapper.toEmployeeEntity(employee);
         var employeeCreated = employeeRepository.save(toEntity);
         return employeeMapper.toEmployee(employeeCreated);

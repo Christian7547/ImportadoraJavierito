@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface IUserDomainRepository {
     List<UserList> getAll(Pageable pageable);
-    User createUser(User user);
+    User saveUser(User user);
     User getByEmail(String email);
     User getById(long id);
+    long countUsers();
     void removeUser(User user);
 }

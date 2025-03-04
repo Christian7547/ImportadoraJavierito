@@ -36,14 +36,30 @@ public class UserService implements IUserService {
         String passwordGenerated = Generator.generatePassword();
         user.setPassword(passwordGenerated);
         user.setUserName(userNameGenerated);
-        var userCreated = userDomainRepository.createUser(user);
+        var userCreated = userDomainRepository.saveUser(user);
         long userId = userCreated.getId();
         employee.setUserId(userId);
-        var employeeCreated = employeeDomainRepository.createEmployee(employee);
+        var employeeCreated = employeeDomainRepository.saveEmployee(employee);
         if(employeeCreated != null){
             emailServer.sendCredentials(user.getEmail(), employee.getName(), employee.getLastName(), user.getUserName(), user.getPassword());
         }
         return userCreated;
+    }
+
+    @Transactional
+    @Override
+    public boolean updateUser(User user, Employee employee) {
+        User getUser = getById(user.getId());
+        Employee getEmployee = employeeDomainRepository.getByUserId(employee.getUserId());
+        getUser.setEmail(user.getEmail());
+        getEmployee.setName(employee.getName());
+        getEmployee.setLastName(employee.getLastName());
+        getEmployee.setSecondLastName(employee.getSecondLastName());
+        getEmployee.setCi(employee.getCi());
+        getEmployee.setPhoneNumber(employee.getPhoneNumber());
+        User userRes = userDomainRepository.saveUser(getUser);
+        Employee employeeRes = employeeDomainRepository.saveEmployee(getEmployee);
+        return userRes != null && employeeRes != null;
     }
 
     @Override
@@ -61,6 +77,11 @@ public class UserService implements IUserService {
     public User getById(long id) {
         User res = userDomainRepository.getById(id);
         return res;
+    }
+
+    @Override
+    public long countUsers() {
+        return userDomainRepository.countUsers();
     }
 
     @Override

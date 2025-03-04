@@ -24,9 +24,11 @@ public class UserController {
     private final IEmployeeService employeeService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0")int page,
-                                    @RequestParam(defaultValue = "10")int size){
-        List<UserList> data = userService.getAll(page, size);
+    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0")int limit,
+                                    @RequestParam(defaultValue = "5")int offset){
+        List<UserList> users = userService.getAll(limit, offset);
+        long total = userService.countUsers();
+        Pair<List<UserList>, Long> data = Pair.of(users, total);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -52,7 +54,7 @@ public class UserController {
         return ResponseEntity.ok(data.getSecond());
     }
 
-    @PostMapping("/createUser")
+    @PostMapping("/saveUser")
     public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO){
         User user = User.builder()
                 .email(userDTO.getEmail())
@@ -71,5 +73,25 @@ public class UserController {
             return new ResponseEntity<>(created, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @PatchMapping("/updateProfile")
+    public ResponseEntity<?> updateProfile(@RequestBody AccountDTO body){
+        User user = User.builder()
+                .id(body.getId())
+                .email(body.getEmail())
+                .build();
+        Employee employee = Employee.builder()
+                .userId(body.getId())
+                .name(body.getName())
+                .lastName(body.getLastName())
+                .secondLastName(body.getSecondLastName())
+                .ci(body.getCi())
+                .phoneNumber(body.getPhoneNumber())
+                .build();
+        boolean res = userService.updateUser(user, employee);
+        if(res)
+            return new ResponseEntity<>(body, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
