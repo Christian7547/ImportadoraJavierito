@@ -10,10 +10,7 @@ import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.*;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.ParameterMode;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.StoredProcedureQuery;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
@@ -55,6 +52,7 @@ public class ItemRepository implements IItemDomainRepository {
         procedureQuery.registerStoredProcedureParameter("p_item_itemAddressID", Short.class, ParameterMode.IN);
         procedureQuery.registerStoredProcedureParameter("p_item_userID", Long.class, ParameterMode.IN);
         procedureQuery.registerStoredProcedureParameter("p_item_acronym", String.class, ParameterMode.IN);
+        procedureQuery.registerStoredProcedureParameter("p_item_purchasePrice", BigDecimal.class, ParameterMode.IN);
 
         // Stock
         procedureQuery.registerStoredProcedureParameter("p_item_branchOfficeID", Long.class, ParameterMode.IN);
@@ -82,6 +80,7 @@ public class ItemRepository implements IItemDomainRepository {
         procedureQuery.setParameter("p_item_itemAddressID", insertItemDTO.getItemAddressID());
         procedureQuery.setParameter("p_item_userID", insertItemDTO.getUserID());
         procedureQuery.setParameter("p_item_acronym", insertItemDTO.getAcronym());
+        procedureQuery.setParameter("p_item_purchasePrice", insertItemDTO.getPurchasePrice());
 
         procedureQuery.setParameter("p_item_branchOfficeID", insertItemDTO.getBranchOfficeID());
         procedureQuery.setParameter("p_quantity", insertItemDTO.getQuantity());
@@ -119,13 +118,14 @@ public class ItemRepository implements IItemDomainRepository {
             item.setPrice((BigDecimal) row[4]);
             item.setWholesalePrice((BigDecimal) row[5]);
             item.setBarePrice((BigDecimal) row[6]);
-            item.setBrand((String) row[7]);
-            item.setCategory((String) row[8]);
-            item.setSubCategory((String) row[9]);
-            item.setDateManufacture((String) row[10]);
-            item.setItemImage((String) row[11]);
-            item.setAddress((String) row[12]);
-            item.setTotalStock((Integer) row[13]);
+            item.setPurchasePrice((BigDecimal) row[7]);
+            item.setBrand((String) row[8]);
+            item.setCategory((String) row[9]);
+            item.setSubCategory((String) row[10]);
+            item.setDateManufacture((String) row[11]);
+            item.setItemImage((String) row[12]);
+            item.setAddress((String) row[13]);
+            item.setTotalStock((Integer) row[14]);
             items.add(item);
         }
         return items;
@@ -153,13 +153,14 @@ public class ItemRepository implements IItemDomainRepository {
         item.setPrice((BigDecimal) result[5]);
         item.setWholesalePrice((BigDecimal) result[6]);
         item.setBarePrice((BigDecimal) result[7]);
-        item.setBrandID((Integer) result[8]);
-        item.setSubCategoryID((Short) result[9]);
-        item.setDateManufacture((String) result[10]);
-        item.setItemAddressID((Short) result[11]);
-        item.setUserID((Long) result[12]);
-        item.setAcronym((String) result[13]);
-        item.setItemImages((String[]) result[14]);
+        item.setPurchasePrice((BigDecimal) result[8]);
+        item.setBrandID((Integer) result[9]);
+        item.setSubCategoryID((Short) result[10]);
+        item.setDateManufacture((String) result[11]);
+        item.setItemAddressID((Short) result[12]);
+        item.setUserID((Long) result[13]);
+        item.setAcronym((String) result[14]);
+        item.setItemImages((String[]) result[15]);
 
         return item;
     }
@@ -167,7 +168,7 @@ public class ItemRepository implements IItemDomainRepository {
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemDTO) {
 
-        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Object[] result = (Object[]) entityManager.createNativeQuery(sql)
                 .setParameter(1, itemDTO.getItemID())
@@ -178,13 +179,14 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter(6, itemDTO.getPrice())
                 .setParameter(7, itemDTO.getWholesalePrice())
                 .setParameter(8, itemDTO.getBarePrice())
-                .setParameter(9, itemDTO.getBrandID())
-                .setParameter(10, itemDTO.getSubCategoryID())
-                .setParameter(11, itemDTO.getWeight())
-                .setParameter(12, itemDTO.getDateManufacture())
-                .setParameter(13, itemDTO.getItemAddressID())
-                .setParameter(14, itemDTO.getUserID())
-                .setParameter(15, itemDTO.getItemImages())
+                .setParameter(9, itemDTO.getPurchasePrice())
+                .setParameter(10, itemDTO.getBrandID())
+                .setParameter(11, itemDTO.getSubCategoryID())
+                .setParameter(12, itemDTO.getAcronym())
+                .setParameter(13, itemDTO.getDateManufacture())
+                .setParameter(14, itemDTO.getItemAddressID())
+                .setParameter(15, itemDTO.getUserID())
+                .setParameter(16, itemDTO.getItemImages())
                 .getSingleResult();
 
         if (result == null) {
@@ -200,13 +202,14 @@ public class ItemRepository implements IItemDomainRepository {
         updatedItem.setPrice((BigDecimal) result[5]);
         updatedItem.setWholesalePrice((BigDecimal) result[6]);
         updatedItem.setBarePrice((BigDecimal) result[7]);
-        updatedItem.setBrandID((Integer) result[8]);
-        updatedItem.setSubCategoryID((Short) result[9]);
-        updatedItem.setWeight((BigDecimal) result[10]);
+        updatedItem.setPurchasePrice((BigDecimal) result[8]);
+        updatedItem.setBrandID((Integer) result[9]);
+        updatedItem.setSubCategoryID((Short) result[10]);
         updatedItem.setDateManufacture((String) result[11]);
         updatedItem.setItemAddressID((Short) result[12]);
         updatedItem.setUserID((Long) result[13]);
-        updatedItem.setItemImages((String[]) result[14]);
+        updatedItem.setAcronym((String) result[14]);
+        updatedItem.setItemImages((String[]) result[15]);
 
         return updatedItem;
     }
@@ -219,5 +222,34 @@ public class ItemRepository implements IItemDomainRepository {
     @Override
     public Item getItem(Long id) {
         return itemMapper.toItem(itemRepository.getById(id)) ;
+    }
+
+    public String findLastBarcodeByAcronym(String acronym) {
+        String sql = """
+        SELECT b.barcode
+        FROM "Barcode" b
+        JOIN "Stock" s ON b."stockID" = s.id
+        JOIN "Item" i ON s."itemID" = i.id
+        WHERE i.acronym = :acronym
+        ORDER BY b.barcode DESC
+        LIMIT 1
+        """;
+
+        try {
+            return (String) entityManager.createNativeQuery(sql)
+                    .setParameter("acronym", acronym)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return acronym + "-0000000";
+        }
+    }
+
+    @Override
+    public Integer countAllItems() {
+        int totalItems = itemRepository.countAll();
+        if(totalItems == 0){
+            return 0;
+        }
+        return totalItems;
     }
 }
