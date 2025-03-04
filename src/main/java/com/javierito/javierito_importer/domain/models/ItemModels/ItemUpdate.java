@@ -26,5 +26,6 @@ public class ItemUpdate {
     private Short itemAddressID;
     private Long userID;
     private String acronym;
+    private BigDecimal purchasePrice;
     private String[] itemImages;
 }

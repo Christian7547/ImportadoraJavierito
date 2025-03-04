@@ -20,6 +20,7 @@ public class ListItems {
     public BigDecimal price;
     public BigDecimal wholesalePrice;
     public BigDecimal barePrice;
+    private BigDecimal purchasePrice;
     public String brand;
     public String category;
     public String subCategory;

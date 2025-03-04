@@ -65,6 +65,9 @@ public class ItemEntity{
     @Column(name = "acronym")
     private String acronym;
 
+    @Column(name = "purchasePrice")
+    private BigDecimal purchasePrice;
+
     @PrePersist
     private void onCreate(){
         if (this.registerDate == null) {

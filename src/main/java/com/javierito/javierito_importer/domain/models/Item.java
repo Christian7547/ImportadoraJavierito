@@ -27,5 +27,6 @@ public class Item {
     private short  itemAddressID;
     private long userID;
     private String acronym;
+    private BigDecimal purchasePrice;
 
 }

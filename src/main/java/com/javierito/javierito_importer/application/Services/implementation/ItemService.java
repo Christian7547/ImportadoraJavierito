@@ -26,7 +26,8 @@ public class ItemService implements IItemSerivce {
     @Override
     public int insertItem(NewItem NewItem) {
 
-        String[] barcodes = barcodeGenerator.generateBarcode(NewItem.getAcronym(), NewItem.getQuantity());
+        String lastBarcode = itemDomainRepository.findLastBarcodeByAcronym(NewItem.getAcronym());
+        String[] barcodes = barcodeGenerator.generateBarcode(NewItem.getAcronym(), NewItem.getQuantity(), lastBarcode);
         NewItem.setBarcodes(barcodes);
         return itemDomainRepository.insertItem(NewItem);
 
@@ -61,5 +62,6 @@ public class ItemService implements IItemSerivce {
 
         return itemDomainRepository.deleteItem(item);
     }
+
 
 }

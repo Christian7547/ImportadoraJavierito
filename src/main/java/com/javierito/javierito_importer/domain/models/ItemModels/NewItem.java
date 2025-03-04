@@ -29,4 +29,5 @@ public class NewItem {
     private Integer quantity;
     private String[] barcodes;
     private String acronym;
+    private BigDecimal purchasePrice;
 }

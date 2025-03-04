@@ -21,6 +21,7 @@ public class InsertItemDTO {
     private String dateManufacture;
     private Short itemAddressID;
     private Long userID;
+    private BigDecimal purchasePrice;
 
     // Item Image
     private String[] pathItems;
