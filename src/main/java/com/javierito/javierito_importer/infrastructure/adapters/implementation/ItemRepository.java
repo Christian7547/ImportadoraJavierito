@@ -10,10 +10,7 @@ import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.*;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.ParameterMode;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.StoredProcedureQuery;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
@@ -229,17 +226,21 @@ public class ItemRepository implements IItemDomainRepository {
 
     public String findLastBarcodeByAcronym(String acronym) {
         String sql = """
-            SELECT b.barcode
-            FROM "Barcode" b
-            JOIN "Stock" s ON b."stockID" = s.id
-            JOIN "Item" i ON s."itemID" = i.id
-            WHERE i.acronym = :acronym
-            ORDER BY b.barcode DESC
-            LIMIT 1
+        SELECT b.barcode
+        FROM "Barcode" b
+        JOIN "Stock" s ON b."stockID" = s.id
+        JOIN "Item" i ON s."itemID" = i.id
+        WHERE i.acronym = :acronym
+        ORDER BY b.barcode DESC
+        LIMIT 1
         """;
-        return (String) entityManager.createNativeQuery(sql)
-                .setParameter("acronym", acronym)
-                .getSingleResult();
 
+        try {
+            return (String) entityManager.createNativeQuery(sql)
+                    .setParameter("acronym", acronym)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return acronym + "-0000000";
+        }
     }
 }
