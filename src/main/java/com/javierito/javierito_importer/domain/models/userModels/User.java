@@ -1,4 +1,4 @@
-package com.javierito.javierito_importer.domain.models;
+package com.javierito.javierito_importer.domain.models.userModels;
 
 import lombok.Builder;
 import lombok.Data;

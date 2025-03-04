@@ -3,7 +3,8 @@ package com.javierito.javierito_importer.application.Services.implementation;
 import com.javierito.javierito_importer.application.Services.interfaces.IUserService;
 import com.javierito.javierito_importer.application.Utils.*;
 import com.javierito.javierito_importer.domain.models.Employee;
-import com.javierito.javierito_importer.domain.models.User;
+import com.javierito.javierito_importer.domain.models.userModels.User;
+import com.javierito.javierito_importer.domain.models.userModels.UserList;
 import com.javierito.javierito_importer.domain.ports.IEmployeeDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IUserDomainRepository;
 import com.javierito.javierito_importer.domain.ports.output.IEmailServer;
@@ -13,9 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 public class UserService implements IUserService {
@@ -25,7 +24,7 @@ public class UserService implements IUserService {
     private final IEmailServer emailServer;
 
     @Override
-    public List<User> getAll(int page, int size) {
+    public List<UserList> getAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userDomainRepository.getAll(pageable);
     }
@@ -60,7 +59,8 @@ public class UserService implements IUserService {
 
     @Override
     public User getById(long id) {
-        return userDomainRepository.getById(id);
+        User res = userDomainRepository.getById(id);
+        return res;
     }
 
     @Override

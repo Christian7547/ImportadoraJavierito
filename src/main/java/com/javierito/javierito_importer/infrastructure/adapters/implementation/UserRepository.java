@@ -1,10 +1,12 @@
 package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
-import com.javierito.javierito_importer.domain.models.User;
+import com.javierito.javierito_importer.domain.models.userModels.User;
+import com.javierito.javierito_importer.domain.models.userModels.UserList;
 import com.javierito.javierito_importer.domain.ports.IUserDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IUserRepository;
 import com.javierito.javierito_importer.infrastructure.entities.UserEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.UserMapper;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +21,9 @@ public class UserRepository implements IUserDomainRepository {
     @Autowired
     private UserMapper userMapper;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final IUserRepository userRepository;
 
     public UserRepository(IUserRepository userRepository) {
@@ -26,9 +31,13 @@ public class UserRepository implements IUserDomainRepository {
     }
 
     @Override
-    public List<User> getAll(Pageable pageable) {
-        var entities = userRepository.findAll(pageable);
-        return userMapper.toUsersList(entities.toList());
+    public List<UserList> getAll(Pageable pageable) {
+        String sql = "SELECT * FROM ufc_get_users(:p_limit, :p_offset)";
+        Query query = entityManager.createNativeQuery(sql, UserList.class);
+        query.setParameter("p_limit", (long)pageable.getPageSize());
+        query.setParameter("p_offset", pageable.getOffset());
+        List<UserList> users = query.getResultList();
+        return users;
     }
 
     @Override
@@ -53,7 +62,8 @@ public class UserRepository implements IUserDomainRepository {
     @Override
     public User getById(long id) {
         Optional<UserEntity> entity = userRepository.findById(id);
-        return userMapper.toUser(entity.get());
+        User model = userMapper.toUser(entity.get());
+        return model;
     }
 
     @Override

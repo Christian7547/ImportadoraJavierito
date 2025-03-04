@@ -1,7 +1,7 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IAuthService;
-import com.javierito.javierito_importer.domain.models.User;
+import com.javierito.javierito_importer.domain.models.userModels.User;
 import com.javierito.javierito_importer.infrastructure.dtos.auth.LoginDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.auth.ResetPasswordDTO;
 import com.javierito.javierito_importer.infrastructure.jwt.JwtService;

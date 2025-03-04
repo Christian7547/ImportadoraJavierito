@@ -1,6 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
-import com.javierito.javierito_importer.domain.models.User;
+import com.javierito.javierito_importer.domain.models.userModels.User;
 import com.javierito.javierito_importer.domain.ports.IAuthDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IAuthRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IUserRepository;
