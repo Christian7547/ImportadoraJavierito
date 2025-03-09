@@ -8,7 +8,7 @@ import org.springframework.lang.Nullable;
 import java.util.List;
 
 public interface IUserDomainRepository {
-    List<UserList> getAll(Pageable pageable, @Nullable Short status, @Nullable String role, @Nullable Integer officeId, @Nullable String someName);
+    List<UserList> getAll(long limit, long offset, @Nullable Short status, @Nullable String role, @Nullable Integer officeId, @Nullable String someName);
     User saveUser(User user);
     User getByEmail(String email);
     User getById(long id);

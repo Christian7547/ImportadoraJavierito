@@ -25,13 +25,12 @@ public class UserService implements IUserService {
     private final IEmailServer emailServer;
 
     @Override
-    public List<UserList> getAll(int page, int size,
+    public List<UserList> getAll(int limit, int offset,
                                  @Nullable Short status,
                                  @Nullable String role,
                                  @Nullable Integer officeId,
                                  @Nullable String someName) {
-        Pageable pageable = PageRequest.of(page, size);
-        return userDomainRepository.getAll(pageable, status, role, officeId, someName);
+        return userDomainRepository.getAll(limit, offset, status, role, officeId, someName);
     }
 
     @Transactional
