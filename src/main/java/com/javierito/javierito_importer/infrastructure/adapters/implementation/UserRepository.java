@@ -39,8 +39,8 @@ public class UserRepository implements IUserDomainRepository {
                                  @Nullable String someName) {
         String sql = "SELECT * FROM ufc_get_users(:p_limit, :p_offset, :p_status, :p_role, :p_office, :p_some_name)";
         Query query = entityManager.createNativeQuery(sql, UserList.class);
-        query.setParameter("p_limit", pageable.getOffset());
-        query.setParameter("p_offset", pageable.getPageSize());
+        query.setParameter("p_limit", pageable.getOffset()); //limite e registros
+        query.setParameter("p_offset", pageable.getPageSize()); //a partir de
         query.setParameter("p_status", status);
         query.setParameter("p_role", role);
         query.setParameter("p_office", officeId);

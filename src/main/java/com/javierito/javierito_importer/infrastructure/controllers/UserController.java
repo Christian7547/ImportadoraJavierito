@@ -25,7 +25,7 @@ public class UserController {
     private final IEmployeeService employeeService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0")int limit,
+    public ResponseEntity<?> getAll(@RequestParam(defaultValue = "1")int limit,
                                     @RequestParam(defaultValue = "5")int offset,
                                     @RequestBody ParamsUserDTO paramsUserDTO){
         List<UserList> users = userService.getAll(limit, offset,
