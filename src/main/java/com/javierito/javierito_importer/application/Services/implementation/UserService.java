@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -24,9 +25,13 @@ public class UserService implements IUserService {
     private final IEmailServer emailServer;
 
     @Override
-    public List<UserList> getAll(int page, int size) {
+    public List<UserList> getAll(int page, int size,
+                                 @Nullable Short status,
+                                 @Nullable String role,
+                                 @Nullable Integer officeId,
+                                 @Nullable String someName) {
         Pageable pageable = PageRequest.of(page, size);
-        return userDomainRepository.getAll(pageable);
+        return userDomainRepository.getAll(pageable, status, role, officeId, someName);
     }
 
     @Transactional

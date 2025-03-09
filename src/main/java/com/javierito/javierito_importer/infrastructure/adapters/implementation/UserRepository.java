@@ -9,6 +9,7 @@ import com.javierito.javierito_importer.infrastructure.mappers.UserMapper;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -31,11 +32,19 @@ public class UserRepository implements IUserDomainRepository {
     }
 
     @Override
-    public List<UserList> getAll(Pageable pageable) {
-        String sql = "SELECT * FROM ufc_get_users(:p_limit, :p_offset)";
+    public List<UserList> getAll(Pageable pageable,
+                                 @Nullable Short status,
+                                 @Nullable String role,
+                                 @Nullable Integer officeId,
+                                 @Nullable String someName) {
+        String sql = "SELECT * FROM ufc_get_users(:p_limit, :p_offset, :p_status, :p_role, :p_office, :p_some_name)";
         Query query = entityManager.createNativeQuery(sql, UserList.class);
         query.setParameter("p_limit", (long)pageable.getPageSize());
         query.setParameter("p_offset", pageable.getOffset());
+        query.setParameter("p_status", status);
+        query.setParameter("p_role", role);
+        query.setParameter("p_office", officeId);
+        query.setParameter("p_some_name", someName);
         List<UserList> users = query.getResultList();
         return users;
     }

@@ -6,6 +6,7 @@ import com.javierito.javierito_importer.domain.models.Employee;
 import com.javierito.javierito_importer.domain.models.userModels.User;
 import com.javierito.javierito_importer.domain.models.userModels.UserList;
 import com.javierito.javierito_importer.infrastructure.dtos.user.AccountDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.user.ParamsUserDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
@@ -25,8 +26,13 @@ public class UserController {
 
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0")int limit,
-                                    @RequestParam(defaultValue = "5")int offset){
-        List<UserList> users = userService.getAll(limit, offset);
+                                    @RequestParam(defaultValue = "5")int offset,
+                                    @RequestBody ParamsUserDTO paramsUserDTO){
+        List<UserList> users = userService.getAll(limit, offset,
+                paramsUserDTO.getStatus(),
+                paramsUserDTO.getRole(),
+                paramsUserDTO.getOfficeId(),
+                paramsUserDTO.getSomeName());
         long total = userService.countUsers();
         Pair<List<UserList>, Long> data = Pair.of(users, total);
         return new ResponseEntity<>(data, HttpStatus.OK);
