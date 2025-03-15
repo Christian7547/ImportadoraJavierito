@@ -45,7 +45,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO data){
         User user = authService.resetPassword(data.getEmail(), data.getNewPassword());
         if(user != null){
