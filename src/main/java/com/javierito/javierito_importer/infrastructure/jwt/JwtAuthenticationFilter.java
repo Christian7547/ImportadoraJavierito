@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.infrastructure.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,9 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-        } catch (ExpiredJwtException e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Token has expired");
+        } catch (MalformedJwtException e) {
+            response.getWriter().write("Malformed JWT: " + e.getMessage());
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid token");
@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isPublicPath(HttpServletRequest request) {
-        return request.getRequestURI().startsWith("/api/auth");
+        return request.getServletPath().contains("/api/auth");
     }
 
     private String extractJwtToken(HttpServletRequest request) {
@@ -78,10 +78,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
         if (jwtService.isTokenValid(jwt, userDetails)) {
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
             UsernamePasswordAuthenticationToken authentication = createAuthenticationToken(userDetails, request);
-            context.setAuthentication(authentication);
-            SecurityContextHolder.setContext(context);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
     }
 
@@ -89,7 +87,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails,
             HttpServletRequest request) {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                userDetails.getUsername(),
+                userDetails,
                 null,
                 userDetails.getAuthorities()
         );

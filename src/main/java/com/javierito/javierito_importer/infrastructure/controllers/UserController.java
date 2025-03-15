@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class UserController {
     private final IEmployeeService employeeService;
 
     @PostMapping("/getAll")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> getAll(@RequestParam(defaultValue = "5")int limit,
                                     @RequestParam(defaultValue = "1")int offset,
                                     @RequestBody ParamsUserDTO paramsUserDTO){
@@ -38,29 +40,8 @@ public class UserController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @GetMapping("/getProfile/{id}")
-    public ResponseEntity<?> getAccountById(@PathVariable int id){
-        User user = userService.getById(id);
-        Employee employee = employeeService.getByUserId(user.getId());
-        AccountDTO accountDTO = AccountDTO.builder()
-                .id(user.getId())
-                .name(employee.getName())
-                .lastName(employee.getLastName())
-                .secondLastName(employee.getSecondLastName())
-                .ci(employee.getCi())
-                .phoneNumber(employee.getPhoneNumber())
-                .email(user.getEmail())
-                .build();
-        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
-    }
-
-    @PostMapping("/getByEmail")
-    public ResponseEntity<?> getUserByEmail(@RequestBody String email){
-        Pair<User, String> data = userService.getByEmail(email);
-        return ResponseEntity.ok(data.getSecond());
-    }
-
     @PostMapping("/saveUser")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO){
         User user = User.builder()
                 .email(userDTO.getEmail())
@@ -79,6 +60,22 @@ public class UserController {
             return new ResponseEntity<>(created, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/getProfile/{id}")
+    public ResponseEntity<?> getAccountById(@PathVariable int id){
+        User user = userService.getById(id);
+        Employee employee = employeeService.getByUserId(user.getId());
+        AccountDTO accountDTO = AccountDTO.builder()
+                .id(user.getId())
+                .name(employee.getName())
+                .lastName(employee.getLastName())
+                .secondLastName(employee.getSecondLastName())
+                .ci(employee.getCi())
+                .phoneNumber(employee.getPhoneNumber())
+                .email(user.getEmail())
+                .build();
+        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 
     @PatchMapping("/updateProfile")
