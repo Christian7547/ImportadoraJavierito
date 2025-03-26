@@ -2,16 +2,21 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 
 import com.javierito.javierito_importer.domain.models.Stock;
+import com.javierito.javierito_importer.domain.models.StockModels.NewStock;
 import com.javierito.javierito_importer.domain.ports.IStockDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IStockRepository;
 import com.javierito.javierito_importer.infrastructure.mappers.StockMapper;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
+
 
 @Repository
 public class StockRepository implements IStockDomainRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     private StockMapper stockMapper;
@@ -51,6 +56,38 @@ public class StockRepository implements IStockDomainRepository {
         var itemEntity = stockRepository.findById(stock.getId());
         stockMapper.saveChanges(itemEntity.get(), stockMapper.toStockEntity(stock));
         stockRepository.save(itemEntity.get());
+    }
+
+    @Override
+    public int insertNewStock(NewStock newStock) {
+        int rowsAffected = 0;
+
+        try {
+            StoredProcedureQuery procedureQuery = entityManager.createStoredProcedureQuery("usp_stock_barcodes");
+
+            procedureQuery.registerStoredProcedureParameter("p_item_id", Long.class, ParameterMode.IN);
+            procedureQuery.registerStoredProcedureParameter("p_branch_office_id", Long.class, ParameterMode.IN);
+            procedureQuery.registerStoredProcedureParameter("p_quantity", Integer.class, ParameterMode.IN);
+            procedureQuery.registerStoredProcedureParameter("p_barcodes", String[].class, ParameterMode.IN);
+            procedureQuery.registerStoredProcedureParameter("p_rows_affected", Integer.class, ParameterMode.OUT);
+
+            procedureQuery.setParameter("p_item_id", newStock.getItemId());
+            procedureQuery.setParameter("p_branch_office_id", newStock.getBranchOfficeId());
+            procedureQuery.setParameter("p_quantity", newStock.getQuantity());
+            procedureQuery.setParameter("p_barcodes", newStock.getBarcodes());
+            procedureQuery.setParameter("p_rows_affected", rowsAffected);
+
+            procedureQuery.execute();
+
+            rowsAffected = (int) procedureQuery.getOutputParameterValue("p_rows_affected");
+
+        } catch (Exception e) {
+
+            System.err.println("Error occurred while inserting new stock: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return rowsAffected;
     }
 
 }

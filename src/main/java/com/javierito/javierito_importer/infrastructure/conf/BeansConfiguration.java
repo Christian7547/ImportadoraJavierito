@@ -76,4 +76,9 @@ public class BeansConfiguration {
     IEmployeeService employeeService(IEmployeeDomainRepository employeeDomainRepository){
         return new EmployeeService(employeeDomainRepository);
     }
+
+    @Bean
+    IStockService stockService(IStockDomainRepository stockDomainRepository, IItemDomainRepository itemDomainRepository){
+        return new StockService(stockDomainRepository, itemDomainRepository);
+    }
 }
