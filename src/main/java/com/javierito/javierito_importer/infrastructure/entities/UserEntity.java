@@ -23,7 +23,6 @@ public class UserEntity implements UserDetails {
     private String userName_;
 
     @Column(name = "password", nullable = false)
-    @JsonIgnore
     private String password;
 
     @Column(name = "role", nullable = false)
