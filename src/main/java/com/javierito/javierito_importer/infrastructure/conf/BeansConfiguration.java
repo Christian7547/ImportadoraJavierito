@@ -83,4 +83,9 @@ public class BeansConfiguration {
     IStockService stockService(IStockDomainRepository stockDomainRepository, IItemDomainRepository itemDomainRepository){
         return new StockService(stockDomainRepository, itemDomainRepository);
     }
+
+    @Bean
+    IBarcodeService barcodeService(IBarcodeDomainRepository barcodeDomainRepository){
+        return new BarcodeService(barcodeDomainRepository);
+    }
 }
