@@ -88,4 +88,9 @@ public class BeansConfiguration {
     IBarcodeService barcodeService(IBarcodeDomainRepository barcodeDomainRepository){
         return new BarcodeService(barcodeDomainRepository);
     }
+
+    @Bean
+    ISaleService saleService(ISaleDomainRepository saleDomainRepository){
+        return new SaleService(saleDomainRepository);
+    }
 }

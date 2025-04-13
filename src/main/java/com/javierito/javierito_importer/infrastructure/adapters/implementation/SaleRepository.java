@@ -1,0 +1,73 @@
+package com.javierito.javierito_importer.infrastructure.adapters.implementation;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.javierito.javierito_importer.application.Services.interfaces.ISaleService;
+import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
+import com.javierito.javierito_importer.domain.ports.ISaleDomainRepository;
+import com.javierito.javierito_importer.infrastructure.adapters.interfaces.ISaleRepository;
+import com.javierito.javierito_importer.infrastructure.mappers.SaleMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Repository
+public class SaleRepository implements ISaleDomainRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Autowired
+    private SaleMapper saleMapper;
+
+    private final ISaleRepository saleRepository;
+
+    private ObjectMapper objectMapper;
+
+    public SaleRepository(ISaleRepository saleRepository) {
+        this.saleRepository = saleRepository;
+    }
+
+    @Override
+    public List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to) {
+
+        String sql = "SELECT * FROM ufc_get_sales_details(?, ?)";
+
+        List<Object[]> results = entityManager.createNativeQuery(sql)
+                .setParameter(1, from)
+                .setParameter(2, to)
+                .getResultList();
+
+        List<SalesDetails> reports = new ArrayList<>();
+
+        for (Object[] result : results) {
+            SalesDetails salesDetails = new SalesDetails();
+
+            salesDetails.setSaleId(((Number) result[0]).longValue());
+            salesDetails.setEmployeeFullName((String) result[1]);
+            salesDetails.setClientFullName((String) result[2]);
+            salesDetails.setSaleTotal((BigDecimal) result[3]);
+            salesDetails.setSaleCommission((BigDecimal) result[4]);
+            salesDetails.setSaleDiscount((BigDecimal) result[5]);
+            salesDetails.setSaleDate(((java.sql.Timestamp) result[6]).toLocalDateTime());
+
+
+            try {
+                JsonNode saleDetailJson = objectMapper.readTree(result[7].toString());
+                salesDetails.setSaleDetail(saleDetailJson);
+            } catch (Exception e) {
+                throw new RuntimeException("Error al parsear el campo sale_detail JSON", e);
+            }
+
+            reports.add(salesDetails);
+        }
+
+        return reports;
+    }
+}
