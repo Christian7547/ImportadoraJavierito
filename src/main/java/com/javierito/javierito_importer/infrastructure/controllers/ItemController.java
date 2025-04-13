@@ -5,6 +5,7 @@ import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
 import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemAcronymDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.UpdateItemDTO;
 import org.springframework.http.HttpStatus;
@@ -111,5 +112,15 @@ public class ItemController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
 
+    }
+
+    @PostMapping("/itemAcronym")
+    public ResponseEntity<?> itemAcronym(@RequestBody ItemAcronymDTO itemDTO) {
+
+        var result = itemSerivce.getItemAcronym(itemDTO.getId());
+
+        if (result != null)
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
     }
 }

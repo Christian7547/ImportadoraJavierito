@@ -2,10 +2,7 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 
 import com.javierito.javierito_importer.domain.models.Item;
-import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
-import com.javierito.javierito_importer.domain.models.ItemModels.ItemWithImages;
-import com.javierito.javierito_importer.domain.models.ItemModels.ListItems;
-import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
+import com.javierito.javierito_importer.domain.models.ItemModels.*;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
@@ -251,5 +248,10 @@ public class ItemRepository implements IItemDomainRepository {
             return 0;
         }
         return totalItems;
+    }
+
+    @Override
+    public ItemAcronym getItemAcronym(Long id) {
+        return itemMapper.toItemAcronym(itemMapper.toItem(itemRepository.getById(id)));
     }
 }
