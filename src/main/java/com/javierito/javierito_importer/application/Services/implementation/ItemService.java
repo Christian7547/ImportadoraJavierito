@@ -3,10 +3,7 @@ package com.javierito.javierito_importer.application.Services.implementation;
 import com.javierito.javierito_importer.application.Utils.BarcodeGenerator;
 import com.javierito.javierito_importer.application.Services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
-import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
-import com.javierito.javierito_importer.domain.models.ItemModels.ItemWithImages;
-import com.javierito.javierito_importer.domain.models.ItemModels.ListItems;
-import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
+import com.javierito.javierito_importer.domain.models.ItemModels.*;
 import com.javierito.javierito_importer.domain.ports.*;
 import org.yaml.snakeyaml.util.Tuple;
 
@@ -45,6 +42,11 @@ public class ItemService implements IItemSerivce {
     @Override
     public ItemWithImages getItemById(Long id) {
         return itemDomainRepository.getItemById(id);
+    }
+
+    @Override
+    public ItemAcronym getItemAcronym(Long id) {
+        return itemDomainRepository.getItemAcronym(id);
     }
 
     @Override

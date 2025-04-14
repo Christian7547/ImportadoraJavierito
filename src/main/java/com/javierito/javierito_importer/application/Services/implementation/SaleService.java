@@ -2,12 +2,16 @@ package com.javierito.javierito_importer.application.Services.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.ISaleService;
+import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
 import com.javierito.javierito_importer.application.Utils.JsonConverter;
 import com.javierito.javierito_importer.domain.models.Sale;
 import com.javierito.javierito_importer.domain.models.SaleDetail;
 import com.javierito.javierito_importer.domain.ports.ISaleDomainRepository;
+import com.javierito.javierito_importer.infrastructure.adapters.interfaces.ISaleRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class SaleService implements ISaleService {
@@ -31,4 +35,9 @@ public class SaleService implements ISaleService {
                 sale.getDiscount(),
                 serializeDetails);
     }
+
+    public List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to) {
+        return saleDomainRepository.getSalesReport(from, to);
+    }
+
 }

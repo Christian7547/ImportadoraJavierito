@@ -1,13 +1,7 @@
 package com.javierito.javierito_importer.domain.ports;
 
 import com.javierito.javierito_importer.domain.models.Item;
-import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
-import com.javierito.javierito_importer.domain.models.ItemModels.ItemWithImages;
-import com.javierito.javierito_importer.domain.models.ItemModels.ListItems;
-import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
-
-
-
+import com.javierito.javierito_importer.domain.models.ItemModels.*;
 import java.util.List;
 
 public interface IItemDomainRepository {
@@ -21,4 +15,6 @@ public interface IItemDomainRepository {
     ItemUpdate updateItemById(ItemUpdate update);
     String findLastBarcodeByAcronym(String acronym);
     Integer countAllItems();
+
+    ItemAcronym getItemAcronym(Long id);
 }
