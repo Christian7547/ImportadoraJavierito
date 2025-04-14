@@ -30,7 +30,7 @@ public class AuthRepository implements IAuthDomainRepository {
         var getUser = authRepository.findByUserName(username);
         if(getUser.isPresent())
         {
-            var checkIfPassword = new BCryptPasswordEncoder().matches(password, getUser.get().getPassword());
+            var checkIfPassword = new BCryptPasswordEncoder(16).matches(password, getUser.get().getPassword());
             if(checkIfPassword)
                 return userMapper.toUser(getUser.get());
             return null;

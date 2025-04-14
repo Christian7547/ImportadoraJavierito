@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.infrastructure.conf;
 
 import com.javierito.javierito_importer.application.Services.implementation.*;
 import com.javierito.javierito_importer.application.Services.interfaces.*;
+import com.javierito.javierito_importer.application.Utils.JsonConverter;
 import com.javierito.javierito_importer.domain.ports.*;
 import com.javierito.javierito_importer.domain.ports.output.IEmailServer;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IAuthRepository;
@@ -82,5 +83,10 @@ public class BeansConfiguration {
     @Bean
     IStockService stockService(IStockDomainRepository stockDomainRepository, IItemDomainRepository itemDomainRepository){
         return new StockService(stockDomainRepository, itemDomainRepository);
+    }
+
+    @Bean
+    ISaleService saleService(ISaleDomainRepository saleDomainRepository, JsonConverter jsonConverter){
+        return new SaleService(saleDomainRepository, jsonConverter);
     }
 }

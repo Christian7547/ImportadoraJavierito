@@ -53,8 +53,6 @@ public class UserRepository implements IUserDomainRepository {
     @Override
     public User saveUser(User user) {
         var toEntity = userMapper.toUserEntity(user);
-        var hash = new BCryptPasswordEncoder().encode(toEntity.getPassword());
-        toEntity.setPassword(hash);
         var userCreated = userRepository.save(toEntity);
         return userMapper.toUser(userCreated);
     }

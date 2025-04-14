@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Pair;
 import org.springframework.lang.Nullable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -36,10 +37,9 @@ public class UserService implements IUserService {
     @Transactional
     @Override
     public User createUser(User user, Employee employee) {
-        String userNameGenerated = Generator.generateUsername(employee.getName(), employee.getLastName(), employee.getSecondLastName());
-        String passwordGenerated = Generator.generatePassword();
-        user.setPassword(passwordGenerated);
-        user.setUserName(userNameGenerated);
+        String passwordGenerated = getNewPassword();
+        user.setPassword(getHasher(passwordGenerated));
+        user.setUserName(getNewUserName(employee.getName(), employee.getLastName(), employee.getSecondLastName()));
         var userCreated = userDomainRepository.saveUser(user);
         long userId = userCreated.getId();
         employee.setUserId(userId);
@@ -92,5 +92,17 @@ public class UserService implements IUserService {
     public void removeUser(User user) {
         user.setStatus((short)0);
         userDomainRepository.removeUser(user);
+    }
+
+    private String getNewUserName(String name, String lastName, String secondLastName){
+        return Generator.generateUsername(name, lastName, secondLastName);
+    }
+
+    private String getNewPassword(){
+        return Generator.generatePassword();
+    }
+
+    private String getHasher(String text){
+        return new BCryptPasswordEncoder(16).encode(text);
     }
 }

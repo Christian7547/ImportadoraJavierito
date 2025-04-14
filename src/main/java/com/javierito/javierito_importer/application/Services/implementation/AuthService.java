@@ -24,7 +24,7 @@ public class AuthService implements IAuthService {
     public User resetPassword(String email, String newPassword) {
         User getUser = userDomainRepository.getByEmail(email);
         if(getUser != null){
-            String hash = new BCryptPasswordEncoder().encode(newPassword);
+            String hash = new BCryptPasswordEncoder(16).encode(newPassword);
             getUser.setPassword(hash);
             getUser.setLastUpdate(LocalDateTime.now());
             return authDomainRepository.resetPassword(getUser);
