@@ -21,9 +21,7 @@ public class SaleService implements ISaleService {
 
     @Override
     public long createSale(Sale sale) throws JsonProcessingException {
-        double total = sale.getDetails().stream().mapToDouble(SaleDetail::getSubtotal).sum();
-        sale.setTotal(total);
-        double calculateCommission = total * 0.1;
+        double calculateCommission = sale.getTotal() * 0.1;
         sale.setCommission(calculateCommission);
         double calculateDiscount = 0;
         sale.setDiscount(calculateDiscount);
