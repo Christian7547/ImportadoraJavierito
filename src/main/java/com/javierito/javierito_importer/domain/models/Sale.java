@@ -12,7 +12,5 @@ public class Sale {
     private double total;
     private long employeeID;
     private long clientID;
-    private double commission;
-    private double discount;
     private List<SaleDetail> details;
 }

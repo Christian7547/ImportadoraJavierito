@@ -11,7 +11,5 @@ public class SaleDTO {
     private double total;
     private long employeeId;
     private long clientId;
-    private double commission;
-    private double discount;
     private List<SaleDetailDTO> details;
 }

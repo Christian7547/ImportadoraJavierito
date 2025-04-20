@@ -9,4 +9,5 @@ public class SaleDetailDTO {
     private int quantity;
     private String barcode;
     private double subtotal;
+    private double percentageDiscount;
 }

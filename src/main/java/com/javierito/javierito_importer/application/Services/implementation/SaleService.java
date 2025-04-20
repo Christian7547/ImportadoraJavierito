@@ -5,9 +5,7 @@ import com.javierito.javierito_importer.application.Services.interfaces.ISaleSer
 import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
 import com.javierito.javierito_importer.application.Utils.JsonConverter;
 import com.javierito.javierito_importer.domain.models.Sale;
-import com.javierito.javierito_importer.domain.models.SaleDetail;
 import com.javierito.javierito_importer.domain.ports.ISaleDomainRepository;
-import com.javierito.javierito_importer.infrastructure.adapters.interfaces.ISaleRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -21,16 +19,10 @@ public class SaleService implements ISaleService {
 
     @Override
     public long createSale(Sale sale) throws JsonProcessingException {
-        double calculateCommission = sale.getTotal() * 0.1;
-        sale.setCommission(calculateCommission);
-        double calculateDiscount = 0;
-        sale.setDiscount(calculateDiscount);
         String serializeDetails = jsonConverter.serializeCollection(sale.getDetails());
         return saleDomainRepository.createSale(sale.getTotal(),
                 sale.getEmployeeID(),
                 sale.getClientID(),
-                sale.getCommission(),
-                sale.getDiscount(),
                 serializeDetails);
     }
 
