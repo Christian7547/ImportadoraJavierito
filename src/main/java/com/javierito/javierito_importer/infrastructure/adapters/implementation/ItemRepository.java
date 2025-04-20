@@ -28,70 +28,65 @@ public class ItemRepository implements IItemDomainRepository {
 
 
     @Override
-    public int insertItem(NewItem insertItemDTO){
+    public int insertItem(NewItem newItem){
 
-        int value = 0;
+        StoredProcedureQuery q = entityManager
+                .createStoredProcedureQuery("usp_create_item");
 
-        StoredProcedureQuery procedureQuery = entityManager.createStoredProcedureQuery("usp_create_item");
-        // IN
-        // Item
-        procedureQuery.registerStoredProcedureParameter("p_item_name", String.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_alias", String.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_description", String.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_model", String.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_price", BigDecimal.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_wholesalePrice", BigDecimal.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_barePrice", BigDecimal.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_brandID", Integer.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_subcategoryID", Integer.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_dateManufacture", String.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_itemAddressID", Short.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_userID", Long.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_acronym", String.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_item_purchasePrice", BigDecimal.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_name",              String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_alias",             String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_description",       String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_model",             String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_price",             BigDecimal.class,  ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_wholesaleprice",    BigDecimal.class,  ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_bareprice",         BigDecimal.class,  ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_brandid",           Integer.class,     ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_subcategoryid",     Short.class,       ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_datemanufacture",   String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_itemaddressid",     Short.class,       ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_userid",            Long.class,        ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_acronym",           String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_purchaseprice",     BigDecimal.class,  ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_status",            String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_transmission",      String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_cylinder_capacity", String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_traction",          String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_series",            String.class,      ParameterMode.IN);
+        q.registerStoredProcedureParameter("item_paths",   String[].class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_branchofficeid", Long.class,   ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_quantity",   Integer.class,  ParameterMode.IN);
+        q.registerStoredProcedureParameter("item_barcodes", String[].class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_count", Integer.class, ParameterMode.INOUT);
 
-        // Stock
-        procedureQuery.registerStoredProcedureParameter("p_item_branchOfficeID", Long.class, ParameterMode.IN);
-        procedureQuery.registerStoredProcedureParameter("p_quantity", Integer.class, ParameterMode.IN);
 
-        // Item Image
-        procedureQuery.registerStoredProcedureParameter("item_paths", String[].class, ParameterMode.IN);
+        q.setParameter("p_item_name",            newItem.getName());
+        q.setParameter("p_item_alias",           newItem.getAlias());
+        q.setParameter("p_item_description",     newItem.getDescription());
+        q.setParameter("p_item_model",           newItem.getModel());
+        q.setParameter("p_item_price",           newItem.getPrice());
+        q.setParameter("p_item_wholesaleprice",  newItem.getWholesalePrice());
+        q.setParameter("p_item_bareprice",       newItem.getBarePrice());
+        q.setParameter("p_item_brandid",         newItem.getBrandID());
+        q.setParameter("p_item_subcategoryid",   newItem.getSubCategoryID());
+        q.setParameter("p_item_datemanufacture", newItem.getDateManufacture());
+        q.setParameter("p_item_itemaddressid",   newItem.getItemAddressID());
+        q.setParameter("p_item_userid",          newItem.getUserID());
+        q.setParameter("p_item_acronym",         newItem.getAcronym());
+        q.setParameter("p_item_purchaseprice",   newItem.getPurchasePrice());
+        q.setParameter("p_item_status",          newItem.getItemStatus().toString());
+        q.setParameter("p_item_transmission",    newItem.getTransmission());
+        q.setParameter("p_item_cylinder_capacity", newItem.getCylinderCapacity());
+        q.setParameter("p_item_traction",        newItem.getTraction().toString());
+        q.setParameter("p_item_series",          newItem.getItemSeries());
 
-        // Barcode
-        procedureQuery.registerStoredProcedureParameter("item_barcodes", String[].class, ParameterMode.IN);
+        q.setParameter("item_paths",     newItem.getPathItems());
+        q.setParameter("p_item_branchofficeid", newItem.getBranchOfficeID().longValue());
+        q.setParameter("p_quantity",     newItem.getQuantity());
+        q.setParameter("item_barcodes",  newItem.getBarcodes());
 
-        // OUT
-        procedureQuery.registerStoredProcedureParameter("p_count", Integer.class, ParameterMode.OUT);
-
-        procedureQuery.setParameter("p_item_name", insertItemDTO.getName());
-        procedureQuery.setParameter("p_item_alias", insertItemDTO.getAlias());
-        procedureQuery.setParameter("p_item_description", insertItemDTO.getDescription());
-        procedureQuery.setParameter("p_item_model", insertItemDTO.getModel());
-        procedureQuery.setParameter("p_item_price", insertItemDTO.getPrice());
-        procedureQuery.setParameter("p_item_wholesalePrice", insertItemDTO.getWholesalePrice());
-        procedureQuery.setParameter("p_item_barePrice", insertItemDTO.getBarePrice());
-        procedureQuery.setParameter("p_item_brandID", insertItemDTO.getBrandID());
-        procedureQuery.setParameter("p_item_subcategoryID", insertItemDTO.getSubCategoryID());
-        procedureQuery.setParameter("p_item_dateManufacture", insertItemDTO.getDateManufacture());
-        procedureQuery.setParameter("p_item_itemAddressID", insertItemDTO.getItemAddressID());
-        procedureQuery.setParameter("p_item_userID", insertItemDTO.getUserID());
-        procedureQuery.setParameter("p_item_acronym", insertItemDTO.getAcronym());
-        procedureQuery.setParameter("p_item_purchasePrice", insertItemDTO.getPurchasePrice());
-
-        procedureQuery.setParameter("p_item_branchOfficeID", insertItemDTO.getBranchOfficeID());
-        procedureQuery.setParameter("p_quantity", insertItemDTO.getQuantity());
-
-        procedureQuery.setParameter("item_paths", insertItemDTO.getPathItems());
-
-        procedureQuery.setParameter("item_barcodes", insertItemDTO.getBarcodes());
-
-        procedureQuery.setParameter("p_count", value);
-
-        procedureQuery.execute();
-
-        int result = (int) procedureQuery.getOutputParameterValue("p_count");
-
-        return result;
+        q.setParameter("p_count", 0);
+        q.execute();
+        return (Integer) q.getOutputParameterValue("p_count");
     }
 
     @Override

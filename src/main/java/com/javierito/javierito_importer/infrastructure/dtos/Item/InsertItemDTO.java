@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Data
 @Builder
 public class InsertItemDTO {
+
     // Item
     private String name;
     private String alias;
@@ -22,6 +23,12 @@ public class InsertItemDTO {
     private Short itemAddressID;
     private Long userID;
     private BigDecimal purchasePrice;
+    private String acronym;
+    private Character itemStatus;
+    private String transmission;
+    private String cylinderCapacity;
+    private Character traction;
+    private String itemSeries;
 
     // Item Image
     private String[] pathItems;
@@ -32,7 +39,4 @@ public class InsertItemDTO {
 
     // Barcode
     private String[] barcodes;
-
-    // Essential
-    private String acronym;
 }

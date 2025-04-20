@@ -43,6 +43,15 @@ public class ItemController {
                 .branchOfficeID(item.getBranchOfficeID())
                 .quantity(item.getQuantity())
                 .barcodes(item.getBarcodes())
+                .itemStatus(item.getItemStatus())
+                .transmission(item.getTransmission())
+                .cylinderCapacity(item.getCylinderCapacity())
+                .traction(item.getTraction())
+                .itemSeries(item.getItemSeries())
+                .pathItems(item.getPathItems())
+                .branchOfficeID(item.getBranchOfficeID())
+                .quantity(item.getQuantity())
+                .barcodes(item.getBarcodes())
                 .build();
 
         var result = itemSerivce.insertItem(newitem);
