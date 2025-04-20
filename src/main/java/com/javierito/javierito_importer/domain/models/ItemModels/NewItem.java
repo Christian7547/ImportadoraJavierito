@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 
 public class NewItem {
+
     private String name;
     private String alias;
     private String description;
@@ -24,10 +25,16 @@ public class NewItem {
     private String dateManufacture;
     private Short itemAddressID;
     private Long userID;
+    private BigDecimal purchasePrice;
+    private String acronym;
+    private Character itemStatus;
+    private String transmission;
+    private String cylinderCapacity;
+    private Character traction;
+    private String itemSeries;
     private String[] pathItems;
     private Integer branchOfficeID;
     private Integer quantity;
     private String[] barcodes;
-    private String acronym;
-    private BigDecimal purchasePrice;
+
 }
