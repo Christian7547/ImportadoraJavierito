@@ -45,7 +45,7 @@ public class UserService implements IUserService {
         employee.setUserId(userId);
         var employeeCreated = employeeDomainRepository.saveEmployee(employee);
         if(employeeCreated != null){
-            emailServer.sendCredentials(user.getEmail(), employee.getName(), employee.getLastName(), user.getUserName(), user.getPassword());
+            emailServer.sendCredentials(user.getEmail(), employee.getName(), employee.getLastName(), user.getUserName(), passwordGenerated);
         }
         return userCreated;
     }
