@@ -32,6 +32,7 @@ public class NewItem {
     private String cylinderCapacity;
     private Character traction;
     private String itemSeries;
+    private String fuel;
     private String[] pathItems;
     private Integer branchOfficeID;
     private Integer quantity;

@@ -29,6 +29,7 @@ public class InsertItemDTO {
     private String cylinderCapacity;
     private Character traction;
     private String itemSeries;
+    private String fuel;
 
     // Item Image
     private String[] pathItems;

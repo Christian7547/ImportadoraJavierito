@@ -48,6 +48,7 @@ public class ItemController {
                 .cylinderCapacity(item.getCylinderCapacity())
                 .traction(item.getTraction())
                 .itemSeries(item.getItemSeries())
+                .fuel(item.getFuel())
                 .pathItems(item.getPathItems())
                 .branchOfficeID(item.getBranchOfficeID())
                 .quantity(item.getQuantity())
