@@ -13,5 +13,4 @@ public interface IUserDomainRepository {
     User getByEmail(String email);
     User getById(long id);
     long countUsers();
-    void removeUser(User user);
 }

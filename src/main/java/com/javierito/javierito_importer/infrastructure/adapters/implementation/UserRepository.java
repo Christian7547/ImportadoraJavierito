@@ -8,9 +8,7 @@ import com.javierito.javierito_importer.infrastructure.entities.UserEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.UserMapper;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -77,10 +75,5 @@ public class UserRepository implements IUserDomainRepository {
     @Override
     public long countUsers() {
         return userRepository.count();
-    }
-
-    @Override
-    public void removeUser(User user) {
-
     }
 }

@@ -1,6 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.mappers;
 
-import com.javierito.javierito_importer.domain.models.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
 import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.BranchOfficeDTO;
 import com.javierito.javierito_importer.infrastructure.entities.BranchOfficeEntity;
 import org.mapstruct.Mapper;

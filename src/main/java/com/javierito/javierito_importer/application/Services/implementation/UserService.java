@@ -67,6 +67,16 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public long changeStatus(long id, short newStatus) {
+        var findUser = getById(id);
+        if(findUser != null){
+            findUser.setStatus(newStatus);
+            return userDomainRepository.saveUser(findUser).getId();
+        }
+        return 0;
+    }
+
+    @Override
     public Pair<User, String> getByEmail(String email) {
         User user = userDomainRepository.getByEmail(email);
         if(user != null){
@@ -86,12 +96,6 @@ public class UserService implements IUserService {
     @Override
     public long countUsers() {
         return userDomainRepository.countUsers();
-    }
-
-    @Override
-    public void removeUser(User user) {
-        user.setStatus((short)0);
-        userDomainRepository.removeUser(user);
     }
 
     private String getNewUserName(String name, String lastName, String secondLastName){

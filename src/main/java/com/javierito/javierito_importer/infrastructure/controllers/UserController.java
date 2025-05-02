@@ -94,7 +94,17 @@ public class UserController {
                 .build();
         boolean res = userService.updateUser(user, employee);
         if(res)
-            return new ResponseEntity<>(body, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PatchMapping("/changeStatus/{userId}")
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<?> changeStatus(@PathVariable long userId, @RequestParam int newStatus){
+        long id = userService.changeStatus(userId, (short) newStatus);
+        if(id > 0)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
