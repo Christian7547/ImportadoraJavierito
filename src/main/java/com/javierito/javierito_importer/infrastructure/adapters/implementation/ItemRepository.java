@@ -120,7 +120,7 @@ public class ItemRepository implements IItemDomainRepository {
             item.setItemImage((String) row[12]);
             item.setAddress((String) row[13]);
             item.setTotalStock((Integer) row[14]);
-            item.setRegisterDate((LocalDateTime) row[15]);
+            item.setRegisterDate(((java.sql.Timestamp) row[15]).toLocalDateTime());
             items.add(item);
         }
         return items;
