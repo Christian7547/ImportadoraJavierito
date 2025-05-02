@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,6 +120,7 @@ public class ItemRepository implements IItemDomainRepository {
             item.setItemImage((String) row[12]);
             item.setAddress((String) row[13]);
             item.setTotalStock((Integer) row[14]);
+            item.setRegisterDate((LocalDateTime) row[15]);
             items.add(item);
         }
         return items;
@@ -167,7 +169,7 @@ public class ItemRepository implements IItemDomainRepository {
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemDTO) {
 
-        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Object[] result = (Object[]) entityManager.createNativeQuery(sql)
                 .setParameter(1, itemDTO.getItemID())
@@ -186,6 +188,12 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter(14, itemDTO.getItemAddressID())
                 .setParameter(15, itemDTO.getUserID())
                 .setParameter(16, itemDTO.getItemImages())
+                .setParameter(17, itemDTO.getItemStatus())
+                .setParameter(18, itemDTO.getTransmission())
+                .setParameter(19, itemDTO.getCylinderCapacity())
+                .setParameter(20, itemDTO.getTraction())
+                .setParameter(21, itemDTO.getItemSeries())
+                .setParameter(22, itemDTO.getFuel())
                 .getSingleResult();
 
         if (result == null) {
@@ -208,7 +216,13 @@ public class ItemRepository implements IItemDomainRepository {
         updatedItem.setItemAddressID((Short) result[12]);
         updatedItem.setUserID((Long) result[13]);
         updatedItem.setAcronym((String) result[14]);
-        updatedItem.setItemImages((String[]) result[15]);
+        updatedItem.setItemStatus((Character) result[15]);
+        updatedItem.setTransmission((String) result[16]);
+        updatedItem.setCylinderCapacity((String) result[17]);
+        updatedItem.setTraction((Character) result[18]);
+        updatedItem.setItemSeries((String) result[19]);
+        updatedItem.setFuel((String) result[20]);
+        updatedItem.setItemImages((String[]) result[21]);
 
         return updatedItem;
     }

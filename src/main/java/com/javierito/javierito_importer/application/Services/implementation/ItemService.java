@@ -24,10 +24,38 @@ public class ItemService implements IItemSerivce {
     @Override
     public int insertItem(NewItem NewItem) {
 
+        NewItem newItem = NewItem.builder()
+                .name(NewItem.getName())
+                .alias(NewItem.getAlias())
+                .description(NewItem.getDescription())
+                .model(NewItem.getModel())
+                .price(NewItem.getPrice())
+                .wholesalePrice(NewItem.getWholesalePrice())
+                .barePrice(NewItem.getBarePrice())
+                .brandID(NewItem.getBrandID())
+                .subCategoryID(NewItem.getSubCategoryID())
+                .dateManufacture(NewItem.getDateManufacture())
+                .itemAddressID(NewItem.getItemAddressID())
+                .userID(NewItem.getUserID())
+                .acronym(NewItem.getAcronym())
+                .purchasePrice(NewItem.getPurchasePrice())
+                .pathItems(NewItem.getPathItems())
+                .branchOfficeID(NewItem.getBranchOfficeID())
+                .quantity(NewItem.getQuantity())
+                .barcodes(NewItem.getBarcodes())
+                .itemStatus(NewItem.getItemStatus())
+                .transmission(NewItem.getTransmission())
+                .cylinderCapacity(NewItem.getCylinderCapacity())
+                .traction(NewItem.getTraction())
+                .itemSeries(NewItem.getItemSeries())
+                .fuel(NewItem.getFuel())
+                .build();
+
         String lastBarcode = itemDomainRepository.findLastBarcodeByAcronym(NewItem.getAcronym());
-        String[] barcodes = barcodeGenerator.generateBarcode(NewItem.getAcronym(), NewItem.getQuantity(), lastBarcode);
-        NewItem.setBarcodes(barcodes);
-        return itemDomainRepository.insertItem(NewItem);
+        String[] barcodes = barcodeGenerator.generateBarcode(newItem.getAcronym(), newItem.getQuantity(), lastBarcode);
+        newItem.setBarcodes(barcodes);
+
+        return itemDomainRepository.insertItem(newItem);
 
     }
 
@@ -51,7 +79,33 @@ public class ItemService implements IItemSerivce {
 
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemUpdate) {
-        return itemDomainRepository.updateItemById(itemUpdate);
+
+        ItemUpdate updated = ItemUpdate.builder()
+                .itemID(itemUpdate.getItemID())
+                .name(itemUpdate.getName())
+                .alias(itemUpdate.getAlias())
+                .description(itemUpdate.getDescription())
+                .model(itemUpdate.getModel())
+                .price(itemUpdate.getPrice())
+                .wholesalePrice(itemUpdate.getWholesalePrice())
+                .barePrice(itemUpdate.getBarePrice())
+                .purchasePrice(itemUpdate.getPurchasePrice())
+                .brandID(itemUpdate.getBrandID())
+                .subCategoryID(itemUpdate.getSubCategoryID())
+                .dateManufacture(itemUpdate.getDateManufacture())
+                .itemAddressID(itemUpdate.getItemAddressID())
+                .userID(itemUpdate.getUserID())
+                .acronym(itemUpdate.getAcronym())
+                .itemStatus(itemUpdate.getItemStatus())
+                .transmission(itemUpdate.getTransmission())
+                .cylinderCapacity(itemUpdate.getCylinderCapacity())
+                .traction(itemUpdate.getTraction())
+                .itemSeries(itemUpdate.getItemSeries())
+                .fuel(itemUpdate.getFuel())
+                .itemImages(itemUpdate.getItemImages())
+                .build();
+
+        return itemDomainRepository.updateItemById(updated);
     }
 
     @Override
