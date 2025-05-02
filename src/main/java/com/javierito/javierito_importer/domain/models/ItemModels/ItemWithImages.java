@@ -27,5 +27,11 @@ public class ItemWithImages {
     private Long userID;
     private String acronym;
     private BigDecimal purchasePrice;
+    private Character itemStatus;
+    private String transmission;
+    private String cylinderCapacity;
+    private Character traction;
+    private String itemSeries;
+    private String fuel;
     private String[] itemImages;
 }

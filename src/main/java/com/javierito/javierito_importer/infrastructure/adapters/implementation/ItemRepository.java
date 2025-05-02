@@ -153,7 +153,13 @@ public class ItemRepository implements IItemDomainRepository {
         item.setItemAddressID((Short) result[12]);
         item.setUserID((Long) result[13]);
         item.setAcronym((String) result[14]);
-        item.setItemImages((String[]) result[15]);
+        item.setItemStatus(result[15] != null ? ((String) result[15]).charAt(0) : null);
+        item.setTransmission((String) result[16]);
+        item.setCylinderCapacity((String) result[17]);
+        item.setTraction(result[18] != null ? ((String) result[18]).charAt(0) : null);
+        item.setItemSeries((String) result[19]);
+        item.setFuel((String) result[20]);
+        item.setItemImages((String[]) result[21]);
 
         return item;
     }

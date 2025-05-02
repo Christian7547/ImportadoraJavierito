@@ -79,7 +79,6 @@ public class ItemController {
 
         var result = itemSerivce.getItemById(itemDTO.getItemID());
 
-
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
