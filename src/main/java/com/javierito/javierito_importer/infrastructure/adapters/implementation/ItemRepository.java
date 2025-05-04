@@ -3,14 +3,19 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.*;
+import com.javierito.javierito_importer.domain.models.StockModels.BranchStockModel;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -33,56 +38,58 @@ public class ItemRepository implements IItemDomainRepository {
         StoredProcedureQuery q = entityManager
                 .createStoredProcedureQuery("usp_create_item");
 
-        q.registerStoredProcedureParameter("p_item_name",              String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_alias",             String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_description",       String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_model",             String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_price",             BigDecimal.class,  ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_wholesaleprice",    BigDecimal.class,  ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_bareprice",         BigDecimal.class,  ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_brandid",           Integer.class,     ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_subcategoryid",     Short.class,       ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_datemanufacture",   String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_itemaddressid",     Short.class,       ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_userid",            Long.class,        ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_acronym",           String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_purchaseprice",     BigDecimal.class,  ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_status",            String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_transmission",      String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_cylinder_capacity", String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_traction",          String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_series",            String.class,      ParameterMode.IN);
-        q.registerStoredProcedureParameter("item_paths",   String[].class, ParameterMode.IN);
-        q.registerStoredProcedureParameter("p_item_branchofficeid", Long.class,   ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_name", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_alias", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_description", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_model", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_price", BigDecimal.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_wholesaleprice", BigDecimal.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_bareprice", BigDecimal.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_brandid", Integer.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_subcategoryid", Short.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_datemanufacture", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_itemaddressid", Short.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_userid", Long.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_acronym", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_purchaseprice", BigDecimal.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_status", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_transmission", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_cylinder_capacity", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_traction", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_series", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_fuel", String.class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("item_paths", String[].class, ParameterMode.IN);
+        q.registerStoredProcedureParameter("p_item_branchofficeid", Long.class, ParameterMode.IN);
         q.registerStoredProcedureParameter("p_quantity",   Integer.class,  ParameterMode.IN);
         q.registerStoredProcedureParameter("item_barcodes", String[].class, ParameterMode.IN);
         q.registerStoredProcedureParameter("p_count", Integer.class, ParameterMode.INOUT);
 
 
-        q.setParameter("p_item_name",            newItem.getName());
-        q.setParameter("p_item_alias",           newItem.getAlias());
-        q.setParameter("p_item_description",     newItem.getDescription());
-        q.setParameter("p_item_model",           newItem.getModel());
-        q.setParameter("p_item_price",           newItem.getPrice());
-        q.setParameter("p_item_wholesaleprice",  newItem.getWholesalePrice());
-        q.setParameter("p_item_bareprice",       newItem.getBarePrice());
-        q.setParameter("p_item_brandid",         newItem.getBrandID());
-        q.setParameter("p_item_subcategoryid",   newItem.getSubCategoryID());
+        q.setParameter("p_item_name", newItem.getName());
+        q.setParameter("p_item_alias", newItem.getAlias());
+        q.setParameter("p_item_description", newItem.getDescription());
+        q.setParameter("p_item_model", newItem.getModel());
+        q.setParameter("p_item_price", newItem.getPrice());
+        q.setParameter("p_item_wholesaleprice", newItem.getWholesalePrice());
+        q.setParameter("p_item_bareprice", newItem.getBarePrice());
+        q.setParameter("p_item_brandid", newItem.getBrandID());
+        q.setParameter("p_item_subcategoryid", newItem.getSubCategoryID());
         q.setParameter("p_item_datemanufacture", newItem.getDateManufacture());
-        q.setParameter("p_item_itemaddressid",   newItem.getItemAddressID());
-        q.setParameter("p_item_userid",          newItem.getUserID());
-        q.setParameter("p_item_acronym",         newItem.getAcronym());
-        q.setParameter("p_item_purchaseprice",   newItem.getPurchasePrice());
-        q.setParameter("p_item_status",          newItem.getItemStatus().toString());
-        q.setParameter("p_item_transmission",    newItem.getTransmission());
+        q.setParameter("p_item_itemaddressid", newItem.getItemAddressID());
+        q.setParameter("p_item_userid", newItem.getUserID());
+        q.setParameter("p_item_acronym", newItem.getAcronym());
+        q.setParameter("p_item_purchaseprice", newItem.getPurchasePrice());
+        q.setParameter("p_item_status", newItem.getItemStatus().toString());
+        q.setParameter("p_item_transmission", newItem.getTransmission() != null ? newItem.getTransmission() : null);
         q.setParameter("p_item_cylinder_capacity", newItem.getCylinderCapacity());
-        q.setParameter("p_item_traction",        newItem.getTraction().toString());
-        q.setParameter("p_item_series",          newItem.getItemSeries());
+        q.setParameter("p_item_traction", newItem.getTraction() != null ? newItem.getTraction().toString() : null);
+        q.setParameter("p_item_series", newItem.getItemSeries());
+        q.setParameter("p_item_fuel", newItem.getFuel());
 
-        q.setParameter("item_paths",     newItem.getPathItems());
+        q.setParameter("item_paths", newItem.getPathItems());
         q.setParameter("p_item_branchofficeid", newItem.getBranchOfficeID().longValue());
-        q.setParameter("p_quantity",     newItem.getQuantity());
-        q.setParameter("item_barcodes",  newItem.getBarcodes());
+        q.setParameter("p_quantity", newItem.getQuantity());
+        q.setParameter("item_barcodes", newItem.getBarcodes());
 
         q.setParameter("p_count", 0);
         q.execute();
@@ -90,36 +97,68 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public List<ListItems> getAllItems(int offset, int limit, String param) {
-        String sql = "SELECT * FROM ufc_get_items(?, ?, ?)";
+    public List<ListItems> getAllItems(int limit,
+                                       int offset,
+                                       @Nullable String param,
+                                       @Nullable String subCategory,
+                                       @Nullable String brand) {
 
-        List<Object[]> results = entityManager.createNativeQuery(sql)
-                .setParameter(1, limit)
-                .setParameter(2, offset)
-                .setParameter(3, param)
-                .getResultList();
-        List<ListItems> items = new ArrayList<>();
+        String sql = "SELECT * FROM ufc_get_items(:p_limit, :p_offset, :param, :p_subcategory, :p_brand)";
 
-        for (Object[] row : results) {
-            ListItems item = new ListItems();
-            item.setItemID(((Long) row[0]));
-            item.setName((String) row[1]);
-            item.setDescription((String) row[2]);
-            item.setModel((String) row[3]);
-            item.setPrice((BigDecimal) row[4]);
-            item.setWholesalePrice((BigDecimal) row[5]);
-            item.setBarePrice((BigDecimal) row[6]);
-            item.setPurchasePrice((BigDecimal) row[7]);
-            item.setBrand((String) row[8]);
-            item.setCategory((String) row[9]);
-            item.setSubCategory((String) row[10]);
-            item.setDateManufacture((String) row[11]);
-            item.setItemImage((String) row[12]);
-            item.setAddress((String) row[13]);
-            item.setTotalStock((Integer) row[14]);
-            items.add(item);
+        Query query = entityManager.createNativeQuery(sql, ListItems.class);
+        query.setParameter("p_limit", limit);
+        query.setParameter("p_offset", offset);
+        query.setParameter("param", param);
+        query.setParameter("p_subcategory", subCategory);
+        query.setParameter("p_brand", brand);
+
+        List<ListItems> listItems = query.getResultList();
+
+        if(listItems.isEmpty()){
+            return new ArrayList<>();
         }
-        return items;
+        return listItems;
+    }
+
+    @Override
+    public ItemAllInfo itemAllInfo(Long id) {
+        String sql = "SELECT * FROM ufc_get_item_all_info(?)";
+
+        Object[] result = (Object[]) entityManager.createNativeQuery(sql)
+                .setParameter(1, id)
+                .getSingleResult();
+
+        if (result == null) {
+            return null;
+        }
+
+        ItemAllInfo item = new ItemAllInfo();
+        item.setItemId((Long) result[0]);
+        item.setName((String) result[1]);
+        item.setAlias((String) result[2]);
+        item.setDescription((String) result[3]);
+        item.setModel((String) result[4]);
+        item.setPrice((BigDecimal) result[5]);
+        item.setWholesalePrice((BigDecimal) result[6]);
+        item.setBarePrice((BigDecimal) result[7]);
+        item.setPurchasePrice((BigDecimal) result[8]);
+        item.setBrandName((String) result[9]);
+        item.setSubCategoryName((String) result[10]);
+        item.setDateManufacture((String) result[11]);
+        item.setItemAddressName((String) result[12]);
+        item.setAcronym((String) result[13]);
+        item.setItemStatus(result[14] != null ? ((String) result[14]).charAt(0) : null);
+        item.setTransmission((String) result[15]);
+        item.setCylinderCapacity((String) result[16]);
+        item.setTraction(result[17] != null ? ((String) result[17]).charAt(0) : null);
+        item.setItemSeries((String) result[18]);
+        item.setFuel((String) result[19]);
+        item.setItemImages(result[20] != null ? Arrays.asList((String[]) result[20]) : new ArrayList<>());
+        item.setTotalStock(result[21] != null ? ((Number) result[21]).longValue() : 0L);
+        item.setBranchStocks((List<BranchStockModel>) result[22]);
+        item.setRegisterDate(result[23] != null ? (Timestamp) result[23] : null);
+
+        return item;
     }
 
     @Override
@@ -151,7 +190,13 @@ public class ItemRepository implements IItemDomainRepository {
         item.setItemAddressID((Short) result[12]);
         item.setUserID((Long) result[13]);
         item.setAcronym((String) result[14]);
-        item.setItemImages((String[]) result[15]);
+        item.setItemStatus(result[15] != null ? ((String) result[15]).charAt(0) : null);
+        item.setTransmission((String) result[16]);
+        item.setCylinderCapacity((String) result[17]);
+        item.setTraction(result[18] != null ? ((String) result[18]).charAt(0) : null);
+        item.setItemSeries((String) result[19]);
+        item.setFuel((String) result[20]);
+        item.setItemImages((String[]) result[21]);
 
         return item;
     }
@@ -159,7 +204,7 @@ public class ItemRepository implements IItemDomainRepository {
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemDTO) {
 
-        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Object[] result = (Object[]) entityManager.createNativeQuery(sql)
                 .setParameter(1, itemDTO.getItemID())
@@ -178,6 +223,12 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter(14, itemDTO.getItemAddressID())
                 .setParameter(15, itemDTO.getUserID())
                 .setParameter(16, itemDTO.getItemImages())
+                .setParameter(17, itemDTO.getItemStatus())
+                .setParameter(18, itemDTO.getTransmission())
+                .setParameter(19, itemDTO.getCylinderCapacity())
+                .setParameter(20, itemDTO.getTraction())
+                .setParameter(21, itemDTO.getItemSeries())
+                .setParameter(22, itemDTO.getFuel())
                 .getSingleResult();
 
         if (result == null) {
@@ -200,7 +251,13 @@ public class ItemRepository implements IItemDomainRepository {
         updatedItem.setItemAddressID((Short) result[12]);
         updatedItem.setUserID((Long) result[13]);
         updatedItem.setAcronym((String) result[14]);
-        updatedItem.setItemImages((String[]) result[15]);
+        updatedItem.setItemStatus((Character) result[15]);
+        updatedItem.setTransmission((String) result[16]);
+        updatedItem.setCylinderCapacity((String) result[17]);
+        updatedItem.setTraction((Character) result[18]);
+        updatedItem.setItemSeries((String) result[19]);
+        updatedItem.setFuel((String) result[20]);
+        updatedItem.setItemImages((String[]) result[21]);
 
         return updatedItem;
     }

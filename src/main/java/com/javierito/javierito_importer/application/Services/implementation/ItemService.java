@@ -5,35 +5,61 @@ import com.javierito.javierito_importer.application.Services.interfaces.IItemSer
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.*;
 import com.javierito.javierito_importer.domain.ports.*;
+import lombok.RequiredArgsConstructor;
 import org.yaml.snakeyaml.util.Tuple;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class ItemService implements IItemSerivce {
 
     private final IItemDomainRepository itemDomainRepository;
     private BarcodeGenerator barcodeGenerator = new BarcodeGenerator();
 
-    public ItemService(IItemDomainRepository itemDomainRepository) {
-
-        this.itemDomainRepository = itemDomainRepository;
-    }
-
 
     @Override
     public int insertItem(NewItem NewItem) {
 
+        NewItem newItem = NewItem.builder()
+                .name(NewItem.getName())
+                .alias(NewItem.getAlias())
+                .description(NewItem.getDescription())
+                .model(NewItem.getModel())
+                .price(NewItem.getPrice())
+                .wholesalePrice(NewItem.getWholesalePrice())
+                .barePrice(NewItem.getBarePrice())
+                .brandID(NewItem.getBrandID())
+                .subCategoryID(NewItem.getSubCategoryID())
+                .dateManufacture(NewItem.getDateManufacture())
+                .itemAddressID(NewItem.getItemAddressID())
+                .userID(NewItem.getUserID())
+                .acronym(NewItem.getAcronym())
+                .purchasePrice(NewItem.getPurchasePrice())
+                .pathItems(NewItem.getPathItems())
+                .branchOfficeID(NewItem.getBranchOfficeID())
+                .quantity(NewItem.getQuantity())
+                .barcodes(NewItem.getBarcodes())
+                .itemStatus(NewItem.getItemStatus())
+                .transmission(NewItem.getTransmission())
+                .cylinderCapacity(NewItem.getCylinderCapacity())
+                .traction(NewItem.getTraction())
+                .itemSeries(NewItem.getItemSeries())
+                .fuel(NewItem.getFuel())
+                .build();
+
         String lastBarcode = itemDomainRepository.findLastBarcodeByAcronym(NewItem.getAcronym());
-        String[] barcodes = barcodeGenerator.generateBarcode(NewItem.getAcronym(), NewItem.getQuantity(), lastBarcode);
-        NewItem.setBarcodes(barcodes);
-        return itemDomainRepository.insertItem(NewItem);
+        String[] barcodes = barcodeGenerator.generateBarcode(newItem.getAcronym(), newItem.getQuantity(), lastBarcode);
+        newItem.setBarcodes(barcodes);
+
+        return itemDomainRepository.insertItem(newItem);
 
     }
 
+
     @Override
-    public Tuple<List<ListItems>, Integer> getAllItems(int offset, int limit, String param) {
-        var result = itemDomainRepository.getAllItems(offset, limit, param);
+    public Tuple<List<ListItems>, Integer> getAllItems(int limit, int offset, String param, String subCategory, String brand) {
+        var result = itemDomainRepository.getAllItems(limit, offset, param, subCategory, brand);
         Integer totalCount = itemDomainRepository.countAllItems();
 
         return new Tuple<List<ListItems>, Integer>(result, totalCount);
@@ -45,13 +71,45 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
+    public ItemAllInfo getItemAllInfo(Long id) {
+        return null;
+    }
+
+    @Override
     public ItemAcronym getItemAcronym(Long id) {
         return itemDomainRepository.getItemAcronym(id);
     }
 
+
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemUpdate) {
-        return itemDomainRepository.updateItemById(itemUpdate);
+
+        ItemUpdate updated = ItemUpdate.builder()
+                .itemID(itemUpdate.getItemID())
+                .name(itemUpdate.getName())
+                .alias(itemUpdate.getAlias())
+                .description(itemUpdate.getDescription())
+                .model(itemUpdate.getModel())
+                .price(itemUpdate.getPrice())
+                .wholesalePrice(itemUpdate.getWholesalePrice())
+                .barePrice(itemUpdate.getBarePrice())
+                .purchasePrice(itemUpdate.getPurchasePrice())
+                .brandID(itemUpdate.getBrandID())
+                .subCategoryID(itemUpdate.getSubCategoryID())
+                .dateManufacture(itemUpdate.getDateManufacture())
+                .itemAddressID(itemUpdate.getItemAddressID())
+                .userID(itemUpdate.getUserID())
+                .acronym(itemUpdate.getAcronym())
+                .itemStatus(itemUpdate.getItemStatus())
+                .transmission(itemUpdate.getTransmission())
+                .cylinderCapacity(itemUpdate.getCylinderCapacity())
+                .traction(itemUpdate.getTraction())
+                .itemSeries(itemUpdate.getItemSeries())
+                .fuel(itemUpdate.getFuel())
+                .itemImages(itemUpdate.getItemImages())
+                .build();
+
+        return itemDomainRepository.updateItemById(updated);
     }
 
     @Override
