@@ -58,8 +58,8 @@ public class ItemService implements IItemSerivce {
 
 
     @Override
-    public Tuple<List<ListItems>, Integer> getAllItems(int offset, int limit, String param, String subCategory, String brand) {
-        var result = itemDomainRepository.getAllItems(offset, limit, param, subCategory, brand);
+    public Tuple<List<ListItems>, Integer> getAllItems(int limit, int offset, String param, String subCategory, String brand) {
+        var result = itemDomainRepository.getAllItems(limit, offset, param, subCategory, brand);
         Integer totalCount = itemDomainRepository.countAllItems();
 
         return new Tuple<List<ListItems>, Integer>(result, totalCount);
