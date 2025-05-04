@@ -8,8 +8,8 @@ import org.springframework.lang.Nullable;
 @Setter
 public class ParamsOfficeDTO {
     @Nullable
-    private String name;
+    private String query;
 
     @Nullable
-    private String address;
+    private Integer status;
 }

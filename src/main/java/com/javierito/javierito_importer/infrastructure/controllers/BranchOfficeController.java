@@ -36,8 +36,8 @@ public class BranchOfficeController {
         ArrayList<OfficeList> offices = branchOfficeService.getAll(
                 limit,
                 offset,
-                params.getName(),
-                params.getAddress());
+                params.getQuery(),
+                params.getStatus());
         if(!offices.isEmpty()){
             long totalOffices = branchOfficeService.countBranchOffices();
             Pair<List<OfficeList>, Long> data = Pair.of(offices, totalOffices);

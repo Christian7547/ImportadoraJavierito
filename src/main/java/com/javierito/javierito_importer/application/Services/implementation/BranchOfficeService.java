@@ -27,12 +27,14 @@ public class BranchOfficeService implements IBranchOfficeService {
     @Override
     public ArrayList<OfficeList> getAll(int limit,
                                         int offset,
-                                        @Nullable String name,
-                                        @Nullable String address) {
+                                        @Nullable String query,
+                                        @Nullable Integer status) {
         Pageable pageable = PageRequest.of(offset, limit);
+        if(status == null)
+            status = 1;
         return (ArrayList<OfficeList>) branchOfficeDomainRepository.getAll(pageable,
-                name,
-                address);
+                query,
+                status);
     }
 
     @Override

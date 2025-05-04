@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface IBranchOfficeService {
 
-    ArrayList<OfficeList> getAll(int limit, int offset, @Nullable String name, @Nullable String address);
+    ArrayList<OfficeList> getAll(int limit, int offset, @Nullable String query, @Nullable Integer status);
     BranchOffice getById(int id);
     BranchOffice createBranchOffice(BranchOffice branchOffice, ArrayList<String> pathImages);
     BranchOffice updateBranchOffice(BranchOffice branchOffice);

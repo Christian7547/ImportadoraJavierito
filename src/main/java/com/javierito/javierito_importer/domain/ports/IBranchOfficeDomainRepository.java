@@ -8,7 +8,7 @@ import org.springframework.lang.Nullable;
 import java.util.List;
 
 public interface IBranchOfficeDomainRepository {
-    List<OfficeList> getAll(Pageable pageable, @Nullable String name, @Nullable String address);
+    List<OfficeList> getAll(Pageable pageable, @Nullable String query, @Nullable Integer status);
     BranchOffice getById(int id);
     BranchOffice createBranchOffice(BranchOffice branchOffice);
     BranchOffice removeOrEditBranchOffice(BranchOffice branchOffice);
