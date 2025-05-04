@@ -1,17 +1,23 @@
 package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
-import com.javierito.javierito_importer.domain.models.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IBranchOfficeRepository;
 import com.javierito.javierito_importer.infrastructure.entities.BranchOfficeEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,15 +26,26 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
     @Autowired
     private BranchOfficeMapper branchOfficeMapper;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final IBranchOfficeRepository branchOfficeRepository;
 
     @Override
-    public List<BranchOffice> getAll() {
-        var branchOffices = branchOfficeRepository.getAll();
-        if(branchOffices.isEmpty()){
+    public List<OfficeList> getAll(Pageable pageable,
+                                   @Nullable String name,
+                                   @Nullable String address) {
+        String sql = "SELECT * FROM ufc_get_offices(:p_limit, :p_offset, :p_name, :p_address)";
+        Query query = entityManager.createNativeQuery(sql, OfficeList.class);
+        query.setParameter("p_limit", pageable.getPageSize());
+        query.setParameter("p_offset", pageable.getPageNumber());
+        query.setParameter("p_name", name);
+        query.setParameter("p_address", address);
+        List<OfficeList> result = query.getResultList();
+        if(result.isEmpty()){
             return new ArrayList<>();
         }
-        return branchOfficeMapper.toBranchOffices(branchOffices);
+        return result;
     }
 
     @Override
@@ -49,5 +66,10 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
         BranchOfficeEntity toEntity = branchOfficeMapper.toBranchOfficeEntity(branchOffice);
         BranchOfficeEntity saved = branchOfficeRepository.save(toEntity);
         return branchOfficeMapper.toBranchOffice(saved);
+    }
+
+    @Override
+    public long countBranchOffices() {
+        return branchOfficeRepository.count();
     }
 }
