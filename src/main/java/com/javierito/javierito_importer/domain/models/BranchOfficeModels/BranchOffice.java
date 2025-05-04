@@ -1,4 +1,4 @@
-package com.javierito.javierito_importer.domain.models;
+package com.javierito.javierito_importer.domain.models.BranchOfficeModels;
 
 import lombok.Builder;
 import lombok.Data;

@@ -2,20 +2,21 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeImageService;
 import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeService;
-import com.javierito.javierito_importer.domain.models.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
-import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.BranchOfficeEditableDTO;
-import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.NewBranchOfficeDTO;
-import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.OfficeImageEditableDTO;
+import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.*;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeImageMapper;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/branchOffice")
@@ -28,11 +29,18 @@ public class BranchOfficeController {
     private final IBranchOfficeService branchOfficeService;
     private final IBranchOfficeImageService imageService;
 
-    @GetMapping("/getAll")
-    public ResponseEntity<?> getBranchOffices(){
-        ArrayList<BranchOffice> offices = branchOfficeService.getAll();
-        if(offices != null){
-            var data = branchOfficeMapper.toBranchOfficesDTO(offices);
+    @PostMapping("/getAll")
+    public ResponseEntity<?> getBranchOffices(@RequestParam(defaultValue = "5")int limit,
+                                              @RequestParam(defaultValue = "1")int offset,
+                                              @RequestBody ParamsOfficeDTO params){
+        ArrayList<OfficeList> offices = branchOfficeService.getAll(
+                limit,
+                offset,
+                params.getName(),
+                params.getAddress());
+        if(!offices.isEmpty()){
+            long totalOffices = branchOfficeService.countBranchOffices();
+            Pair<List<OfficeList>, Long> data = Pair.of(offices, totalOffices);
             return new ResponseEntity<>(data, HttpStatus.OK);
         }
         return new ResponseEntity<>("Could not get branch offices", HttpStatus.OK);
@@ -100,5 +108,13 @@ public class BranchOfficeController {
             return new ResponseEntity<>("Branch office removed", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("Branch office removed", HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/getCoordinates/{id}")
+    public ResponseEntity<?> getCoordinatesByOffice(@PathVariable int id){
+        Map<String, String> coordinates = branchOfficeService.getCoordinatesByOffice(id);
+        if(coordinates.isEmpty())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(coordinates, HttpStatus.OK);
     }
 }

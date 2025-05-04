@@ -1,4 +1,4 @@
-package com.javierito.javierito_importer.infrastructure.dtos.Sale;
+package com.javierito.javierito_importer.infrastructure.dtos.sale;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
