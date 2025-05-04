@@ -31,7 +31,8 @@ public class UserService implements IUserService {
                                  @Nullable String role,
                                  @Nullable Integer officeId,
                                  @Nullable String someName) {
-        return userDomainRepository.getAll(limit, offset, status, role, officeId, someName);
+        Pageable pageable = PageRequest.of(offset, limit);
+        return userDomainRepository.getAll(pageable, status, role, officeId, someName);
     }
 
     @Transactional

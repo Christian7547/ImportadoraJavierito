@@ -11,6 +11,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
@@ -30,14 +32,13 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
     private final IBranchOfficeRepository branchOfficeRepository;
 
     @Override
-    public List<OfficeList> getAll(int limit,
-                                     int offset,
-                                     @Nullable String name,
-                                     @Nullable String address) {
+    public List<OfficeList> getAll(Pageable pageable,
+                                   @Nullable String name,
+                                   @Nullable String address) {
         String sql = "SELECT * FROM ufc_get_offices(:p_limit, :p_offset, :p_name, :p_address)";
         Query query = entityManager.createNativeQuery(sql, OfficeList.class);
-        query.setParameter("p_limit", limit);
-        query.setParameter("p_offset", offset);
+        query.setParameter("p_limit", pageable.getPageSize());
+        query.setParameter("p_offset", pageable.getPageNumber());
         query.setParameter("p_name", name);
         query.setParameter("p_address", address);
         List<OfficeList> result = query.getResultList();

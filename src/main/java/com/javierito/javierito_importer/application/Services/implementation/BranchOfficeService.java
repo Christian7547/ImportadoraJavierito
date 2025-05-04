@@ -7,6 +7,8 @@ import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeImageDomainRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +29,8 @@ public class BranchOfficeService implements IBranchOfficeService {
                                         int offset,
                                         @Nullable String name,
                                         @Nullable String address) {
-        return (ArrayList<OfficeList>) branchOfficeDomainRepository.getAll(limit,
-                offset,
+        Pageable pageable = PageRequest.of(offset, limit);
+        return (ArrayList<OfficeList>) branchOfficeDomainRepository.getAll(pageable,
                 name,
                 address);
     }
