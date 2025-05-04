@@ -1,16 +1,22 @@
 package com.javierito.javierito_importer.application.Services.implementation;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeService;
-import com.javierito.javierito_importer.domain.models.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeImageDomainRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class BranchOfficeService implements IBranchOfficeService {
@@ -19,8 +25,14 @@ public class BranchOfficeService implements IBranchOfficeService {
     private final IBranchOfficeImageDomainRepository branchOfficeImageDomainRepository;
 
     @Override
-    public ArrayList<BranchOffice> getAll() {
-        return (ArrayList<BranchOffice>) branchOfficeDomainRepository.getAll();
+    public ArrayList<OfficeList> getAll(int limit,
+                                        int offset,
+                                        @Nullable String name,
+                                        @Nullable String address) {
+        Pageable pageable = PageRequest.of(offset, limit);
+        return (ArrayList<OfficeList>) branchOfficeDomainRepository.getAll(pageable,
+                name,
+                address);
     }
 
     @Override
@@ -57,6 +69,18 @@ public class BranchOfficeService implements IBranchOfficeService {
     }
 
     @Override
+    public Map<String, String> getCoordinatesByOffice(int branchOfficeId) {
+        BranchOffice office = branchOfficeDomainRepository.getById(branchOfficeId);
+        if(office != null){
+            Map<String, String> coordinates = new HashMap<>();
+            coordinates.put("latitude", office.getLatitude());
+            coordinates.put("longitude", office.getLongitude());
+            return coordinates;
+        }
+        return Map.of();
+    }
+
+    @Override
     public boolean removeBranchOffice(BranchOffice branchOffice) {
         BranchOffice getOffice = getById(branchOffice.getId());
         if(getOffice != null) {
@@ -66,5 +90,10 @@ public class BranchOfficeService implements IBranchOfficeService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public long countBranchOffices() {
+        return branchOfficeDomainRepository.countBranchOffices();
     }
 }

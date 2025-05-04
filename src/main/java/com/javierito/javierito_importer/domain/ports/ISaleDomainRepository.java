@@ -1,12 +1,21 @@
 package com.javierito.javierito_importer.domain.ports;
 
+import com.javierito.javierito_importer.domain.models.SaleModels.SaleList;
 import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
+import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ISaleDomainRepository {
-    long createSale (double total, long employeeId, long clientId, String details);
+    long createSale (double total, long employeeId, long clientId, BigDecimal percentageDiscount, String details);
+
+    List<SaleList> getAll(Pageable pageable,
+                       @Nullable LocalDateTime initDate,
+                       @Nullable LocalDateTime finishDate,
+                       @Nullable String params);
 
     List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to);
 }

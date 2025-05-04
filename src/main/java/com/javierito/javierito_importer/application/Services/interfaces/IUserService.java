@@ -12,8 +12,8 @@ public interface IUserService {
     List<UserList> getAll(int page, int size, @Nullable Short status, @Nullable String role, @Nullable Integer officeId, @Nullable String someName);
     User createUser(User user, Employee employee);
     boolean updateUser(User user, Employee employee);
+    long changeStatus(long id, short newStatus);
     Pair<User, String> getByEmail(String email);
     User getById(long id);
     long countUsers();
-    void removeUser(User user);
 }

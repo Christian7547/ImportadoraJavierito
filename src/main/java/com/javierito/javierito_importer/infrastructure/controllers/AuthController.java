@@ -30,16 +30,17 @@ public class AuthController {
     private UserMapper userMapper;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody LoginDTO data){
+    public ResponseEntity<?> authenticate(@RequestBody LoginDTO loginDTO){
         try
         {
-            User user = authService.authenticate(data.getUsername(), data.getPassword());
-            if(user != null)
+            Pair<User, String> data = authService.authenticate(loginDTO.getUsername(), loginDTO.getPassword());
+            if(data != null)
             {
-                var u = userMapper.toUserEntity(user);
+                var u = userMapper.toUserEntity(data.getFirst());
                 String token = jwtService.generateToken(u);
                 Map<String, Object> response = new HashMap<>();
                 response.put("token", token);
+                response.put("branchOffice", data.getSecond());
                 return ResponseEntity.ok(response);
             }
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
