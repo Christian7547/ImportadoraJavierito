@@ -8,65 +8,43 @@ import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemAcronymDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.ItemDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.UpdateItemDTO;
+import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/api/items")
+@RequiredArgsConstructor
 public class ItemController {
 
+    private final ItemMapper itemMapper;
     private final IItemSerivce itemSerivce;
-
-    public ItemController(IItemSerivce itemSerivce) {this.itemSerivce = itemSerivce;}
 
     @PostMapping("/insertItem")
     public ResponseEntity<Integer> insertItem(@RequestBody InsertItemDTO item) {
 
-        NewItem newitem = NewItem.builder()
-                .name(item.getName())
-                .alias(item.getAlias())
-                .description(item.getDescription())
-                .model(item.getModel())
-                .price(item.getPrice())
-                .wholesalePrice(item.getWholesalePrice())
-                .barePrice(item.getBarePrice())
-                .brandID(item.getBrandID())
-                .subCategoryID(item.getSubCategoryID())
-                .dateManufacture(item.getDateManufacture())
-                .itemAddressID(item.getItemAddressID())
-                .userID(item.getUserID())
-                .acronym(item.getAcronym())
-                .purchasePrice(item.getPurchasePrice())
-                .pathItems(item.getPathItems())
-                .branchOfficeID(item.getBranchOfficeID())
-                .quantity(item.getQuantity())
-                .barcodes(item.getBarcodes())
-                .itemStatus(item.getItemStatus())
-                .transmission(item.getTransmission())
-                .cylinderCapacity(item.getCylinderCapacity())
-                .traction(item.getTraction())
-                .itemSeries(item.getItemSeries())
-                .fuel(item.getFuel())
-                .pathItems(item.getPathItems())
-                .branchOfficeID(item.getBranchOfficeID())
-                .quantity(item.getQuantity())
-                .barcodes(item.getBarcodes())
-                .build();
+        NewItem toNewItem = itemMapper.toNewItem(item);
+        int result = itemSerivce.insertItem(toNewItem);
 
-        var result = itemSerivce.insertItem(newitem);
-
-        if(result != 0)
+        if (result != 0) {
             return new ResponseEntity<>(result, HttpStatus.CREATED);
-        else
+        } else {
             return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/getAllItems")
-    public ResponseEntity<?> getAllItems(@RequestParam int offset, int limit, String param) {
+    public ResponseEntity<?> getAllItems(@RequestParam(defaultValue = "5") int offset,
+                                         @RequestParam(defaultValue = "1") int limit,
+                                         String param,
+                                         String subCategory,
+                                         String brand){
 
-        var result = itemSerivce.getAllItems(offset, limit, param);
+        var result = itemSerivce.getAllItems(offset, limit, param, subCategory, brand);
 
         if (result != null)
             return new ResponseEntity<>(new Object(){ public final Object data = result._1(); public final int total = result._2();}, HttpStatus.OK);
@@ -79,7 +57,6 @@ public class ItemController {
 
         var result = itemSerivce.getItemById(itemDTO.getItemID());
 
-
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
@@ -88,28 +65,11 @@ public class ItemController {
     @PatchMapping("/UpdateItem")
     public ResponseEntity<?> updateItem(@RequestBody UpdateItemDTO updateItemDTO) {
 
-        ItemUpdate updated = ItemUpdate.builder()
-                .itemID(updateItemDTO.getItemID())
-                .name(updateItemDTO.getName())
-                .alias(updateItemDTO.getAlias())
-                .description(updateItemDTO.getDescription())
-                .model(updateItemDTO.getModel())
-                .price(updateItemDTO.getPrice())
-                .wholesalePrice(updateItemDTO.getWholesalePrice())
-                .barePrice(updateItemDTO.getBarePrice())
-                .purchasePrice(updateItemDTO.getPurchasePrice())
-                .brandID(updateItemDTO.getBrandID())
-                .subCategoryID(updateItemDTO.getSubCategoryID())
-                .dateManufacture(updateItemDTO.getDateManufacture())
-                .itemAddressID(updateItemDTO.getItemAddressID())
-                .userID(updateItemDTO.getUserID())
-                .acronym(updateItemDTO.getAcronym())
-                .itemImages(updateItemDTO.getItemImages())
-                .build();
-        var result = itemSerivce.updateItemById(updated);
+        ItemUpdate toItemUpdate = itemMapper.toItemUpdate(updateItemDTO);
+        var updated = itemSerivce.updateItemById(toItemUpdate);
 
-        if (result != null)
-            return new ResponseEntity<>(result, HttpStatus.OK);
+        if (updated == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
     }
 

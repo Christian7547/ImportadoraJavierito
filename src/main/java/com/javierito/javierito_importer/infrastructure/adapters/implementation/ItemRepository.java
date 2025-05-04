@@ -8,8 +8,12 @@ import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItem
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,36 +96,27 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public List<ListItems> getAllItems(int offset, int limit, String param) {
-        String sql = "SELECT * FROM ufc_get_items(?, ?, ?)";
+    public List<ListItems> getAllItems(int limit,
+                                       int offset,
+                                       @Nullable String param,
+                                       @Nullable String subCategory,
+                                       @Nullable String brand) {
 
-        List<Object[]> results = entityManager.createNativeQuery(sql)
-                .setParameter(1, limit)
-                .setParameter(2, offset)
-                .setParameter(3, param)
-                .getResultList();
-        List<ListItems> items = new ArrayList<>();
+        String sql = "SELECT * FROM ufc_get_items(:p_limit, :p_offset, :param, :p_subcategory, :p_brand)";
 
-        for (Object[] row : results) {
-            ListItems item = new ListItems();
-            item.setItemID(((Long) row[0]));
-            item.setName((String) row[1]);
-            item.setDescription((String) row[2]);
-            item.setModel((String) row[3]);
-            item.setPrice((BigDecimal) row[4]);
-            item.setWholesalePrice((BigDecimal) row[5]);
-            item.setBarePrice((BigDecimal) row[6]);
-            item.setPurchasePrice((BigDecimal) row[7]);
-            item.setBrand((String) row[8]);
-            item.setCategory((String) row[9]);
-            item.setSubCategory((String) row[10]);
-            item.setDateManufacture((String) row[11]);
-            item.setItemImage((String) row[12]);
-            item.setAddress((String) row[13]);
-            item.setTotalStock((Integer) row[14]);
-            items.add(item);
+        Query query = entityManager.createNativeQuery(sql, ListItems.class);
+        query.setParameter("p_limit", limit);
+        query.setParameter("p_offset", offset);
+        query.setParameter("param", param);
+        query.setParameter("p_subcategory", subCategory);
+        query.setParameter("p_brand", brand);
+
+        List<ListItems> listItems = query.getResultList();
+
+        if(listItems.isEmpty()){
+            return new ArrayList<>();
         }
-        return items;
+        return listItems;
     }
 
     @Override
@@ -153,7 +148,13 @@ public class ItemRepository implements IItemDomainRepository {
         item.setItemAddressID((Short) result[12]);
         item.setUserID((Long) result[13]);
         item.setAcronym((String) result[14]);
-        item.setItemImages((String[]) result[15]);
+        item.setItemStatus(result[15] != null ? ((String) result[15]).charAt(0) : null);
+        item.setTransmission((String) result[16]);
+        item.setCylinderCapacity((String) result[17]);
+        item.setTraction(result[18] != null ? ((String) result[18]).charAt(0) : null);
+        item.setItemSeries((String) result[19]);
+        item.setFuel((String) result[20]);
+        item.setItemImages((String[]) result[21]);
 
         return item;
     }
@@ -161,7 +162,7 @@ public class ItemRepository implements IItemDomainRepository {
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemDTO) {
 
-        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         Object[] result = (Object[]) entityManager.createNativeQuery(sql)
                 .setParameter(1, itemDTO.getItemID())
@@ -180,6 +181,12 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter(14, itemDTO.getItemAddressID())
                 .setParameter(15, itemDTO.getUserID())
                 .setParameter(16, itemDTO.getItemImages())
+                .setParameter(17, itemDTO.getItemStatus())
+                .setParameter(18, itemDTO.getTransmission())
+                .setParameter(19, itemDTO.getCylinderCapacity())
+                .setParameter(20, itemDTO.getTraction())
+                .setParameter(21, itemDTO.getItemSeries())
+                .setParameter(22, itemDTO.getFuel())
                 .getSingleResult();
 
         if (result == null) {
@@ -202,7 +209,13 @@ public class ItemRepository implements IItemDomainRepository {
         updatedItem.setItemAddressID((Short) result[12]);
         updatedItem.setUserID((Long) result[13]);
         updatedItem.setAcronym((String) result[14]);
-        updatedItem.setItemImages((String[]) result[15]);
+        updatedItem.setItemStatus((Character) result[15]);
+        updatedItem.setTransmission((String) result[16]);
+        updatedItem.setCylinderCapacity((String) result[17]);
+        updatedItem.setTraction((Character) result[18]);
+        updatedItem.setItemSeries((String) result[19]);
+        updatedItem.setFuel((String) result[20]);
+        updatedItem.setItemImages((String[]) result[21]);
 
         return updatedItem;
     }
