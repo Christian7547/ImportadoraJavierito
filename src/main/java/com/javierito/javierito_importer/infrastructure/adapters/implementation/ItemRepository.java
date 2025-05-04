@@ -3,6 +3,7 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.*;
+import com.javierito.javierito_importer.domain.models.StockModels.BranchStockModel;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
@@ -10,11 +11,11 @@ import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -117,6 +118,47 @@ public class ItemRepository implements IItemDomainRepository {
             return new ArrayList<>();
         }
         return listItems;
+    }
+
+    @Override
+    public ItemAllInfo itemAllInfo(Long id) {
+        String sql = "SELECT * FROM ufc_get_item_all_info(?)";
+
+        Object[] result = (Object[]) entityManager.createNativeQuery(sql)
+                .setParameter(1, id)
+                .getSingleResult();
+
+        if (result == null) {
+            return null;
+        }
+
+        ItemAllInfo item = new ItemAllInfo();
+        item.setItemId((Long) result[0]);
+        item.setName((String) result[1]);
+        item.setAlias((String) result[2]);
+        item.setDescription((String) result[3]);
+        item.setModel((String) result[4]);
+        item.setPrice((BigDecimal) result[5]);
+        item.setWholesalePrice((BigDecimal) result[6]);
+        item.setBarePrice((BigDecimal) result[7]);
+        item.setPurchasePrice((BigDecimal) result[8]);
+        item.setBrandName((String) result[9]);
+        item.setSubCategoryName((String) result[10]);
+        item.setDateManufacture((String) result[11]);
+        item.setItemAddressName((String) result[12]);
+        item.setAcronym((String) result[13]);
+        item.setItemStatus(result[14] != null ? ((String) result[14]).charAt(0) : null);
+        item.setTransmission((String) result[15]);
+        item.setCylinderCapacity((String) result[16]);
+        item.setTraction(result[17] != null ? ((String) result[17]).charAt(0) : null);
+        item.setItemSeries((String) result[18]);
+        item.setFuel((String) result[19]);
+        item.setItemImages(result[20] != null ? Arrays.asList((String[]) result[20]) : new ArrayList<>());
+        item.setTotalStock(result[21] != null ? ((Number) result[21]).longValue() : 0L);
+        item.setBranchStocks((List<BranchStockModel>) result[22]);
+        item.setRegisterDate(result[23] != null ? (Timestamp) result[23] : null);
+
+        return item;
     }
 
     @Override

@@ -17,4 +17,6 @@ public interface IItemDomainRepository {
     Integer countAllItems();
 
     ItemAcronym getItemAcronym(Long id);
+
+    ItemAllInfo itemAllInfo(Long id);
 }

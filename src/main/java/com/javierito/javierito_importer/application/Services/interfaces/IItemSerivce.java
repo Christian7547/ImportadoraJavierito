@@ -18,4 +18,6 @@ public interface IItemSerivce {
     ItemWithImages getItemById(Long id);
 
     ItemAcronym getItemAcronym(Long id);
+
+    ItemAllInfo getItemAllInfo(Long id);
 }

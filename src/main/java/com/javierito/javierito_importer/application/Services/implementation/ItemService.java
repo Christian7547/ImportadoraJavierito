@@ -71,9 +71,15 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
+    public ItemAllInfo getItemAllInfo(Long id) {
+        return null;
+    }
+
+    @Override
     public ItemAcronym getItemAcronym(Long id) {
         return itemDomainRepository.getItemAcronym(id);
     }
+
 
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemUpdate) {
