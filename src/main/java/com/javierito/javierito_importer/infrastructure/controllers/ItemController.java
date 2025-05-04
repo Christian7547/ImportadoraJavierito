@@ -38,13 +38,13 @@ public class ItemController {
     }
 
     @GetMapping("/getAllItems")
-    public ResponseEntity<?> getAllItems(@RequestParam(defaultValue = "5") int offset,
-                                         @RequestParam(defaultValue = "1") int limit,
+    public ResponseEntity<?> getAllItems(@RequestParam(defaultValue = "5") int limit,
+                                         @RequestParam(defaultValue = "1") int offset,
                                          String param,
                                          String subCategory,
                                          String brand){
 
-        var result = itemSerivce.getAllItems(offset, limit, param, subCategory, brand);
+        var result = itemSerivce.getAllItems(limit, offset, param, subCategory, brand);
 
         if (result != null)
             return new ResponseEntity<>(new Object(){ public final Object data = result._1(); public final int total = result._2();}, HttpStatus.OK);

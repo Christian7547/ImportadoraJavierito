@@ -10,7 +10,7 @@ public interface IItemDomainRepository {
     Item getItem(Long id);
 
     int insertItem(NewItem newItem);
-    List<ListItems> getAllItems(int offset, int limit, String param, String subCategory, String brand);
+    List<ListItems> getAllItems(int limit, int offset, String param, String subCategory, String brand);
     ItemWithImages getItemById(Long itemID);
     ItemUpdate updateItemById(ItemUpdate update);
     String findLastBarcodeByAcronym(String acronym);
