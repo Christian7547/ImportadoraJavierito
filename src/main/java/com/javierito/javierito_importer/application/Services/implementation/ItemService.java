@@ -5,20 +5,17 @@ import com.javierito.javierito_importer.application.Services.interfaces.IItemSer
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.*;
 import com.javierito.javierito_importer.domain.ports.*;
+import lombok.RequiredArgsConstructor;
 import org.yaml.snakeyaml.util.Tuple;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class ItemService implements IItemSerivce {
 
     private final IItemDomainRepository itemDomainRepository;
     private BarcodeGenerator barcodeGenerator = new BarcodeGenerator();
-
-    public ItemService(IItemDomainRepository itemDomainRepository) {
-
-        this.itemDomainRepository = itemDomainRepository;
-    }
 
 
     @Override
@@ -59,9 +56,10 @@ public class ItemService implements IItemSerivce {
 
     }
 
+
     @Override
-    public Tuple<List<ListItems>, Integer> getAllItems(int offset, int limit, String param) {
-        var result = itemDomainRepository.getAllItems(offset, limit, param);
+    public Tuple<List<ListItems>, Integer> getAllItems(int offset, int limit, String param, String subCategory, String brand) {
+        var result = itemDomainRepository.getAllItems(offset, limit, param, subCategory, brand);
         Integer totalCount = itemDomainRepository.countAllItems();
 
         return new Tuple<List<ListItems>, Integer>(result, totalCount);

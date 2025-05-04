@@ -8,7 +8,10 @@ import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItem
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -93,37 +96,27 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public List<ListItems> getAllItems(int offset, int limit, String param) {
-        String sql = "SELECT * FROM ufc_get_items(?, ?, ?)";
+    public List<ListItems> getAllItems(int limit,
+                                       int offset,
+                                       @Nullable String param,
+                                       @Nullable String subCategory,
+                                       @Nullable String brand) {
 
-        List<Object[]> results = entityManager.createNativeQuery(sql)
-                .setParameter(1, limit)
-                .setParameter(2, offset)
-                .setParameter(3, param)
-                .getResultList();
-        List<ListItems> items = new ArrayList<>();
+        String sql = "SELECT * FROM ufc_get_items(:p_limit, :p_offset, :param, :p_subcategory, :p_brand)";
 
-        for (Object[] row : results) {
-            ListItems item = new ListItems();
-            item.setItemID(((Long) row[0]));
-            item.setName((String) row[1]);
-            item.setDescription((String) row[2]);
-            item.setModel((String) row[3]);
-            item.setPrice((BigDecimal) row[4]);
-            item.setWholesalePrice((BigDecimal) row[5]);
-            item.setBarePrice((BigDecimal) row[6]);
-            item.setPurchasePrice((BigDecimal) row[7]);
-            item.setBrand((String) row[8]);
-            item.setCategory((String) row[9]);
-            item.setSubCategory((String) row[10]);
-            item.setDateManufacture((String) row[11]);
-            item.setItemImage((String) row[12]);
-            item.setAddress((String) row[13]);
-            item.setTotalStock((Integer) row[14]);
-            item.setRegisterDate(((java.sql.Timestamp) row[15]).toLocalDateTime());
-            items.add(item);
+        Query query = entityManager.createNativeQuery(sql, ListItems.class);
+        query.setParameter("p_limit", limit);
+        query.setParameter("p_offset", offset);
+        query.setParameter("param", param);
+        query.setParameter("p_subcategory", subCategory);
+        query.setParameter("p_brand", brand);
+
+        List<ListItems> listItems = query.getResultList();
+
+        if(listItems.isEmpty()){
+            return new ArrayList<>();
         }
-        return items;
+        return listItems;
     }
 
     @Override

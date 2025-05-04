@@ -12,6 +12,7 @@ import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -37,9 +38,13 @@ public class ItemController {
     }
 
     @GetMapping("/getAllItems")
-    public ResponseEntity<?> getAllItems(@RequestParam int offset, int limit, String param) {
+    public ResponseEntity<?> getAllItems(@RequestParam(defaultValue = "5") int offset,
+                                         @RequestParam(defaultValue = "1") int limit,
+                                         String param,
+                                         String subCategory,
+                                         String brand){
 
-        var result = itemSerivce.getAllItems(offset, limit, param);
+        var result = itemSerivce.getAllItems(offset, limit, param, subCategory, brand);
 
         if (result != null)
             return new ResponseEntity<>(new Object(){ public final Object data = result._1(); public final int total = result._2();}, HttpStatus.OK);

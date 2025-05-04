@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
 
 @Data
 @Builder
@@ -21,7 +21,7 @@ public class ItemsDTO
     private BigDecimal price;
     private BigDecimal wholesalePrice;
     private BigDecimal barePrice;
-    private  BigDecimal purchasePrice;
+    private BigDecimal purchasePrice;
     private String brand;
     private String category;
     private String subCategory;
@@ -29,6 +29,7 @@ public class ItemsDTO
     private String itemImage;
     private String address;
     private Integer totalStock;
-    private  LocalDateTime registerDate;
+    private Timestamp registerDate;
+
 }
 

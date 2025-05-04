@@ -14,7 +14,7 @@ public interface IItemSerivce {
     Item deleteItem(Item item);
 
     int insertItem(NewItem insertItemDTO);
-    Tuple<List<ListItems>, Integer> getAllItems(int offset, int limit, String param);
+    Tuple<List<ListItems>, Integer> getAllItems(int offset, int limit, String param, String subCategory, String brand);
     ItemWithImages getItemById(Long id);
 
     ItemAcronym getItemAcronym(Long id);
