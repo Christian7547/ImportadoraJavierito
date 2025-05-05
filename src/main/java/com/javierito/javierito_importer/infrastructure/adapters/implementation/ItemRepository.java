@@ -1,6 +1,9 @@
 package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.javierito.javierito_importer.application.Utils.JsonConverter;
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.*;
 import com.javierito.javierito_importer.domain.models.StockModels.BranchStockModel;
@@ -23,13 +26,15 @@ public class ItemRepository implements IItemDomainRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
-
+    private final JsonConverter jsonConverter;
     @Autowired
     private ItemMapper itemMapper;
 
     private final IItemRepository itemRepository;
 
-    public ItemRepository(IItemRepository itemRepository){this.itemRepository = itemRepository;}
+    public ItemRepository(JsonConverter jsonConverter, IItemRepository itemRepository){
+        this.jsonConverter = jsonConverter;
+        this.itemRepository = itemRepository;}
 
 
     @Override
@@ -121,41 +126,44 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public ItemAllInfo itemAllInfo(Long id) {
-        String query = "SELECT * FROM ufc_get_item_by_id_allinfo(:p_itemid)";
+    public ItemAllInfo itemAllInfo(Long id) throws JsonProcessingException {
 
-        // Ejecutamos la consulta directamente
+        String query = "SELECT * FROM ufc_get_item_by_id_allinfo(:p_itemid)";
         Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter("p_itemid", id);
-
-
         Object[] result = (Object[]) nativeQuery.getSingleResult();
 
-        ItemAllInfo itemInfo = new ItemAllInfo();
-        itemInfo.setItemId((Long) result[0]);
-        itemInfo.setName((String) result[1]);
-        itemInfo.setAlias((String) result[2]);
-        itemInfo.setDescription((String) result[3]);
-        itemInfo.setModel((String) result[4]);
-        itemInfo.setPrice((BigDecimal) result[5]);
-        itemInfo.setWholesalePrice((BigDecimal) result[6]);
-        itemInfo.setBarePrice((BigDecimal) result[7]);
-        itemInfo.setPurchasePrice((BigDecimal) result[8]);
-        itemInfo.setBrandName((String) result[9]);
-        itemInfo.setSubCategoryName((String) result[10]);
-        itemInfo.setDateManufacture((String) result[11]);
-        itemInfo.setItemAddressName((String) result[12]);
-        itemInfo.setAcronym((String) result[13]);
-        itemInfo.setItemStatus((String) result[14]);
-        itemInfo.setTransmission((String) result[15]);
-        itemInfo.setCylinderCapacity((String) result[16]);
-        itemInfo.setTraction((String) result[17]);
-        itemInfo.setItemSeries((String) result[18]);
-        itemInfo.setFuel((String) result[19]);
-        itemInfo.setItemImages(List.of((String[]) result[20]));
-        itemInfo.setTotalStock((Long) result[21]);
-        itemInfo.setBranchStocks((String) result[22]);
-        itemInfo.setRegisterDate((Timestamp) result[23]);
+        String branchStocksJson = (String) result[22];
+        List<BranchStockModel> branchStocks = jsonConverter.deserializeCollection(
+                branchStocksJson,
+                new TypeReference<List<BranchStockModel>>() {}
+        );
+        ItemAllInfo itemInfo = ItemAllInfo.builder()
+                .itemId((Long) result[0])
+                .name((String) result[1])
+                .alias((String) result[2])
+                .description((String) result[3])
+                .model((String) result[4])
+                .price((BigDecimal) result[5])
+                .wholesalePrice((BigDecimal) result[6])
+                .barePrice((BigDecimal) result[7])
+                .purchasePrice((BigDecimal) result[8])
+                .brandName((String) result[9])
+                .subCategoryName((String) result[10])
+                .dateManufacture((String) result[11])
+                .itemAddressName((String) result[12])
+                .acronym((String) result[13])
+                .itemStatus((String) result[14])
+                .transmission((String) result[15])
+                .cylinderCapacity((String) result[16])
+                .traction((String) result[17])
+                .itemSeries((String) result[18])
+                .fuel((String) result[19])
+                .itemImages(List.of((String[]) result[20]))
+                .totalStock((Long) result[21])
+                .branchStocks(branchStocks)
+                .registerDate((Timestamp) result[23])
+                .build();
 
         return itemInfo;
     }

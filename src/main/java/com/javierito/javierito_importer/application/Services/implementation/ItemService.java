@@ -83,9 +83,7 @@ public class ItemService implements IItemSerivce {
 
     @Override
     public ItemAllInfo getItemAllInfo(Long id) throws JsonProcessingException {
-        ItemAllInfo rawItemInfo = itemDomainRepository.itemAllInfo(id);
-        ItemAllInfo item = new ItemAllInfo();
-        BeanUtils.copyProperties(rawItemInfo, item);
+        ItemAllInfo item = itemDomainRepository.itemAllInfo(id);
         return item;
     }
 
