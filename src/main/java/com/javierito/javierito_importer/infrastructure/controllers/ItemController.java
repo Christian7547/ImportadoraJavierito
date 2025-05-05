@@ -1,5 +1,6 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
@@ -60,6 +61,16 @@ public class ItemController {
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/getItemAllInfo")
+    public ResponseEntity<?> getAllItemInfo(@RequestBody Long id) throws JsonProcessingException {
+        var result = itemSerivce.getItemAllInfo(id);
+
+        if (result != null)
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>("Could not get item info", HttpStatus.NOT_FOUND);
+
     }
 
     @PatchMapping("/UpdateItem")
