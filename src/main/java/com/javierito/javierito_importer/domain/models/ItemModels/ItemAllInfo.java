@@ -30,10 +30,10 @@ public class ItemAllInfo {
     private String dateManufacture;
     private String itemAddressName;
     private String acronym;
-    private Character itemStatus;
+    private String itemStatus;
     private String transmission;
     private String cylinderCapacity;
-    private Character traction;
+    private String traction;
     private String itemSeries;
     private String fuel;
     private List<String> itemImages;

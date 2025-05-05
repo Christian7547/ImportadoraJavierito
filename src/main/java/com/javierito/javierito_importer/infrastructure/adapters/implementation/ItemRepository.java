@@ -122,44 +122,44 @@ public class ItemRepository implements IItemDomainRepository {
 
     @Override
     public ItemAllInfo itemAllInfo(Long id) {
-        String sql = "SELECT * FROM ufc_get_item_all_info(?)";
+        String query = "SELECT * FROM ufc_get_item_by_id_allinfo(:p_itemid)";
 
-        Object[] result = (Object[]) entityManager.createNativeQuery(sql)
-                .setParameter(1, id)
-                .getSingleResult();
+        // Ejecutamos la consulta directamente
+        Query nativeQuery = entityManager.createNativeQuery(query);
+        nativeQuery.setParameter("p_itemid", id);
 
-        if (result == null) {
-            return null;
-        }
 
-        ItemAllInfo item = new ItemAllInfo();
-        item.setItemId((Long) result[0]);
-        item.setName((String) result[1]);
-        item.setAlias((String) result[2]);
-        item.setDescription((String) result[3]);
-        item.setModel((String) result[4]);
-        item.setPrice((BigDecimal) result[5]);
-        item.setWholesalePrice((BigDecimal) result[6]);
-        item.setBarePrice((BigDecimal) result[7]);
-        item.setPurchasePrice((BigDecimal) result[8]);
-        item.setBrandName((String) result[9]);
-        item.setSubCategoryName((String) result[10]);
-        item.setDateManufacture((String) result[11]);
-        item.setItemAddressName((String) result[12]);
-        item.setAcronym((String) result[13]);
-        item.setItemStatus(result[14] != null ? ((String) result[14]).charAt(0) : null);
-        item.setTransmission((String) result[15]);
-        item.setCylinderCapacity((String) result[16]);
-        item.setTraction(result[17] != null ? ((String) result[17]).charAt(0) : null);
-        item.setItemSeries((String) result[18]);
-        item.setFuel((String) result[19]);
-        item.setItemImages(result[20] != null ? Arrays.asList((String[]) result[20]) : new ArrayList<>());
-        item.setTotalStock(result[21] != null ? ((Number) result[21]).longValue() : 0L);
-        item.setBranchStocks((List<BranchStockModel>) result[22]);
-        item.setRegisterDate(result[23] != null ? (Timestamp) result[23] : null);
+        Object[] result = (Object[]) nativeQuery.getSingleResult();
 
-        return item;
+        ItemAllInfo itemInfo = new ItemAllInfo();
+        itemInfo.setItemId((Long) result[0]);
+        itemInfo.setName((String) result[1]);
+        itemInfo.setAlias((String) result[2]);
+        itemInfo.setDescription((String) result[3]);
+        itemInfo.setModel((String) result[4]);
+        itemInfo.setPrice((BigDecimal) result[5]);
+        itemInfo.setWholesalePrice((BigDecimal) result[6]);
+        itemInfo.setBarePrice((BigDecimal) result[7]);
+        itemInfo.setPurchasePrice((BigDecimal) result[8]);
+        itemInfo.setBrandName((String) result[9]);
+        itemInfo.setSubCategoryName((String) result[10]);
+        itemInfo.setDateManufacture((String) result[11]);
+        itemInfo.setItemAddressName((String) result[12]);
+        itemInfo.setAcronym((String) result[13]);
+        itemInfo.setItemStatus((String) result[14]);
+        itemInfo.setTransmission((String) result[15]);
+        itemInfo.setCylinderCapacity((String) result[16]);
+        itemInfo.setTraction((String) result[17]);
+        itemInfo.setItemSeries((String) result[18]);
+        itemInfo.setFuel((String) result[19]);
+        itemInfo.setItemImages(List.of((String[]) result[20]));
+        itemInfo.setTotalStock((Long) result[21]);
+        itemInfo.setBranchStocks((String) result[22]);
+        itemInfo.setRegisterDate((Timestamp) result[23]);
+
+        return itemInfo;
     }
+
 
     @Override
     public ItemWithImages getItemById(Long itemID) {

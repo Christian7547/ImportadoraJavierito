@@ -19,8 +19,8 @@ public class BeansConfiguration {
     private final IAuthRepository authRepository;
 
     @Bean
-    IItemSerivce itemBeanService(IItemDomainRepository iItemDomainRepository){
-        return new ItemService(iItemDomainRepository);
+    IItemSerivce itemBeanService(IItemDomainRepository iItemDomainRepository, JsonConverter jsonConverter){
+        return new ItemService(iItemDomainRepository, jsonConverter);
     }
 
     @Bean
