@@ -29,9 +29,7 @@ public class BranchOfficeService implements IBranchOfficeService {
                                         int offset,
                                         @Nullable String query,
                                         @Nullable Integer status) {
-        Pageable pageable = PageRequest.of(offset, limit);
-        if(status == null)
-            status = 1;
+        Pageable pageable = PageRequest.of(offset, limit);;
         return (ArrayList<OfficeList>) branchOfficeDomainRepository.getAll(pageable,
                 query,
                 status);
