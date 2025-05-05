@@ -38,6 +38,6 @@ public class ItemAllInfo {
     private String fuel;
     private List<String> itemImages;
     private Long totalStock;
-    private List<BranchStockModel> branchStocks;
+    private String branchStocks;
     private Timestamp registerDate;
 }
