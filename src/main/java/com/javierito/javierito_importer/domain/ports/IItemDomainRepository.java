@@ -1,5 +1,6 @@
 package com.javierito.javierito_importer.domain.ports;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.*;
 import java.util.List;
@@ -18,5 +19,5 @@ public interface IItemDomainRepository {
 
     ItemAcronym getItemAcronym(Long id);
 
-    ItemAllInfo itemAllInfo(Long id);
+    ItemAllInfo itemAllInfo(Long id) throws JsonProcessingException;
 }

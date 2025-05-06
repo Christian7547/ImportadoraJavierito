@@ -1,21 +1,32 @@
 package com.javierito.javierito_importer.application.Services.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Utils.BarcodeGenerator;
 import com.javierito.javierito_importer.application.Services.interfaces.IItemSerivce;
+import com.javierito.javierito_importer.application.Utils.JsonConverter;
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.*;
+import com.javierito.javierito_importer.domain.models.StockModels.BranchStockModel;
 import com.javierito.javierito_importer.domain.ports.*;
 import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.beans.BeanUtils;
 import org.yaml.snakeyaml.util.Tuple;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
 public class ItemService implements IItemSerivce {
 
     private final IItemDomainRepository itemDomainRepository;
+    private final JsonConverter jsonConverter;
     private BarcodeGenerator barcodeGenerator = new BarcodeGenerator();
+
 
 
     @Override
@@ -71,8 +82,9 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
-    public ItemAllInfo getItemAllInfo(Long id) {
-        return null;
+    public ItemAllInfo getItemAllInfo(Long id) throws JsonProcessingException {
+        ItemAllInfo item = itemDomainRepository.itemAllInfo(id);
+        return item;
     }
 
     @Override

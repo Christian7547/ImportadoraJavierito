@@ -12,4 +12,6 @@ public class OfficeList {
     private String name;
     private String address;
     private Timestamp registerDate;
+    private short status;
+    private String owner;
 }

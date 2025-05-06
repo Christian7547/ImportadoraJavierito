@@ -1,5 +1,6 @@
 package com.javierito.javierito_importer.application.Services.interfaces;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.*;
 import org.yaml.snakeyaml.util.Tuple;
@@ -19,5 +20,5 @@ public interface IItemSerivce {
 
     ItemAcronym getItemAcronym(Long id);
 
-    ItemAllInfo getItemAllInfo(Long id);
+    ItemAllInfo getItemAllInfo(Long id) throws JsonProcessingException;
 }
