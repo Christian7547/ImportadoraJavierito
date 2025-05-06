@@ -91,7 +91,11 @@ public class BeansConfiguration {
     }
 
     @Bean
-    ISaleService saleService(ISaleDomainRepository saleDomainRepository, JsonConverter jsonConverter){
-        return new SaleService(saleDomainRepository, jsonConverter);
+    ISaleService saleService(
+            ISaleDomainRepository saleDomainRepository,
+            IBarcodeDomainRepository barcodeDomainRepository,
+            IStockDomainRepository stockDomainRepository,
+            JsonConverter jsonConverter){
+        return new SaleService(saleDomainRepository, barcodeDomainRepository, stockDomainRepository, jsonConverter);
     }
 }

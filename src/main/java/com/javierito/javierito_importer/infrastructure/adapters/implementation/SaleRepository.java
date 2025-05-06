@@ -2,14 +2,20 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.javierito.javierito_importer.domain.models.SaleModels.Sale;
+import com.javierito.javierito_importer.domain.models.SaleModels.SaleDetail;
 import com.javierito.javierito_importer.domain.models.SaleModels.SaleList;
 import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
 import com.javierito.javierito_importer.domain.ports.ISaleDomainRepository;
+import com.javierito.javierito_importer.infrastructure.adapters.interfaces.ISaleDetailRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.ISaleRepository;
+import com.javierito.javierito_importer.infrastructure.entities.SaleDetailEntity;
+import com.javierito.javierito_importer.infrastructure.entities.SaleEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.SaleMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -20,8 +26,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class SaleRepository implements ISaleDomainRepository {
 
     @PersistenceContext
@@ -31,35 +39,12 @@ public class SaleRepository implements ISaleDomainRepository {
     private SaleMapper saleMapper;
 
     private final ISaleRepository saleRepository;
+    private final ISaleDetailRepository saleDetailRepository;
 
     private ObjectMapper objectMapper;
 
-    public SaleRepository(ISaleRepository saleRepository) {
-        this.saleRepository = saleRepository;
-    }
-
-    public List<SaleList> getAll(Pageable pageable,
-                                 @Nullable LocalDateTime initDate,
-                                 @Nullable LocalDateTime finishDate,
-                                 @Nullable String params){
-        String sql = "SELECT * FROM ufc_get_sales(:p_limit, :p_offset, :p_initDate, :p_finishDate, :p_params)";
-        Query query = entityManager.createNativeQuery(sql, SaleList.class);
-        query.setParameter("p_limit", pageable.getPageSize());
-        query.setParameter("p_offset", pageable.getPageNumber());
-        query.setParameter("p_initDate", initDate);
-        query.setParameter("p_finishDate", finishDate);
-        query.setParameter("p_params", params);
-        List<SaleList> sales = query.getResultList();
-
-        if(sales.isEmpty()){
-            return new ArrayList<>();
-        }
-        return sales;
-    }
-
     @Override
     public List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to) {
-
         String sql = "SELECT * FROM ufc_get_sales_details(?, ?)";
 
         List<Object[]> results = entityManager.createNativeQuery(sql)
@@ -92,6 +77,39 @@ public class SaleRepository implements ISaleDomainRepository {
 
         return reports;
     }
+
+    @Override
+    public Sale saveSale(Sale source) {
+        SaleEntity entity = saleMapper.toEntityFromSale(source);
+        var result = saleRepository.save(entity);
+        return saleMapper.toSaleFromEntity(result);
+    }
+
+    @Override
+    public Sale getSaleById(long id) {
+        return saleMapper.toSaleFromEntity(saleRepository.findById(id).get());
+    }
+
+    @Override
+    public void deleteDetailBySaleId(long saleId) {
+        saleDetailRepository.deleteBySaleId(saleId);
+    }
+
+    @Override
+    public boolean refund(long saleId) {
+        return false;
+    }
+
+    @Override
+    public SaleDetail getDetailsBySaleId(long saleId) {
+        Optional<SaleDetailEntity> entity = saleDetailRepository.getBySaleId(saleId);
+        if(entity.isEmpty()){
+            return null;
+        }
+        return saleMapper.toSaleDetail(entity.get());
+    }
+
+    @Override
     public long createSale(double total,
                            long employeeId,
                            long clientId,
@@ -108,4 +126,26 @@ public class SaleRepository implements ISaleDomainRepository {
         Long out = (Long) query.getSingleResult();
         return out.longValue();
     }
+
+    @Override
+    public List<SaleList> getAll(Pageable pageable,
+                                 @Nullable LocalDateTime initDate,
+                                 @Nullable LocalDateTime finishDate,
+                                 @Nullable String params){
+        String sql = "SELECT * FROM ufc_get_sales(:p_limit, :p_offset, :p_initDate, :p_finishDate, :p_params)";
+        Query query = entityManager.createNativeQuery(sql, SaleList.class);
+        query.setParameter("p_limit", pageable.getPageSize());
+        query.setParameter("p_offset", pageable.getPageNumber());
+        query.setParameter("p_initDate", initDate);
+        query.setParameter("p_finishDate", finishDate);
+        query.setParameter("p_params", params);
+        List<SaleList> sales = query.getResultList();
+
+        if(sales.isEmpty()){
+            return new ArrayList<>();
+        }
+        return sales;
+    }
+
+
 }

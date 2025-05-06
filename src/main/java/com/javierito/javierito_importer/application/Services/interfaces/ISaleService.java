@@ -1,5 +1,6 @@
 package com.javierito.javierito_importer.application.Services.interfaces;
 
+import com.javierito.javierito_importer.domain.models.SaleModels.SaleDetail;
 import com.javierito.javierito_importer.domain.models.SaleModels.SaleList;
 import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
 import java.time.LocalDateTime;
@@ -18,4 +19,11 @@ public interface ISaleService {
 
     List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to);
 
+    Sale getSaleById(long id);
+
+    Sale deleteSale(long id, short newStatus);
+
+    boolean refund(long saleId) throws JsonProcessingException;
+
+    SaleDetail getDetailsBySaleId(long saleId);
 }
