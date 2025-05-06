@@ -1,6 +1,7 @@
 package com.javierito.javierito_importer.application.Services.implementation;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IBarcodeService;
+import com.javierito.javierito_importer.domain.models.BarcodeModels.Barcode;
 import com.javierito.javierito_importer.domain.models.BarcodeModels.BarcodeItem;
 import com.javierito.javierito_importer.domain.ports.IBarcodeDomainRepository;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,15 @@ public class BarcodeService implements IBarcodeService {
     @Override
     public List<BarcodeItem> getBarcodes(long id) {
         return barcodeDomainRepository.getItemBarcodes(id);
+    }
+
+    @Override
+    public Barcode getByBarcode(String barcode) {
+        return barcodeDomainRepository.getByBarcode(barcode);
+    }
+
+    @Override
+    public List<Barcode> getManyBarcodesByCodes(List<String> codes) {
+        return barcodeDomainRepository.getManyBarcodesByCodes(codes);
     }
 }

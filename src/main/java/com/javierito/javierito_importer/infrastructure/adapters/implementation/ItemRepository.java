@@ -133,39 +133,40 @@ public class ItemRepository implements IItemDomainRepository {
         nativeQuery.setParameter("p_itemid", id);
         Object[] result = (Object[]) nativeQuery.getSingleResult();
 
-        String branchStocksJson = (String) result[22];
-        List<BranchStockModel> branchStocks = jsonConverter.deserializeCollection(
-                branchStocksJson,
-                new TypeReference<List<BranchStockModel>>() {}
-        );
-        ItemAllInfo itemInfo = ItemAllInfo.builder()
-                .itemId((Long) result[0])
-                .name((String) result[1])
-                .alias((String) result[2])
-                .description((String) result[3])
-                .model((String) result[4])
-                .price((BigDecimal) result[5])
-                .wholesalePrice((BigDecimal) result[6])
-                .barePrice((BigDecimal) result[7])
-                .purchasePrice((BigDecimal) result[8])
-                .brandName((String) result[9])
-                .subCategoryName((String) result[10])
-                .dateManufacture((String) result[11])
-                .itemAddressName((String) result[12])
-                .acronym((String) result[13])
-                .itemStatus((String) result[14])
-                .transmission((String) result[15])
-                .cylinderCapacity((String) result[16])
-                .traction((String) result[17])
-                .itemSeries((String) result[18])
-                .fuel((String) result[19])
-                .itemImages(List.of((String[]) result[20]))
-                .totalStock((Long) result[21])
-                .branchStocks(branchStocks)
-                .registerDate((Timestamp) result[23])
-                .build();
-
-        return itemInfo;
+//        String branchStocksJson = (String) result[22];
+//        List<BranchStockModel> branchStocks = jsonConverter.deserializeCollection(
+//                branchStocksJson,
+//                new TypeReference<List<BranchStockModel>>() {}
+//        );
+//        ItemAllInfo itemInfo = ItemAllInfo.builder()
+//                .itemId((Long) result[0])
+//                .name((String) result[1])
+//                .alias((String) result[2])
+//                .description((String) result[3])
+//                .model((String) result[4])
+//                .price((BigDecimal) result[5])
+//                .wholesalePrice((BigDecimal) result[6])
+//                .barePrice((BigDecimal) result[7])
+//                .purchasePrice((BigDecimal) result[8])
+//                .brandName((String) result[9])
+//                .subCategoryName((String) result[10])
+//                .dateManufacture((String) result[11])
+//                .itemAddressName((String) result[12])
+//                .acronym((String) result[13])
+//                .itemStatus((String) result[14])
+//                .transmission((String) result[15])
+//                .cylinderCapacity((String) result[16])
+//                .traction((String) result[17])
+//                .itemSeries((String) result[18])
+//                .fuel((String) result[19])
+//                .itemImages(List.of((String[]) result[20]))
+//                .totalStock((Long) result[21])
+//                .branchStocks(branchStocks)
+//                .registerDate((Timestamp) result[23])
+//                .build();
+//
+//        return itemInfo;
+        return null;
     }
 
 

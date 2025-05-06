@@ -1,10 +1,11 @@
 package com.javierito.javierito_importer.domain.models.SaleModels;
 
-import com.javierito.javierito_importer.domain.models.SaleDetail;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -14,6 +15,13 @@ public class Sale {
     private double total;
     private long employeeID;
     private long clientID;
+
+    @Nullable
+    private LocalDateTime registerDate;
+
+    @Nullable
+    private Short status;
+
     private BigDecimal percentageDiscount;
-    private List<SaleDetail> details;
+    private List<Detail> details;
 }
