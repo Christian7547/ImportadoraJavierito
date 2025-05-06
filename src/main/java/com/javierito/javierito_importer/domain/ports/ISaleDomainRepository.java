@@ -1,5 +1,7 @@
 package com.javierito.javierito_importer.domain.ports;
 
+import com.javierito.javierito_importer.domain.models.SaleModels.Sale;
+import com.javierito.javierito_importer.domain.models.SaleModels.SaleDetail;
 import com.javierito.javierito_importer.domain.models.SaleModels.SaleList;
 import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
 import org.springframework.data.domain.Pageable;
@@ -18,4 +20,14 @@ public interface ISaleDomainRepository {
                        @Nullable String params);
 
     List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to);
+
+    Sale saveSale(Sale source);
+
+    Sale getSaleById(long id);
+
+    void deleteDetailBySaleId(long saleId);
+
+    boolean refund(long saleId);
+
+    SaleDetail getDetailsBySaleId(long saleId);
 }

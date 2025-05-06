@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.ISaleService;
+import com.javierito.javierito_importer.domain.models.SaleModels.SaleDetail;
 import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
 import com.javierito.javierito_importer.infrastructure.dtos.sale.SaleParamsDTO;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,12 +12,7 @@ import com.javierito.javierito_importer.infrastructure.mappers.SaleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,5 +59,19 @@ public class SaleController {
         }
 
         return new ResponseEntity<>(salesDetails, HttpStatus.OK);
+    }
+
+    @PatchMapping("/deleteSale/{id}")
+    public ResponseEntity<?> deleteSale(@PathVariable long id, @RequestParam int newStatus){
+        Sale sale = saleService.deleteSale(id, (short) newStatus);
+        if(sale != null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/refund/{saleId}")
+    public ResponseEntity<?> refund(@PathVariable long saleId) throws JsonProcessingException {
+        boolean detail = saleService.refund(saleId);
+        return new ResponseEntity<>(detail, HttpStatus.OK);
     }
 }

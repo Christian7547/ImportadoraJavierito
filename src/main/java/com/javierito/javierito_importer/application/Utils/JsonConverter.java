@@ -1,7 +1,7 @@
 package com.javierito.javierito_importer.application.Utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.stereotype.Component;
@@ -34,10 +34,9 @@ public class JsonConverter {
     public String serializeCollection(Collection<?> target) throws JsonProcessingException {
         return objectMapper.writeValueAsString(target);
     }
-    public <T> T deserializeCollection(String json, TypeReference<T> typeReference) throws JsonProcessingException {
-        if (json == null || json.isEmpty()) {
-            return null;
-        }
-        return objectMapper.readValue(json, typeReference);
+
+    public <T> List<T> deserializeCollection(String json, Class<T> elementType) throws JsonProcessingException {
+        JavaType type = objectMapper.getTypeFactory().constructCollectionType(List.class, elementType);
+        return objectMapper.readValue(json, type);
     }
 }

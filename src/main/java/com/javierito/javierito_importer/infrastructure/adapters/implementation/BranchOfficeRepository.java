@@ -69,6 +69,6 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
 
     @Override
     public long countBranchOffices() {
-        return branchOfficeRepository.count();
+        return branchOfficeRepository.countBranchOffices();
     }
 }

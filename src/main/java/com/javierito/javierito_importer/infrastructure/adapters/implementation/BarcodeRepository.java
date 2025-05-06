@@ -1,8 +1,10 @@
 package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
+import com.javierito.javierito_importer.domain.models.BarcodeModels.Barcode;
 import com.javierito.javierito_importer.domain.models.BarcodeModels.BarcodeItem;
 import com.javierito.javierito_importer.domain.ports.IBarcodeDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IBarcodeRepository;
+import com.javierito.javierito_importer.infrastructure.entities.BarcodeEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.BarcodeMapper;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class BarcodeRepository implements IBarcodeDomainRepository {
@@ -46,6 +49,35 @@ public class BarcodeRepository implements IBarcodeDomainRepository {
             barcodeItems.add(barcodeItem);
         }
         return barcodeItems;
+    }
 
+    @Override
+    public int saveManyChanges(List<Barcode> barcodes) {
+        int rowsAffected = 0;
+        List<BarcodeEntity> barcodeEntities = barcodeMapper.toBarcodesEntity(barcodes);
+        for (BarcodeEntity barcode: barcodeEntities){
+            barcodeRepository.save(barcode);
+            rowsAffected ++;
+        }
+        return rowsAffected;
+    }
+
+    @Override
+    public Barcode getByBarcode(String barcode) {
+        Optional<BarcodeEntity> barcodeEntity = barcodeRepository.getByBarcode(barcode);
+        if(barcodeEntity.isEmpty()){
+            return null;
+        }
+        return barcodeMapper.toBarcode(barcodeEntity.get());
+    }
+
+    @Override
+    public List<Barcode> getManyBarcodesByCodes(List<String> codes) {
+        List<Barcode> barcodes = new ArrayList<>();
+        for (String code: codes){
+            Barcode barcode = getByBarcode(code);
+            barcodes.add(barcode);
+        }
+        return barcodes;
     }
 }
