@@ -2,7 +2,6 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.ISaleService;
-import com.javierito.javierito_importer.domain.models.SaleModels.SaleDetail;
 import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
 import com.javierito.javierito_importer.infrastructure.dtos.sale.SaleParamsDTO;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -63,15 +62,19 @@ public class SaleController {
 
     @PatchMapping("/deleteSale/{id}")
     public ResponseEntity<?> deleteSale(@PathVariable long id, @RequestParam int newStatus){
-        Sale sale = saleService.deleteSale(id, (short) newStatus);
-        if(sale != null)
+        boolean success = saleService.deleteSale(id, (short) newStatus);
+        if(success)
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/refund/{saleId}")
-    public ResponseEntity<?> refund(@PathVariable long saleId) throws JsonProcessingException {
-        boolean detail = saleService.refund(saleId);
-        return new ResponseEntity<>(detail, HttpStatus.OK);
+    public ResponseEntity<?> refund(@PathVariable long saleId) {
+        try {
+            saleService.refund(saleId);
+            return new ResponseEntity<>("Successful refund", HttpStatus.OK);
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
