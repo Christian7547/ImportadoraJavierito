@@ -37,6 +37,9 @@ public class BranchOfficeEntity {
     @Column(name = "lastUpdate")
     private LocalDateTime lastUpdate;
 
+    @Column(name = "ownerID")
+    private int ownerId;
+
     @PrePersist
     private void onCreate(){
         if (this.registerDate == null) {
