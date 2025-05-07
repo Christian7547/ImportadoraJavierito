@@ -57,26 +57,27 @@ public class SaleService implements ISaleService {
 
     @Override
     @Transactional
-    public Sale deleteSale(long id, short newStatus) {
+    public boolean deleteSale(long id, short newStatus) {
         Sale getSale = getSaleById(id);
         if(getSale == null )
-            return null;
+            return false;
         getSale.setStatus(newStatus);
         if(newStatus == 2){
             saleDomainRepository.deleteDetailBySaleId(getSale.getId());
         }
-        return saleDomainRepository.saveSale(getSale);
+        return true;
     }
 
     @Override
     @Transactional
-    public boolean refund(long saleId) throws JsonProcessingException {
+    public void refund(long saleId) throws JsonProcessingException {
         SaleDetail saleDetail = getDetailsBySaleId(saleId);
         List<Detail> details = jsonConverter.deserializeCollection(
                 saleDetail.getDetail(),
                 Detail.class
         );
-        List<Barcode> barcodes = barcodeDomainRepository.getManyBarcodesByCodes(details.stream().map(Detail::getBarcode).toList());
+        List<Barcode> barcodes = barcodeDomainRepository.getManyBarcodesByCodes(details.stream().map(Detail::getBarcode)
+                .toList());
         barcodes.forEach(barcode -> barcode.setStatus((short) 1));
         for (Barcode barcode : barcodes) {
             Stock currentStock = stockDomainRepository.getStock(barcode.getStockId());
@@ -89,7 +90,6 @@ public class SaleService implements ISaleService {
         }
         barcodeDomainRepository.saveManyChanges(barcodes);
         deleteSale(saleId, (short) 2);
-        return false;
     }
 
     @Override
