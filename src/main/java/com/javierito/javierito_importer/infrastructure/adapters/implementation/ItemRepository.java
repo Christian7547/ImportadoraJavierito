@@ -126,18 +126,12 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public ItemAllInfo itemAllInfo(Long id) throws JsonProcessingException {
+    public ItemAllInfo itemAllInfo(Long id) {
 
         String query = "SELECT * FROM ufc_get_item_by_id_allinfo(:p_itemid)";
         Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter("p_itemid", id);
         Object[] result = (Object[]) nativeQuery.getSingleResult();
-
-        String branchStocksJson = (String) result[22];
-        List<BranchStockModel> branchStocks = jsonConverter.deserializeCollection(
-                branchStocksJson,
-                BranchStockModel.class
-        );
 
         return ItemAllInfo.builder()
                 .itemId((Long) result[0])
@@ -162,7 +156,7 @@ public class ItemRepository implements IItemDomainRepository {
                 .fuel((String) result[19])
                 .itemImages(List.of((String[]) result[20]))
                 .totalStock((Long) result[21])
-                .branchStocks(branchStocks)
+                .branchStocks((String) result[22])
                 .registerDate((Timestamp) result[23])
                 .build();
     }

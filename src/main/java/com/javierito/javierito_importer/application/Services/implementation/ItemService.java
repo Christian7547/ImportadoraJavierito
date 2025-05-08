@@ -82,9 +82,39 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
-    public ItemAllInfo getItemAllInfo(Long id) throws JsonProcessingException {
+    public Allinfo getItemAllInfo(Long id) throws JsonProcessingException {
         ItemAllInfo item = itemDomainRepository.itemAllInfo(id);
-        return item;
+        Allinfo data = new Allinfo();
+
+        data.setItemId(item.getItemId());
+        data.setName(item.getName());
+        data.setAlias(item.getAlias());
+        data.setDescription(item.getDescription());
+        data.setModel(item.getModel());
+        data.setPrice(item.getPrice());
+        data.setWholesalePrice(item.getWholesalePrice());
+        data.setBarePrice(item.getBarePrice());
+        data.setPurchasePrice(item.getPurchasePrice());
+        data.setBrandName(item.getBrandName());
+        data.setSubCategoryName(item.getSubCategoryName());
+        data.setDateManufacture(item.getDateManufacture());
+        data.setItemAddressName(item.getItemAddressName());
+        data.setAcronym(item.getAcronym());
+        data.setItemStatus(item.getItemStatus());
+        data.setTransmission(item.getTransmission());
+        data.setCylinderCapacity(item.getCylinderCapacity());
+        data.setTraction(item.getTraction());
+        data.setItemSeries(item.getItemSeries());
+        data.setFuel(item.getFuel());
+        data.setItemImages(item.getItemImages());
+        data.setTotalStock(item.getTotalStock());
+        data.setRegisterDate(item.getRegisterDate());
+
+        List<BranchStockModel> branchStocks =
+                jsonConverter.deserializeCollection(item.getBranchStocks(), BranchStockModel.class);
+        data.setBranchStocks(branchStocks);
+
+        return data;
     }
 
     @Override

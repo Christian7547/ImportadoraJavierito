@@ -20,5 +20,5 @@ public interface IItemSerivce {
 
     ItemAcronym getItemAcronym(Long id);
 
-    ItemAllInfo getItemAllInfo(Long id) throws JsonProcessingException;
+    Allinfo getItemAllInfo(Long id) throws JsonProcessingException;
 }
