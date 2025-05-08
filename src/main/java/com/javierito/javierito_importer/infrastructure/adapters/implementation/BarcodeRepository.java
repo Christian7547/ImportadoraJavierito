@@ -50,34 +50,4 @@ public class BarcodeRepository implements IBarcodeDomainRepository {
         }
         return barcodeItems;
     }
-
-    @Override
-    public int saveManyChanges(List<Barcode> barcodes) {
-        int rowsAffected = 0;
-        List<BarcodeEntity> barcodeEntities = barcodeMapper.toBarcodesEntity(barcodes);
-        for (BarcodeEntity barcode: barcodeEntities){
-            barcodeRepository.save(barcode);
-            rowsAffected ++;
-        }
-        return rowsAffected;
-    }
-
-    @Override
-    public Barcode getByBarcode(String barcode) {
-        Optional<BarcodeEntity> barcodeEntity = barcodeRepository.getByBarcode(barcode);
-        if(barcodeEntity.isEmpty()){
-            return null;
-        }
-        return barcodeMapper.toBarcode(barcodeEntity.get());
-    }
-
-    @Override
-    public List<Barcode> getManyBarcodesByCodes(List<String> codes) {
-        List<Barcode> barcodes = new ArrayList<>();
-        for (String code: codes){
-            Barcode barcode = getByBarcode(code);
-            barcodes.add(barcode);
-        }
-        return barcodes;
-    }
 }

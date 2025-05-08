@@ -7,10 +7,4 @@ import java.util.List;
 public interface IBarcodeDomainRepository {
 
     List<BarcodeItem> getItemBarcodes(long id);
-
-    int saveManyChanges(List<Barcode> barcodes);
-
-    Barcode getByBarcode(String barcode);
-
-    List<Barcode> getManyBarcodesByCodes(List<String> codes);
 }
