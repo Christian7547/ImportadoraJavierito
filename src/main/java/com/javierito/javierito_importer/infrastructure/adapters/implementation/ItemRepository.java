@@ -214,9 +214,6 @@ public class ItemRepository implements IItemDomainRepository {
                 ":p_cylindercapacity, :p_traction, :p_itemseries, :p_fuel)";
 
 
-        String itemStatus = itemDTO.getItemStatus() != null ? (itemDTO.getItemStatus()) : null;
-        String traction = itemDTO.getTraction() != null ? (itemDTO.getTraction()) : null;
-
         Query query = entityManager.createNativeQuery(sql, ItemUpdate.class)
                 .setParameter("p_itemid", itemDTO.getItemID())
                 .setParameter("p_name", itemDTO.getName())
@@ -234,10 +231,10 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter("p_itemaddressid", itemDTO.getItemAddressID())
                 .setParameter("p_userid", itemDTO.getUserID())
                 .setParameter("p_itemimages", itemDTO.getItemImages())
-                .setParameter("p_itemstatus", itemStatus)
+                .setParameter("p_itemstatus", itemDTO.getItemStatus())
                 .setParameter("p_transmission", itemDTO.getTransmission())
                 .setParameter("p_cylindercapacity", itemDTO.getCylinderCapacity())
-                .setParameter("p_traction", traction)
+                .setParameter("p_traction", itemDTO.getTraction())
                 .setParameter("p_itemseries", itemDTO.getItemSeries())
                 .setParameter("p_fuel", itemDTO.getFuel());
 

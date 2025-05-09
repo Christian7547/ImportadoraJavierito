@@ -59,7 +59,7 @@ public class ItemUpdate {
     private String acronym;
 
     @Column(name = "itemstatus")
-    private String itemStatus;
+    private Character itemStatus;
 
     @Column(name = "transmission")
     private String transmission;
@@ -68,7 +68,7 @@ public class ItemUpdate {
     private String cylinderCapacity;
 
     @Column(name = "traction")
-    private String traction;
+    private Character traction;
 
     @Column(name = "itemseries")
     private String itemSeries;
