@@ -213,7 +213,11 @@ public class ItemRepository implements IItemDomainRepository {
                 ":p_userid, :p_itemimages, :p_itemstatus, :p_transmission, " +
                 ":p_cylindercapacity, :p_traction, :p_itemseries, :p_fuel)";
 
-        Query query = entityManager.createNativeQuery(sql)
+
+        String itemStatus = itemDTO.getItemStatus() != null ? (itemDTO.getItemStatus()) : null;
+        String traction = itemDTO.getTraction() != null ? (itemDTO.getTraction()) : null;
+
+        Query query = entityManager.createNativeQuery(sql, ItemUpdate.class)
                 .setParameter("p_itemid", itemDTO.getItemID())
                 .setParameter("p_name", itemDTO.getName())
                 .setParameter("p_alias", itemDTO.getAlias())
@@ -230,20 +234,17 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter("p_itemaddressid", itemDTO.getItemAddressID())
                 .setParameter("p_userid", itemDTO.getUserID())
                 .setParameter("p_itemimages", itemDTO.getItemImages())
-                .setParameter("p_itemstatus", itemDTO.getItemStatus() != null ? itemDTO.getItemStatus().toString() : null)
+                .setParameter("p_itemstatus", itemStatus)
                 .setParameter("p_transmission", itemDTO.getTransmission())
                 .setParameter("p_cylindercapacity", itemDTO.getCylinderCapacity())
-                .setParameter("p_traction", itemDTO.getTraction() != null ? itemDTO.getTraction().toString() : null)
+                .setParameter("p_traction", traction)
                 .setParameter("p_itemseries", itemDTO.getItemSeries())
                 .setParameter("p_fuel", itemDTO.getFuel());
 
+        return (ItemUpdate) query.getSingleResult();
 
-        List<ItemUpdate> result = query.unwrap(org.hibernate.query.NativeQuery.class)
-                .setResultTransformer(Transformers.aliasToBean(ItemUpdate.class))
-                .getResultList();
-
-        return result.isEmpty() ? null : result.get(0);
     }
+
     @Override
     public Item deleteItem(Item item) {
         return itemMapper.toItem(itemRepository.save(itemMapper.toItemEntity(item)));
