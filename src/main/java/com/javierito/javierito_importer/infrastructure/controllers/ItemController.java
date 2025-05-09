@@ -81,7 +81,7 @@ public class ItemController {
 
         if (updated == null)
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/removeItem")
