@@ -204,69 +204,78 @@ public class ItemRepository implements IItemDomainRepository {
         return item;
     }
 
+
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemDTO) {
-        String sql = "SELECT * FROM ufc_update_item_by_id(" +
-                ":p_itemid, :p_name, :p_alias, :p_description, " +
-                ":p_model, :p_price, :p_wholesaleprice, :p_bareprice, " +
-                ":p_purchaseprice, :p_brandid, :p_subcategoryid, " +
-                ":p_acronym, :p_datemanufacture, :p_itemaddressid, " +
-                ":p_userid, :p_itemimages, :p_itemstatus, :p_transmission, " +
-                ":p_cylindercapacity, :p_traction, :p_itemseries, :p_fuel)";
 
-        Query query = entityManager.createNativeQuery(sql)
-                .setParameter("p_itemid", itemDTO.getItemID())
-                .setParameter("p_name", itemDTO.getName())
-                .setParameter("p_alias", itemDTO.getAlias())
-                .setParameter("p_description", itemDTO.getDescription())
-                .setParameter("p_model", itemDTO.getModel())
-                .setParameter("p_price", itemDTO.getPrice())
-                .setParameter("p_wholesaleprice", itemDTO.getWholesalePrice())
-                .setParameter("p_bareprice", itemDTO.getBarePrice())
-                .setParameter("p_purchaseprice", itemDTO.getPurchasePrice())
-                .setParameter("p_brandid", itemDTO.getBrandID())
-                .setParameter("p_subcategoryid", itemDTO.getSubCategoryID())
-                .setParameter("p_acronym", itemDTO.getAcronym())
-                .setParameter("p_datemanufacture", itemDTO.getDateManufacture())
-                .setParameter("p_itemaddressid", itemDTO.getItemAddressID())
-                .setParameter("p_userid", itemDTO.getUserID())
-                .setParameter("p_itemimages", itemDTO.getItemImages())
-                .setParameter("p_itemstatus", itemDTO.getItemStatus() == null ? null : itemDTO.getItemStatus().toString())
-                .setParameter("p_transmission", itemDTO.getTransmission())
-                .setParameter("p_cylindercapacity", itemDTO.getCylinderCapacity())
-                .setParameter("p_traction", itemDTO.getTraction() == null ? null : itemDTO.getTraction().toString())
-                .setParameter("p_itemseries", itemDTO.getItemSeries())
-                .setParameter("p_fuel", itemDTO.getFuel());
+        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        Object[] result = (Object[]) query.getSingleResult();
+        Object[] result = (Object[]) entityManager.createNativeQuery(sql)
+                .setParameter(1, itemDTO.getItemID())
+                .setParameter(2, itemDTO.getName())
+                .setParameter(3, itemDTO.getAlias())
+                .setParameter(4, itemDTO.getDescription())
+                .setParameter(5, itemDTO.getModel())
+                .setParameter(6, itemDTO.getPrice())
+                .setParameter(7, itemDTO.getWholesalePrice())
+                .setParameter(8, itemDTO.getBarePrice())
+                .setParameter(9, itemDTO.getPurchasePrice())
+                .setParameter(10, itemDTO.getBrandID())
+                .setParameter(11, itemDTO.getSubCategoryID())
+                .setParameter(12, itemDTO.getAcronym())
+                .setParameter(13, itemDTO.getDateManufacture())
+                .setParameter(14, itemDTO.getItemAddressID())
+                .setParameter(15, itemDTO.getUserID())
+                .setParameter(16, itemDTO.getItemImages())
+                .setParameter(17, itemDTO.getItemStatus() != null ? String.valueOf(itemDTO.getItemStatus()) : null)
+                .setParameter(18, itemDTO.getTransmission())
+                .setParameter(19, itemDTO.getCylinderCapacity())
+                .setParameter(20, itemDTO.getTraction() != null ? String.valueOf(itemDTO.getTraction()) : null)
+                .setParameter(21, itemDTO.getItemSeries())
+                .setParameter(22, itemDTO.getFuel())
+                .getSingleResult();
 
-        ItemUpdate updated = new ItemUpdate();
-        updated.setItemID(((BigInteger) result[0]).longValue());
-        updated.setName((String) result[1]);
-        updated.setAlias((String) result[2]);
-        updated.setDescription((String) result[3]);
-        updated.setModel((String) result[4]);
-        updated.setPrice((BigDecimal) result[5]);
-        updated.setWholesalePrice((BigDecimal) result[6]);
-        updated.setBarePrice((BigDecimal) result[7]);
-        updated.setPurchasePrice((BigDecimal) result[8]);
-        updated.setBrandID((Integer) result[9]);
-        updated.setSubCategoryID(((Short) result[10]));
-        updated.setAcronym((String) result[11]);
-        updated.setDateManufacture((String) result[12]);
-        updated.setItemAddressID((Short) result[13]);
-        updated.setUserID(((BigInteger) result[14]).longValue());
-        updated.setItemImages((String[]) result[15]);
-        updated.setItemStatus(result[16] != null ? ((String) result[16]).charAt(0) : null);
-        updated.setTransmission((String) result[17]);
-        updated.setCylinderCapacity((String) result[18]);
-        updated.setTraction(result[19] != null ? ((String) result[19]).charAt(0) : null);
-        updated.setItemSeries((String) result[20]);
-        updated.setFuel((String) result[21]);
+        if (result == null) return null;
 
-        return updated;
+        ItemUpdate updatedItem = new ItemUpdate();
+        updatedItem.setItemID((Long) result[0]);
+        updatedItem.setName((String) result[1]);
+        updatedItem.setAlias((String) result[2]);
+        updatedItem.setDescription((String) result[3]);
+        updatedItem.setModel((String) result[4]);
+        updatedItem.setPrice((BigDecimal) result[5]);
+        updatedItem.setWholesalePrice((BigDecimal) result[6]);
+        updatedItem.setBarePrice((BigDecimal) result[7]);
+        updatedItem.setPurchasePrice((BigDecimal) result[8]);
+        updatedItem.setBrandID((Integer) result[9]);
+        updatedItem.setSubCategoryID((Short) result[10]);
+        updatedItem.setDateManufacture((String) result[11]);
+        updatedItem.setItemAddressID((Short) result[12]);
+        updatedItem.setUserID((Long) result[13]);
+        updatedItem.setAcronym((String) result[14]);
+
+        if (result[15] != null) {
+            String statusStr = result[15].toString();
+            updatedItem.setItemStatus(statusStr.isEmpty() ? null : statusStr.charAt(0));
+        } else {
+            updatedItem.setItemStatus(null);
+        }
+
+        updatedItem.setTransmission((String) result[16]);
+        updatedItem.setCylinderCapacity((String) result[17]);
+
+        if (result[18] != null) {
+            String tractionStr = result[18].toString();
+            updatedItem.setTraction(tractionStr.isEmpty() ? null : tractionStr.charAt(0));
+        } else {
+            updatedItem.setTraction(null);
+        }
+
+        updatedItem.setItemSeries((String) result[19]);
+        updatedItem.setFuel((String) result[20]);
+        updatedItem.setItemImages((String[]) result[21]);
+        return updatedItem;
     }
-
 
     @Override
     public Item deleteItem(Item item) {
