@@ -210,8 +210,8 @@ public class ItemRepository implements IItemDomainRepository {
                 ":p_model, :p_price, :p_wholesaleprice, :p_bareprice, " +
                 ":p_purchaseprice, :p_brandid, :p_subcategoryid, " +
                 ":p_acronym, :p_datemanufacture, :p_itemaddressid, " +
-                ":p_userid, :p_itemimages, :p_itemstatus, :p_transmission, " +
-                ":p_cylindercapacity, :p_traction, :p_itemseries, :p_fuel)";
+                ":p_userid, :p_itemimages, :p_itemstatus::\"char\", :p_transmission, " +
+                ":p_cylindercapacity, :p_traction::\"char\", :p_itemseries, :p_fuel)";
 
 
         Query query = entityManager.createNativeQuery(sql, ItemUpdate.class)
@@ -231,15 +231,14 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter("p_itemaddressid", itemDTO.getItemAddressID())
                 .setParameter("p_userid", itemDTO.getUserID())
                 .setParameter("p_itemimages", itemDTO.getItemImages())
-                .setParameter("p_itemstatus", itemDTO.getItemStatus())
+                .setParameter("p_itemstatus", itemDTO.getItemStatus() == null ? null : itemDTO.getItemStatus().toString())
                 .setParameter("p_transmission", itemDTO.getTransmission())
                 .setParameter("p_cylindercapacity", itemDTO.getCylinderCapacity())
-                .setParameter("p_traction", itemDTO.getTraction())
+                .setParameter("p_traction", itemDTO.getTraction() == null ? null : itemDTO.getTraction().toString())
                 .setParameter("p_itemseries", itemDTO.getItemSeries())
                 .setParameter("p_fuel", itemDTO.getFuel());
 
         return (ItemUpdate) query.getSingleResult();
-
     }
 
     @Override
