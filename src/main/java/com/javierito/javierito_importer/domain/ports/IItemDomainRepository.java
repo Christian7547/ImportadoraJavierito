@@ -20,4 +20,6 @@ public interface IItemDomainRepository {
     ItemAcronym getItemAcronym(Long id);
 
     ItemAllInfo itemAllInfo(Long id) throws JsonProcessingException;
+
+    BarcodeItemInfo getItemBarcodeInfo(String barcode);
 }

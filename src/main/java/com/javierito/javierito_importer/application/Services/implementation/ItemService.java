@@ -118,6 +118,11 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
+    public BarcodeItemInfo getItemBarcodeInfo(String barcode) {
+        return itemDomainRepository.getItemBarcodeInfo(barcode);
+    }
+
+    @Override
     public ItemAcronym getItemAcronym(Long id) {
         return itemDomainRepository.getItemAcronym(id);
     }

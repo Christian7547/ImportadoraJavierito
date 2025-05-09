@@ -307,4 +307,16 @@ public class ItemRepository implements IItemDomainRepository {
     public ItemAcronym getItemAcronym(Long id) {
         return itemMapper.toItemAcronym(itemMapper.toItem(itemRepository.getById(id)));
     }
+
+    @Override
+    public BarcodeItemInfo getItemBarcodeInfo(String barcode) {
+
+        String sql = "SELECT * FROM public.ufc_get_item_by_barcode(:p_barcode)";
+
+        Query query = entityManager.createNativeQuery(sql, BarcodeItemInfo.class);
+        query.setParameter("p_barcode", barcode);
+
+        List<BarcodeItemInfo> resultList = query.getResultList();
+        return resultList.getFirst();
+    }
 }

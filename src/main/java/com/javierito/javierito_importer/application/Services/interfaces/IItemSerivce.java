@@ -21,4 +21,6 @@ public interface IItemSerivce {
     ItemAcronym getItemAcronym(Long id);
 
     Allinfo getItemAllInfo(Long id) throws JsonProcessingException;
+
+    BarcodeItemInfo getItemBarcodeInfo(String barcode);
 }
