@@ -45,34 +45,12 @@ public class SaleRepository implements ISaleDomainRepository {
     public List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to) {
         String sql = "SELECT * FROM ufc_get_sales_details(?, ?)";
 
-        List<Object[]> results = entityManager.createNativeQuery(sql)
+        Query results = entityManager.createNativeQuery(sql, SalesDetails.class)
                 .setParameter(1, from)
-                .setParameter(2, to)
-                .getResultList();
+                .setParameter(2, to);
 
-        List<SalesDetails> reports = new ArrayList<>();
-
-        for (Object[] result : results) {
-            SalesDetails salesDetails = new SalesDetails();
-
-            salesDetails.setSaleId(((Number) result[0]).longValue());
-            salesDetails.setEmployeeFullName((String) result[1]);
-            salesDetails.setClientFullName((String) result[2]);
-            salesDetails.setSaleTotal((BigDecimal) result[3]);
-            salesDetails.setSaleCommission((BigDecimal) result[4]);
-            salesDetails.setSaleDiscount((BigDecimal) result[5]);
-            salesDetails.setSaleDate(((java.sql.Timestamp) result[6]).toLocalDateTime());
-
-
-            try {
-                JsonNode saleDetailJson = objectMapper.readTree(result[7].toString());
-                salesDetails.setSaleDetail(saleDetailJson);
-            } catch (Exception e) {
-                throw new RuntimeException("Error al parsear el campo sale_detail JSON", e);
-            }
-            reports.add(salesDetails);
-        }
-
+        List<SalesDetails> reports = results.getResultList();
+        
         return reports;
     }
 

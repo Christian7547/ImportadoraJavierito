@@ -1,12 +1,10 @@
 package com.javierito.javierito_importer.application.Services.interfaces;
 
-import com.javierito.javierito_importer.domain.models.SaleModels.SaleDetail;
-import com.javierito.javierito_importer.domain.models.SaleModels.SaleList;
-import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
+import com.javierito.javierito_importer.domain.models.SaleModels.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.javierito.javierito_importer.domain.models.SaleModels.Sale;
 
 public interface ISaleService {
     long createSale(Sale sale) throws JsonProcessingException;
@@ -17,7 +15,7 @@ public interface ISaleService {
                           LocalDateTime finishDate,
                           String params);
 
-    List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to);
+    List<SaleReport> getSalesReport(LocalDateTime from, LocalDateTime to) throws JsonProcessingException;
 
     Sale getSaleById(long id);
 

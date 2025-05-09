@@ -1,20 +1,19 @@
 package com.javierito.javierito_importer.domain.models.SaleModels;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SalesDetails {
+public class SaleReport {
 
     private Long saleId;
     private String employeeFullName;
@@ -22,6 +21,6 @@ public class SalesDetails {
     private BigDecimal saleTotal;
     private BigDecimal saleDiscount;
     private Timestamp saleDate;
-    private String saleDetail;
+    private List<Detail> saleDetail;
 
 }
