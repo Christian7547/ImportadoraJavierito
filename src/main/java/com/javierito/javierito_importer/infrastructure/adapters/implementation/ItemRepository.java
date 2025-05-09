@@ -11,6 +11,7 @@ import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.*;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -204,65 +205,45 @@ public class ItemRepository implements IItemDomainRepository {
 
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemDTO) {
+        String sql = "SELECT * FROM ufc_update_item_by_id(" +
+                ":p_itemid, :p_name, :p_alias, :p_description, " +
+                ":p_model, :p_price, :p_wholesaleprice, :p_bareprice, " +
+                ":p_purchaseprice, :p_brandid, :p_subcategoryid, " +
+                ":p_acronym, :p_datemanufacture, :p_itemaddressid, " +
+                ":p_userid, :p_itemimages, :p_itemstatus, :p_transmission, " +
+                ":p_cylindercapacity, :p_traction, :p_itemseries, :p_fuel)";
 
-        String sql = "SELECT * FROM ufc_update_item_by_id(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Query query = entityManager.createNativeQuery(sql)
+                .setParameter("p_itemid", itemDTO.getItemID())
+                .setParameter("p_name", itemDTO.getName())
+                .setParameter("p_alias", itemDTO.getAlias())
+                .setParameter("p_description", itemDTO.getDescription())
+                .setParameter("p_model", itemDTO.getModel())
+                .setParameter("p_price", itemDTO.getPrice())
+                .setParameter("p_wholesaleprice", itemDTO.getWholesalePrice())
+                .setParameter("p_bareprice", itemDTO.getBarePrice())
+                .setParameter("p_purchaseprice", itemDTO.getPurchasePrice())
+                .setParameter("p_brandid", itemDTO.getBrandID())
+                .setParameter("p_subcategoryid", itemDTO.getSubCategoryID())
+                .setParameter("p_acronym", itemDTO.getAcronym())
+                .setParameter("p_datemanufacture", itemDTO.getDateManufacture())
+                .setParameter("p_itemaddressid", itemDTO.getItemAddressID())
+                .setParameter("p_userid", itemDTO.getUserID())
+                .setParameter("p_itemimages", itemDTO.getItemImages())
+                .setParameter("p_itemstatus", itemDTO.getItemStatus() != null ? itemDTO.getItemStatus().toString() : null)
+                .setParameter("p_transmission", itemDTO.getTransmission())
+                .setParameter("p_cylindercapacity", itemDTO.getCylinderCapacity())
+                .setParameter("p_traction", itemDTO.getTraction() != null ? itemDTO.getTraction().toString() : null)
+                .setParameter("p_itemseries", itemDTO.getItemSeries())
+                .setParameter("p_fuel", itemDTO.getFuel());
 
-        Object[] result = (Object[]) entityManager.createNativeQuery(sql)
-                .setParameter(1, itemDTO.getItemID())
-                .setParameter(2, itemDTO.getName())
-                .setParameter(3, itemDTO.getAlias())
-                .setParameter(4, itemDTO.getDescription())
-                .setParameter(5, itemDTO.getModel())
-                .setParameter(6, itemDTO.getPrice())
-                .setParameter(7, itemDTO.getWholesalePrice())
-                .setParameter(8, itemDTO.getBarePrice())
-                .setParameter(9, itemDTO.getPurchasePrice())
-                .setParameter(10, itemDTO.getBrandID())
-                .setParameter(11, itemDTO.getSubCategoryID())
-                .setParameter(12, itemDTO.getAcronym())
-                .setParameter(13, itemDTO.getDateManufacture())
-                .setParameter(14, itemDTO.getItemAddressID())
-                .setParameter(15, itemDTO.getUserID())
-                .setParameter(16, itemDTO.getItemImages())
-                .setParameter(17, itemDTO.getItemStatus())
-                .setParameter(18, itemDTO.getTransmission())
-                .setParameter(19, itemDTO.getCylinderCapacity())
-                .setParameter(20, itemDTO.getTraction())
-                .setParameter(21, itemDTO.getItemSeries())
-                .setParameter(22, itemDTO.getFuel())
-                .getSingleResult();
 
-        if (result == null) {
-            return null;
-        }
+        List<ItemUpdate> result = query.unwrap(org.hibernate.query.NativeQuery.class)
+                .setResultTransformer(Transformers.aliasToBean(ItemUpdate.class))
+                .getResultList();
 
-        ItemUpdate updatedItem = new ItemUpdate();
-        updatedItem.setItemID((Long) result[0]);
-        updatedItem.setName((String) result[1]);
-        updatedItem.setAlias((String) result[2]);
-        updatedItem.setDescription((String) result[3]);
-        updatedItem.setModel((String) result[4]);
-        updatedItem.setPrice((BigDecimal) result[5]);
-        updatedItem.setWholesalePrice((BigDecimal) result[6]);
-        updatedItem.setBarePrice((BigDecimal) result[7]);
-        updatedItem.setPurchasePrice((BigDecimal) result[8]);
-        updatedItem.setBrandID((Integer) result[9]);
-        updatedItem.setSubCategoryID((Short) result[10]);
-        updatedItem.setDateManufacture((String) result[11]);
-        updatedItem.setItemAddressID((Short) result[12]);
-        updatedItem.setUserID((Long) result[13]);
-        updatedItem.setAcronym((String) result[14]);
-        updatedItem.setItemStatus((Character) result[15]);
-        updatedItem.setTransmission((String) result[16]);
-        updatedItem.setCylinderCapacity((String) result[17]);
-        updatedItem.setTraction((Character) result[18]);
-        updatedItem.setItemSeries((String) result[19]);
-        updatedItem.setFuel((String) result[20]);
-        updatedItem.setItemImages((String[]) result[21]);
-
-        return updatedItem;
+        return result.isEmpty() ? null : result.get(0);
     }
-
     @Override
     public Item deleteItem(Item item) {
         return itemMapper.toItem(itemRepository.save(itemMapper.toItemEntity(item)));
