@@ -11,11 +11,13 @@ import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.*;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -202,6 +204,7 @@ public class ItemRepository implements IItemDomainRepository {
         return item;
     }
 
+
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemDTO) {
 
@@ -224,17 +227,15 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter(14, itemDTO.getItemAddressID())
                 .setParameter(15, itemDTO.getUserID())
                 .setParameter(16, itemDTO.getItemImages())
-                .setParameter(17, itemDTO.getItemStatus())
+                .setParameter(17, itemDTO.getItemStatus() != null ? String.valueOf(itemDTO.getItemStatus()) : null)
                 .setParameter(18, itemDTO.getTransmission())
                 .setParameter(19, itemDTO.getCylinderCapacity())
-                .setParameter(20, itemDTO.getTraction())
+                .setParameter(20, itemDTO.getTraction() != null ? String.valueOf(itemDTO.getTraction()) : null)
                 .setParameter(21, itemDTO.getItemSeries())
                 .setParameter(22, itemDTO.getFuel())
                 .getSingleResult();
 
-        if (result == null) {
-            return null;
-        }
+        if (result == null) return null;
 
         ItemUpdate updatedItem = new ItemUpdate();
         updatedItem.setItemID((Long) result[0]);
@@ -252,14 +253,27 @@ public class ItemRepository implements IItemDomainRepository {
         updatedItem.setItemAddressID((Short) result[12]);
         updatedItem.setUserID((Long) result[13]);
         updatedItem.setAcronym((String) result[14]);
-        updatedItem.setItemStatus((Character) result[15]);
+
+        if (result[15] != null) {
+            String statusStr = result[15].toString();
+            updatedItem.setItemStatus(statusStr.isEmpty() ? null : statusStr.charAt(0));
+        } else {
+            updatedItem.setItemStatus(null);
+        }
+
         updatedItem.setTransmission((String) result[16]);
         updatedItem.setCylinderCapacity((String) result[17]);
-        updatedItem.setTraction((Character) result[18]);
+
+        if (result[18] != null) {
+            String tractionStr = result[18].toString();
+            updatedItem.setTraction(tractionStr.isEmpty() ? null : tractionStr.charAt(0));
+        } else {
+            updatedItem.setTraction(null);
+        }
+
         updatedItem.setItemSeries((String) result[19]);
         updatedItem.setFuel((String) result[20]);
         updatedItem.setItemImages((String[]) result[21]);
-
         return updatedItem;
     }
 

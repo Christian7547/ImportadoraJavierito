@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.ISaleService;
+import com.javierito.javierito_importer.domain.models.SaleModels.SaleReport;
 import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
 import com.javierito.javierito_importer.infrastructure.dtos.sale.SaleParamsDTO;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -42,16 +43,16 @@ public class SaleController {
     }
 
     @GetMapping("/SaleReports")
-    public ResponseEntity<List<SalesDetails>> getSalesReport(
+    public ResponseEntity<List<SaleReport>> getSalesReport(
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime from,
 
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-            LocalDateTime to) {
+            LocalDateTime to) throws JsonProcessingException {
 
-        List<SalesDetails> salesDetails = saleService.getSalesReport(from, to);
+        List<SaleReport> salesDetails = saleService.getSalesReport(from, to);
 
         if (salesDetails.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

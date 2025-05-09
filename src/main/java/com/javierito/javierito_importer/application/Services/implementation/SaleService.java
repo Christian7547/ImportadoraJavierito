@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Array;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -47,8 +48,27 @@ public class SaleService implements ISaleService {
                 serializeDetails);
     }
 
-    public List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to) {
-        return saleDomainRepository.getSalesReport(from, to);
+    public List<SaleReport> getSalesReport(LocalDateTime from, LocalDateTime to) throws JsonProcessingException {
+        List<SalesDetails> data = saleDomainRepository.getSalesReport(from, to);
+        List<SaleReport> reportList = new ArrayList<>();
+
+        for (SalesDetails detail : data) {
+            List<Detail> detailList = jsonConverter.deserializeCollection(detail.getSaleDetail(), Detail.class);
+
+            SaleReport report = SaleReport.builder()
+                    .saleId(detail.getSaleId())
+                    .employeeFullName(detail.getEmployeeFullName())
+                    .clientFullName(detail.getClientFullName())
+                    .saleTotal(detail.getSaleTotal())
+                    .saleDiscount(detail.getSaleDiscount())
+                    .saleDate(detail.getSaleDate())
+                    .saleDetail(detailList)
+                    .build();
+
+            reportList.add(report);
+        }
+
+        return reportList;
     }
 
     @Override
