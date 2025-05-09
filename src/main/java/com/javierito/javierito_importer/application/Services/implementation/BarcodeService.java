@@ -18,19 +18,8 @@ public class BarcodeService implements IBarcodeService {
         this.barcodeDomainRepository = barcodeDomainRepository;
     }
 
-
     @Override
     public List<BarcodeItem> getBarcodes(long id) {
         return barcodeDomainRepository.getItemBarcodes(id);
-    }
-
-    @Override
-    public Barcode getByBarcode(String barcode) {
-        return barcodeDomainRepository.getByBarcode(barcode);
-    }
-
-    @Override
-    public List<Barcode> getManyBarcodesByCodes(List<String> codes) {
-        return barcodeDomainRepository.getManyBarcodesByCodes(codes);
     }
 }

@@ -104,4 +104,14 @@ public class ItemController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping("/getItembyBarcode")
+    public ResponseEntity<?> getItemByBarcode(@RequestBody String barcode) {
+
+        var result = itemSerivce.getItemBarcodeInfo(barcode);
+
+        if (result != null)
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
+    }
 }

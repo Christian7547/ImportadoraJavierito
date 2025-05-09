@@ -126,47 +126,39 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public ItemAllInfo itemAllInfo(Long id) throws JsonProcessingException {
+    public ItemAllInfo itemAllInfo(Long id) {
 
         String query = "SELECT * FROM ufc_get_item_by_id_allinfo(:p_itemid)";
         Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter("p_itemid", id);
         Object[] result = (Object[]) nativeQuery.getSingleResult();
 
-//        String branchStocksJson = (String) result[22];
-//        List<BranchStockModel> branchStocks = jsonConverter.deserializeCollection(
-//                branchStocksJson,
-//                new TypeReference<List<BranchStockModel>>() {}
-//        );
-//        ItemAllInfo itemInfo = ItemAllInfo.builder()
-//                .itemId((Long) result[0])
-//                .name((String) result[1])
-//                .alias((String) result[2])
-//                .description((String) result[3])
-//                .model((String) result[4])
-//                .price((BigDecimal) result[5])
-//                .wholesalePrice((BigDecimal) result[6])
-//                .barePrice((BigDecimal) result[7])
-//                .purchasePrice((BigDecimal) result[8])
-//                .brandName((String) result[9])
-//                .subCategoryName((String) result[10])
-//                .dateManufacture((String) result[11])
-//                .itemAddressName((String) result[12])
-//                .acronym((String) result[13])
-//                .itemStatus((String) result[14])
-//                .transmission((String) result[15])
-//                .cylinderCapacity((String) result[16])
-//                .traction((String) result[17])
-//                .itemSeries((String) result[18])
-//                .fuel((String) result[19])
-//                .itemImages(List.of((String[]) result[20]))
-//                .totalStock((Long) result[21])
-//                .branchStocks(branchStocks)
-//                .registerDate((Timestamp) result[23])
-//                .build();
-//
-//        return itemInfo;
-        return null;
+        return ItemAllInfo.builder()
+                .itemId((Long) result[0])
+                .name((String) result[1])
+                .alias((String) result[2])
+                .description((String) result[3])
+                .model((String) result[4])
+                .price((BigDecimal) result[5])
+                .wholesalePrice((BigDecimal) result[6])
+                .barePrice((BigDecimal) result[7])
+                .purchasePrice((BigDecimal) result[8])
+                .brandName((String) result[9])
+                .subCategoryName((String) result[10])
+                .dateManufacture((String) result[11])
+                .itemAddressName((String) result[12])
+                .acronym((String) result[13])
+                .itemStatus((String) result[14])
+                .transmission((String) result[15])
+                .cylinderCapacity((String) result[16])
+                .traction((String) result[17])
+                .itemSeries((String) result[18])
+                .fuel((String) result[19])
+                .itemImages(List.of((String[]) result[20]))
+                .totalStock((Long) result[21])
+                .branchStocks((String) result[22])
+                .registerDate((Timestamp) result[23])
+                .build();
     }
 
 
@@ -314,5 +306,17 @@ public class ItemRepository implements IItemDomainRepository {
     @Override
     public ItemAcronym getItemAcronym(Long id) {
         return itemMapper.toItemAcronym(itemMapper.toItem(itemRepository.getById(id)));
+    }
+
+    @Override
+    public BarcodeItemInfo getItemBarcodeInfo(String barcode) {
+
+        String sql = "SELECT * FROM public.ufc_get_item_by_barcode(:p_barcode)";
+
+        Query query = entityManager.createNativeQuery(sql, BarcodeItemInfo.class);
+        query.setParameter("p_barcode", barcode);
+
+        List<BarcodeItemInfo> resultList = query.getResultList();
+        return resultList.getFirst();
     }
 }

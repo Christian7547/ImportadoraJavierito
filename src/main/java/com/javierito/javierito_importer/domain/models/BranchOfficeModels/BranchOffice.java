@@ -17,4 +17,5 @@ public class BranchOffice {
     private short status;
     private LocalDateTime registerDate;
     private LocalDateTime lastUpdate;
+    private int ownerId;
 }

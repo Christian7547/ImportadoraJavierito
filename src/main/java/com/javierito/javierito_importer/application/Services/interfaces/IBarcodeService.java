@@ -9,7 +9,4 @@ public interface IBarcodeService {
 
     List<BarcodeItem> getBarcodes(long id);
 
-    Barcode getByBarcode(String barcode);
-
-    List<Barcode> getManyBarcodesByCodes(List<String> codes);
 }

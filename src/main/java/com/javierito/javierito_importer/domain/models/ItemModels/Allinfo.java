@@ -1,10 +1,11 @@
 package com.javierito.javierito_importer.domain.models.ItemModels;
 
-
+import com.javierito.javierito_importer.domain.models.StockModels.BranchStockModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemAllInfo {
+public class Allinfo {
     private Long itemId;
     private String name;
     private String alias;
@@ -36,6 +37,6 @@ public class ItemAllInfo {
     private String fuel;
     private List<String> itemImages;
     private Long totalStock;
-    private String branchStocks;
+    private List<BranchStockModel> branchStocks;
     private Timestamp registerDate;
 }

@@ -12,9 +12,7 @@ import com.javierito.javierito_importer.infrastructure.adapters.interfaces.ISale
 import com.javierito.javierito_importer.infrastructure.entities.SaleDetailEntity;
 import com.javierito.javierito_importer.infrastructure.entities.SaleEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.SaleMapper;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
+import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +20,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,8 +94,18 @@ public class SaleRepository implements ISaleDomainRepository {
     }
 
     @Override
-    public boolean refund(long saleId) {
-        return false;
+    public boolean refund(long saleId, String[] barcodes) {
+        StoredProcedureQuery procedure = entityManager.createStoredProcedureQuery("usp_refund");
+
+        procedure.registerStoredProcedureParameter("p_saleId", Long.class, ParameterMode.IN);
+        procedure.registerStoredProcedureParameter("p_barcodes", String[].class, ParameterMode.IN);
+        procedure.registerStoredProcedureParameter("p_success", Boolean.class, ParameterMode.OUT);
+
+        procedure.setParameter("p_saleId", saleId);
+        procedure.setParameter("p_barcodes", barcodes);
+        procedure.execute();
+
+        return (Boolean) procedure.getOutputParameterValue("p_success");
     }
 
     @Override

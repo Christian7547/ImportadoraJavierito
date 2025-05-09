@@ -12,6 +12,7 @@ public class NewBranchOfficeDTO {
     private String address;
     private String latitude;
     private String longitude;
+    private int ownerId;
     //images
     private ArrayList<String> pathImages;
 }
