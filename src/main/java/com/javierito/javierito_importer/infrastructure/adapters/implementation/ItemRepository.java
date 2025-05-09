@@ -17,6 +17,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -213,8 +214,7 @@ public class ItemRepository implements IItemDomainRepository {
                 ":p_userid, :p_itemimages, :p_itemstatus::\"char\", :p_transmission, " +
                 ":p_cylindercapacity, :p_traction::\"char\", :p_itemseries, :p_fuel)";
 
-
-        Query query = entityManager.createNativeQuery(sql, ItemUpdate.class)
+        Query query = entityManager.createNativeQuery(sql)
                 .setParameter("p_itemid", itemDTO.getItemID())
                 .setParameter("p_name", itemDTO.getName())
                 .setParameter("p_alias", itemDTO.getAlias())
@@ -238,8 +238,35 @@ public class ItemRepository implements IItemDomainRepository {
                 .setParameter("p_itemseries", itemDTO.getItemSeries())
                 .setParameter("p_fuel", itemDTO.getFuel());
 
-        return (ItemUpdate) query.getSingleResult();
+        Object[] result = (Object[]) query.getSingleResult();
+
+        ItemUpdate updated = new ItemUpdate();
+        updated.setItemID(((BigInteger) result[0]).longValue());
+        updated.setName((String) result[1]);
+        updated.setAlias((String) result[2]);
+        updated.setDescription((String) result[3]);
+        updated.setModel((String) result[4]);
+        updated.setPrice((BigDecimal) result[5]);
+        updated.setWholesalePrice((BigDecimal) result[6]);
+        updated.setBarePrice((BigDecimal) result[7]);
+        updated.setPurchasePrice((BigDecimal) result[8]);
+        updated.setBrandID((Integer) result[9]);
+        updated.setSubCategoryID(((Short) result[10]));
+        updated.setAcronym((String) result[11]);
+        updated.setDateManufacture((String) result[12]);
+        updated.setItemAddressID((Short) result[13]);
+        updated.setUserID(((BigInteger) result[14]).longValue());
+        updated.setItemImages((String[]) result[15]);
+        updated.setItemStatus(result[16] != null ? ((String) result[16]).charAt(0) : null);
+        updated.setTransmission((String) result[17]);
+        updated.setCylinderCapacity((String) result[18]);
+        updated.setTraction(result[19] != null ? ((String) result[19]).charAt(0) : null);
+        updated.setItemSeries((String) result[20]);
+        updated.setFuel((String) result[21]);
+
+        return updated;
     }
+
 
     @Override
     public Item deleteItem(Item item) {
