@@ -13,10 +13,6 @@ public class ItemAuditService implements IItemAuditService {
 
     public ItemAuditService(IItemAuditDomainRepository itemAuditDomainRepository) {this.itemAuditDomainRepository = itemAuditDomainRepository;}
 
-    @Override
-    public ArrayList<ItemAudit> recycleBin() {
-        return itemAuditDomainRepository.recycleBin();
-    }
 
     @Override
     public ArrayList<ItemAudit> excelReports(ExcelReportsDTO excelReportsDTO) { return itemAuditDomainRepository.excelReports(excelReportsDTO); }

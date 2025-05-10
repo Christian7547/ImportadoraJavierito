@@ -43,9 +43,10 @@ public class ItemController {
                                          @RequestParam(defaultValue = "1") int offset,
                                          String param,
                                          String subCategory,
-                                         String brand){
+                                         String brand,
+                                         String itemStatus){
 
-        var result = itemSerivce.getAllItems(limit, offset, param, subCategory, brand);
+        var result = itemSerivce.getAllItems(limit, offset, param, subCategory, brand, itemStatus);
 
         if (result != null)
             return new ResponseEntity<>(new Object(){ public final Object data = result._1(); public final int total = result._2();}, HttpStatus.OK);

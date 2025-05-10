@@ -7,7 +7,5 @@ import java.util.ArrayList;
 
 public interface IItemAuditService {
 
-    ArrayList<ItemAudit> recycleBin();
-
     ArrayList<ItemAudit> excelReports(ExcelReportsDTO excelReportsDTO);
 }

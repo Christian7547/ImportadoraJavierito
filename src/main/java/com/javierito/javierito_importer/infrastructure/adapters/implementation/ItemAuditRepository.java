@@ -21,11 +21,6 @@ public class ItemAuditRepository implements IItemAuditDomainRepository {
     public ItemAuditRepository(IItemAuditRepository itemAuditRepository) {this.itemAuditRepository = itemAuditRepository;}
 
     @Override
-    public ArrayList<ItemAudit> recycleBin() {
-        return this.itemAuditMapper.toItemAudits(this.itemAuditRepository.findAll());
-    }
-
-    @Override
     public ArrayList<ItemAudit> excelReports(ExcelReportsDTO excelReportsDTO) {
         System.out.println(excelReportsDTO);
         return this.itemAuditMapper.toItemAudits(this.itemAuditRepository.findAll())

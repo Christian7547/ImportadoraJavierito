@@ -17,16 +17,6 @@ public class ItemAuditController {
 
     public ItemAuditController(IItemAuditService itemAuditService) {this.itemAuditService = itemAuditService;}
 
-    @GetMapping("/recycleBin")
-    public ResponseEntity<?> getItemAudits() {
-
-        ArrayList<ItemAudit> recycleBin = itemAuditService.recycleBin();
-
-        if(recycleBin != null){
-            return new ResponseEntity<>(recycleBin, HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Could not get Recycle Bin", HttpStatus.OK);
-    }
 
     @PostMapping("/excelReports")
     public ResponseEntity<?> getItemAuditsExcel(@RequestBody ExcelReportsDTO excelReportsDTO) {
