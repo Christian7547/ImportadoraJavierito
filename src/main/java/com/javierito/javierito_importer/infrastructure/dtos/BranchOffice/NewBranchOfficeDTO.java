@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.infrastructure.dtos.BranchOffice;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,6 +23,9 @@ public class NewBranchOfficeDTO {
 
     @NotBlank(message = "The branch longitude must not be empty or null")
     private String longitude;
+
+    @PositiveOrZero
+    private short status;
 
     @Positive
     private int ownerId;

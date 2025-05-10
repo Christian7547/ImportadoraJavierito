@@ -76,6 +76,7 @@ public class BranchOfficeController {
                 .latitude(newBranchOfficeDTO.getLatitude())
                 .longitude(newBranchOfficeDTO.getLongitude())
                 .ownerId(newBranchOfficeDTO.getOwnerId())
+                .status(newBranchOfficeDTO.getStatus())
                 .build();
         var created = branchOfficeService.createBranchOffice(branchOffice, newBranchOfficeDTO.getPathImages());
         if(created != null){
