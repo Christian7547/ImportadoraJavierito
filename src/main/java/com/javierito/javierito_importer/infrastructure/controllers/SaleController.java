@@ -45,7 +45,6 @@ public class SaleController {
             throw new BadRequestException("could not create the sale");
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
-
     }
 
     @GetMapping("/SaleReports")
