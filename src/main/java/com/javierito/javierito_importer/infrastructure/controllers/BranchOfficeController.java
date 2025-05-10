@@ -8,6 +8,7 @@ import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
 import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.*;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeImageMapper;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
@@ -68,7 +69,7 @@ public class BranchOfficeController {
     }
 
     @PostMapping("/createBranchOffice")
-    public ResponseEntity<?> createBranchOffice(@RequestBody NewBranchOfficeDTO newBranchOfficeDTO) {
+    public ResponseEntity<?> createBranchOffice(@RequestBody @Valid NewBranchOfficeDTO newBranchOfficeDTO) {
         BranchOffice branchOffice = BranchOffice.builder()
                 .name(newBranchOfficeDTO.getName())
                 .address(newBranchOfficeDTO.getAddress())
@@ -84,7 +85,7 @@ public class BranchOfficeController {
     }
 
     @PatchMapping("/editBranchOffice")
-    public ResponseEntity<?> editBranchOffice(@RequestBody BranchOfficeEditableDTO data) {
+    public ResponseEntity<?> editBranchOffice(@RequestBody @Valid BranchOfficeEditableDTO data) {
         BranchOffice branchOffice = BranchOffice.builder()
                 .id(data.getId())
                 .name(data.getName())

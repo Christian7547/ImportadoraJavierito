@@ -25,6 +25,9 @@ public class AuthService implements IAuthService {
     @Override
     public Pair<User, String> authenticate(String username, String password) {
         User user = authDomainRepository.authenticate(username, password);
+        if(user == null) {
+            return null;
+        }
         Employee employee = employeeDomainRepository.getByUserId(user.getId());
         BranchOffice branchOffice = branchOfficeDomainRepository.getById(employee.getBranchOfficeId());
         return Pair.of(user, branchOffice.getName());
