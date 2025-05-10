@@ -5,8 +5,11 @@ import com.javierito.javierito_importer.application.Services.interfaces.IUserSer
 import com.javierito.javierito_importer.domain.models.userModels.User;
 import com.javierito.javierito_importer.infrastructure.dtos.auth.LoginDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.auth.ResetPasswordDTO;
+import com.javierito.javierito_importer.infrastructure.exception.types.ResourceNotFoundException;
 import com.javierito.javierito_importer.infrastructure.jwt.JwtService;
 import com.javierito.javierito_importer.infrastructure.mappers.UserMapper;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -30,37 +33,36 @@ public class AuthController {
     private UserMapper userMapper;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody LoginDTO loginDTO){
-        try
-        {
-            Pair<User, String> data = authService.authenticate(loginDTO.getUsername(), loginDTO.getPassword());
-            if(data != null)
-            {
-                var u = userMapper.toUserEntity(data.getFirst());
-                String token = jwtService.generateToken(u);
-                Map<String, Object> response = new HashMap<>();
-                response.put("token", token);
-                response.put("branchOffice", data.getSecond());
-                return ResponseEntity.ok(response);
-            }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> authenticate(@RequestBody @Valid LoginDTO loginDTO){
+        Pair<User, String> data = authService.authenticate(loginDTO.getUsername(), loginDTO.getPassword());
+
+        if(data == null) {
+            throw new ResourceNotFoundException("user", "username", loginDTO.getUsername());
         }
+
+        var u = userMapper.toUserEntity(data.getFirst());
+        String token = jwtService.generateToken(u);
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("branchOffice", data.getSecond());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/getRecoveryCode")
     public ResponseEntity<?> getRecoveryCode(@RequestBody String email){
         Pair<User, String> data = userService.getByEmail(email);
+        if(data == null) {
+            throw new ResourceNotFoundException("user", "email", email);
+        }
         return ResponseEntity.ok(data.getSecond());
     }
 
     @PostMapping("/resetPassword")
-    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO data){
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPasswordDTO data){
         User user = authService.resetPassword(data.getEmail(), data.getNewPassword());
-        if(user != null){
-            return ResponseEntity.ok(user);
+        if(user == null){
+            throw new ResourceNotFoundException("user", "email", data.getEmail());
         }
-        return ResponseEntity.badRequest().body("No saved changes");
+        return ResponseEntity.noContent().build();
     }
 }

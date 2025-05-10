@@ -8,7 +8,11 @@ import com.javierito.javierito_importer.domain.models.userModels.UserList;
 import com.javierito.javierito_importer.infrastructure.dtos.user.AccountDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.user.ParamsUserDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.user.UserDTO;
+import com.javierito.javierito_importer.infrastructure.exception.types.BadRequestException;
+import com.javierito.javierito_importer.infrastructure.exception.types.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.prefs.BackingStoreException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -35,6 +40,9 @@ public class UserController {
                 paramsUserDTO.getRole(),
                 paramsUserDTO.getOfficeId(),
                 paramsUserDTO.getSomeName());
+        if(users.isEmpty()) {
+            throw new ResourceNotFoundException("user");
+        }
         long total = userService.countUsers();
         Pair<List<UserList>, Long> data = Pair.of(users, total);
         return new ResponseEntity<>(data, HttpStatus.OK);
@@ -42,7 +50,7 @@ public class UserController {
 
     @PostMapping("/saveUser")
     @PreAuthorize("hasRole('Admin')")
-    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO){
         User user = User.builder()
                 .email(userDTO.getEmail())
                 .role(userDTO.getRole())
@@ -55,16 +63,21 @@ public class UserController {
                 .phoneNumber(userDTO.getPhoneNumber())
                 .branchOfficeId(userDTO.getBranchOfficeId())
                 .build();
-        var created = userService.createUser(user, employee);
-        if(created != null){
-            return new ResponseEntity<>(created, HttpStatus.CREATED);
+        User created = userService.createUser(user, employee);
+        if (created == null) {
+            throw new BadRequestException("The user could not be created. Please try again later.");
         }
-        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     @GetMapping("/getProfile/{id}")
     public ResponseEntity<?> getAccountById(@PathVariable int id){
         User user = userService.getById(id);
+
+        if(user == null) {
+            throw new ResourceNotFoundException("user", "id", Integer.toString(id));
+        }
+
         Employee employee = employeeService.getByUserId(user.getId());
         AccountDTO accountDTO = AccountDTO.builder()
                 .id(user.getId())
@@ -79,7 +92,7 @@ public class UserController {
     }
 
     @PatchMapping("/updateProfile")
-    public ResponseEntity<?> updateProfile(@RequestBody AccountDTO body){
+    public ResponseEntity<?> updateProfile(@Valid @RequestBody AccountDTO body){
         User user = User.builder()
                 .id(body.getId())
                 .email(body.getEmail())
@@ -93,18 +106,19 @@ public class UserController {
                 .phoneNumber(body.getPhoneNumber())
                 .build();
         boolean res = userService.updateUser(user, employee);
-        if(res)
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(!res) {
+            throw new BadRequestException("The user could not be updated. Please try again later.");
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/changeStatus/{userId}")
     @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<?> changeStatus(@PathVariable long userId, @RequestParam int newStatus){
         long id = userService.changeStatus(userId, (short) newStatus);
-        if(id > 0)
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(id < 0) {
+            throw new ResourceNotFoundException("user", "id", Long.toString(userId));
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
