@@ -8,6 +8,8 @@ import java.util.List;
 public interface IItemDomainRepository {
 
     Item deleteItem(Item item);
+    Item restoreItem(Item item);
+    void deleteItemPermanently(Item item);
     Item getItem(Long id);
 
     int insertItem(NewItem newItem);
