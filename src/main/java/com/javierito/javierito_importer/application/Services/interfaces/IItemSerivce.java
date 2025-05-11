@@ -13,6 +13,8 @@ public interface IItemSerivce {
 
     ItemUpdate updateItemById(ItemUpdate itemUpdate);
     Item deleteItem(Item item);
+    void deleteItemPermanently(Item item);
+    Item restoreItem(Item item);
 
     int insertItem(NewItem insertItemDTO);
     Tuple<List<ListItems>, Integer> getAllItems(int limit, int offset, String param, String subCategory, String brand, String itemStatus);

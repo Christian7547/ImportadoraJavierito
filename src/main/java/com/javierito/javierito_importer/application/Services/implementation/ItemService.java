@@ -180,5 +180,23 @@ public class ItemService implements IItemSerivce {
         return itemDomainRepository.deleteItem(item);
     }
 
+    @Override
+    public void deleteItemPermanently(Item item) {
+        itemDomainRepository.deleteItemPermanently(item);
+    }
+
+    @Override
+    public Item restoreItem(Item item) {
+        item = itemDomainRepository.getItem(item.getId());
+        if (item == null) {
+            return null;
+        }
+        item.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        item.setUserID(item.getUserID());
+        item.setStatus((short) 1);
+
+        return itemDomainRepository.restoreItem(item);
+    }
+
 
 }

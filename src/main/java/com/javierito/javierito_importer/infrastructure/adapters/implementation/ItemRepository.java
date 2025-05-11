@@ -1,26 +1,20 @@
 package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.javierito.javierito_importer.application.Utils.JsonConverter;
 import com.javierito.javierito_importer.domain.models.Item;
 import com.javierito.javierito_importer.domain.models.ItemModels.*;
-import com.javierito.javierito_importer.domain.models.StockModels.BranchStockModel;
 import com.javierito.javierito_importer.domain.ports.IItemDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IItemRepository;
 import com.javierito.javierito_importer.infrastructure.mappers.ItemMapper;
 import jakarta.persistence.*;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -298,6 +292,16 @@ public class ItemRepository implements IItemDomainRepository {
     @Override
     public Item deleteItem(Item item) {
         return itemMapper.toItem(itemRepository.save(itemMapper.toItemEntity(item)));
+    }
+
+    @Override
+    public Item restoreItem(Item item) {
+        return itemMapper.toItem(itemRepository.save(itemMapper.toItemEntity(item)));
+    }
+
+    @Override
+    public void deleteItemPermanently(Item item) {
+        itemRepository.deleteById(item.getId());
     }
 
     @Override

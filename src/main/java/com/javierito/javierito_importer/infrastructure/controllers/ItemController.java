@@ -130,4 +130,19 @@ public class ItemController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get items", HttpStatus.NOT_FOUND);
     }
+
+    @PatchMapping("/restoreItem")
+    public ResponseEntity<?> restoreItem(@RequestBody Item item) {
+
+        var result = itemSerivce.restoreItem(item);
+        if(result != null)
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/deleteItemPermanently")
+    public ResponseEntity<?> deleteItemPermanently(@RequestBody Item item) {
+        itemSerivce.deleteItemPermanently(item);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
