@@ -6,6 +6,7 @@ import lombok.Data;
 
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -51,10 +52,10 @@ public class ItemEntity{
     private Short status;
 
     @Column(name = "registerDate")
-    private LocalDateTime registerDate;
+    private Timestamp registerDate;
 
     @Column(name = "lastUpdate")
-    private LocalDateTime  lastUpdate;
+    private Timestamp  lastUpdate;
 
     @Column(name = "itemAddressID")
     private Short  itemAddressID;
@@ -69,9 +70,9 @@ public class ItemEntity{
     private BigDecimal purchasePrice;
 
     @PrePersist
-    private void onCreate(){
+    private void onCreate() {
         if (this.registerDate == null) {
-            this.registerDate = LocalDateTime.now();
+            this.registerDate = new Timestamp(System.currentTimeMillis());;
         }
         this.status = 1;
     }

@@ -103,14 +103,16 @@ public class ItemRepository implements IItemDomainRepository {
         return (Integer) q.getOutputParameterValue("p_count");
     }
 
+
     @Override
     public List<ListItems> getAllItems(int limit,
                                        int offset,
                                        @Nullable String param,
                                        @Nullable String subCategory,
-                                       @Nullable String brand) {
+                                       @Nullable String brand,
+                                       @Nullable String itemStatus) {
 
-        String sql = "SELECT * FROM ufc_get_items(:p_limit, :p_offset, :param, :p_subcategory, :p_brand)";
+        String sql = "SELECT * FROM ufc_get_items(:p_limit, :p_offset, :param, :p_subcategory, :p_brand, :p_itemstatus)";
 
         Query query = entityManager.createNativeQuery(sql, ListItems.class);
         query.setParameter("p_limit", limit);
@@ -118,13 +120,11 @@ public class ItemRepository implements IItemDomainRepository {
         query.setParameter("param", param);
         query.setParameter("p_subcategory", subCategory);
         query.setParameter("p_brand", brand);
+        query.setParameter("p_itemstatus", itemStatus);
 
         List<ListItems> listItems = query.getResultList();
 
-        if(listItems.isEmpty()){
-            return new ArrayList<>();
-        }
-        return listItems;
+        return listItems.isEmpty() ? new ArrayList<>() : listItems;
     }
 
     @Override
@@ -202,6 +202,24 @@ public class ItemRepository implements IItemDomainRepository {
         item.setItemImages((String[]) result[21]);
 
         return item;
+    }
+
+    @Override
+    public List<RecycleBin> getRecycleBin(int limit, int offset, String param, String subCategory, String brand, String itemStatus) {
+
+        String sql = "SELECT * FROM public.ufc_get_deleted_items(:p_limit, :p_offset, :param, :p_subcategory, :p_brand, :p_itemstatus)";
+
+        Query query = entityManager.createNativeQuery(sql, RecycleBin.class);
+        query.setParameter("p_limit", limit);
+        query.setParameter("p_offset", offset);
+        query.setParameter("param", param);
+        query.setParameter("p_subcategory", subCategory);
+        query.setParameter("p_brand", brand);
+        query.setParameter("p_itemstatus", itemStatus);
+
+        List<RecycleBin> listItems = query.getResultList();
+
+        return listItems.isEmpty() ? new ArrayList<>() : listItems;
     }
 
 

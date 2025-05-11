@@ -43,9 +43,10 @@ public class ItemController {
                                          @RequestParam(defaultValue = "1") int offset,
                                          String param,
                                          String subCategory,
-                                         String brand){
+                                         String brand,
+                                         String itemStatus){
 
-        var result = itemSerivce.getAllItems(limit, offset, param, subCategory, brand);
+        var result = itemSerivce.getAllItems(limit, offset, param, subCategory, brand, itemStatus);
 
         if (result != null)
             return new ResponseEntity<>(new Object(){ public final Object data = result._1(); public final int total = result._2();}, HttpStatus.OK);
@@ -63,7 +64,7 @@ public class ItemController {
         return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/getItemAllInfo")
+    @PostMapping("/getItemAllInfo")
     public ResponseEntity<?> getAllItemInfo(@RequestBody Long id) throws JsonProcessingException {
         var result = itemSerivce.getItemAllInfo(id);
 
@@ -113,5 +114,20 @@ public class ItemController {
         if (result != null)
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/getItemRecycleBin")
+    public ResponseEntity<?> getItemRecycleBin(@RequestParam(defaultValue = "5") int limit,
+                                               @RequestParam(defaultValue = "1") int offset,
+                                               String param,
+                                               String subCategory,
+                                               String brand,
+                                               String itemStatus) {
+
+        var result = itemSerivce.getRecycleBin(limit, offset, param, subCategory, brand, itemStatus);
+
+        if(result != null)
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>("Could not get items", HttpStatus.NOT_FOUND);
     }
 }

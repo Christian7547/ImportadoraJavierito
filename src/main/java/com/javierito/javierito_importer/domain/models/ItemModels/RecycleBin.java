@@ -1,6 +1,9 @@
 package com.javierito.javierito_importer.domain.models.ItemModels;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -10,8 +13,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class ListItems {
-
+public class RecycleBin {
     private Long itemID;
     private String name;
     private String description;
@@ -29,5 +31,5 @@ public class ListItems {
     private Integer totalStock;
     private Timestamp registerDate;
     private String itemStatus;
-
+    private Timestamp lastUpdate;
 }
