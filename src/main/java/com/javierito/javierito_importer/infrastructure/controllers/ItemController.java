@@ -64,7 +64,7 @@ public class ItemController {
         return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/getItemAllInfo")
+    @PostMapping("/getItemAllInfo")
     public ResponseEntity<?> getAllItemInfo(@RequestBody Long id) throws JsonProcessingException {
         var result = itemSerivce.getItemAllInfo(id);
 
