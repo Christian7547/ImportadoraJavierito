@@ -115,4 +115,19 @@ public class ItemController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/getItemRecycleBin")
+    public ResponseEntity<?> getItemRecycleBin(@RequestParam(defaultValue = "5") int limit,
+                                               @RequestParam(defaultValue = "1") int offset,
+                                               String param,
+                                               String subCategory,
+                                               String brand,
+                                               String itemStatus) {
+
+        var result = itemSerivce.getRecycleBin(limit, offset, param, subCategory, brand, itemStatus);
+
+        if(result != null)
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>("Could not get items", HttpStatus.NOT_FOUND);
+    }
 }

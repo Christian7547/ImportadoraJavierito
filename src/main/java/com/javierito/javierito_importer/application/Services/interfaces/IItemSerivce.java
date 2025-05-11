@@ -23,4 +23,7 @@ public interface IItemSerivce {
     Allinfo getItemAllInfo(Long id) throws JsonProcessingException;
 
     BarcodeItemInfo getItemBarcodeInfo(String barcode);
+
+    List<RecycleBin> getRecycleBin(int limit, int offset, String param, String subCategory, String brand, String itemStatus);
+
 }

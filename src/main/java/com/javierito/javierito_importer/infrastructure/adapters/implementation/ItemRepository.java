@@ -204,6 +204,24 @@ public class ItemRepository implements IItemDomainRepository {
         return item;
     }
 
+    @Override
+    public List<RecycleBin> getRecycleBin(int limit, int offset, String param, String subCategory, String brand, String itemStatus) {
+
+        String sql = "SELECT * FROM public.ufc_get_deleted_items(:p_limit, :p_offset, :param, :p_subcategory, :p_brand, :p_itemstatus)";
+
+        Query query = entityManager.createNativeQuery(sql, RecycleBin.class);
+        query.setParameter("p_limit", limit);
+        query.setParameter("p_offset", offset);
+        query.setParameter("param", param);
+        query.setParameter("p_subcategory", subCategory);
+        query.setParameter("p_brand", brand);
+        query.setParameter("p_itemstatus", itemStatus);
+
+        List<RecycleBin> listItems = query.getResultList();
+
+        return listItems.isEmpty() ? new ArrayList<>() : listItems;
+    }
+
 
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemDTO) {

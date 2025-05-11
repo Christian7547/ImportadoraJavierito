@@ -123,6 +123,12 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
+    public List<RecycleBin> getRecycleBin(int limit, int offset, String param, String subCategory, String brand, String itemStatus) {
+        var result = itemDomainRepository.getRecycleBin(limit, offset, param, subCategory, brand, itemStatus);
+        return result;
+    }
+
+    @Override
     public ItemAcronym getItemAcronym(Long id) {
         return itemDomainRepository.getItemAcronym(id);
     }
@@ -168,7 +174,7 @@ public class ItemService implements IItemSerivce {
         }
 
         item.setStatus((short) 0);
-        item.setLastUpdate(LocalDateTime.now());
+        item.setLastUpdate(new Timestamp(System.currentTimeMillis()));
         item.setUserID(itemDto.getUserID());
 
         return itemDomainRepository.deleteItem(item);

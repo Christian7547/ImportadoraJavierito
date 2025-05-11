@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,8 +23,8 @@ public class Item {
     private short subCategoryID;
     private String dateManufacture;
     private short status;
-    private LocalDateTime registerDate;
-    private LocalDateTime  lastUpdate;
+    private Timestamp registerDate;
+    private Timestamp  lastUpdate;
     private short  itemAddressID;
     private long userID;
     private String acronym;
