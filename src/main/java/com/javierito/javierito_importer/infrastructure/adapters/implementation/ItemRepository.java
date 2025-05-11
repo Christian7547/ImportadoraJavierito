@@ -290,18 +290,47 @@ public class ItemRepository implements IItemDomainRepository {
     }
 
     @Override
-    public Item deleteItem(Item item) {
-        return itemMapper.toItem(itemRepository.save(itemMapper.toItemEntity(item)));
+    public void deleteItem(DeleteItem item) {
+
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery("usp_delete_item");
+
+        query.registerStoredProcedureParameter("p_item_id", Long.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_user_id", Long.class, ParameterMode.IN);
+
+        query.setParameter("p_item_id", item.getItemId());
+        query.setParameter("p_user_id", item.UserId);
+
+        query.execute();
     }
 
     @Override
-    public Item restoreItem(Item item) {
-        return itemMapper.toItem(itemRepository.save(itemMapper.toItemEntity(item)));
+    public void restoreItem(DeleteItem item) {
+
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery("usp_restore_item");
+
+        query.registerStoredProcedureParameter("p_item_id", Long.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_user_id", Long.class, ParameterMode.IN);
+
+        query.setParameter("p_item_id", item.getItemId());
+        query.setParameter("p_user_id", item.UserId);
+
+        query.execute();
     }
 
     @Override
-    public void deleteItemPermanently(Item item) {
-        itemRepository.deleteById(item.getId());
+    public void deleteItemPermanently(DeleteItem item) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery("usp_delete_item_permanently");
+
+        query.registerStoredProcedureParameter("p_item_id", Long.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_user_id", Long.class, ParameterMode.IN);
+
+        query.setParameter("p_item_id", item.getItemId());
+        query.setParameter("p_user_id", item.UserId);
+
+        query.execute();
     }
 
     @Override

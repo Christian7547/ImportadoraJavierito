@@ -12,9 +12,10 @@ import java.util.List;
 public interface IItemSerivce {
 
     ItemUpdate updateItemById(ItemUpdate itemUpdate);
-    Item deleteItem(Item item);
-    void deleteItemPermanently(Item item);
-    Item restoreItem(Item item);
+
+    void deleteItem(DeleteItem item);
+    void deleteItemPermanently(DeleteItem item);
+    void restoreItem(DeleteItem item);
 
     int insertItem(NewItem insertItemDTO);
     Tuple<List<ListItems>, Integer> getAllItems(int limit, int offset, String param, String subCategory, String brand, String itemStatus);
