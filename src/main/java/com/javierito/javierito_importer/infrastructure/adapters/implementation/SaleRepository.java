@@ -132,6 +132,4 @@ public class SaleRepository implements ISaleDomainRepository {
         }
         return sales;
     }
-
-
 }
