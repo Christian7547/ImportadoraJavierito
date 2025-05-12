@@ -98,4 +98,9 @@ public class BeansConfiguration {
             JsonConverter jsonConverter){
         return new SaleService(saleDomainRepository, barcodeDomainRepository, stockDomainRepository, jsonConverter);
     }
+
+    @Bean
+    IReportService reportService(IReportDomainRepository reportDomainRepository){
+        return new ReportService(reportDomainRepository);
+    }
 }

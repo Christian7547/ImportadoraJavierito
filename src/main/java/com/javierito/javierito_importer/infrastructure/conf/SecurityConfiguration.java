@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/stocks/**").permitAll()
                         .requestMatchers("/api/barcodes/**").permitAll()
                         .requestMatchers("/api/sales/**").permitAll()
+                        .requestMatchers("/api/reports/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
