@@ -16,5 +16,6 @@ public class NewStock {
     private int quantity;
     private String acronym;
     private String[] barcodes;
+    private Long userId;
 
 }

@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface IItemDomainRepository {
 
-    Item deleteItem(Item item);
+    void deleteItem(DeleteItem item);
+    void restoreItem(DeleteItem item);
+    void deleteItemPermanently(DeleteItem item);
+
     Item getItem(Long id);
 
     int insertItem(NewItem newItem);

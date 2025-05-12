@@ -60,34 +60,24 @@ public class StockRepository implements IStockDomainRepository {
 
     @Override
     public int insertNewStock(NewStock newStock) {
-        int rowsAffected = 0;
+        StoredProcedureQuery procedureQuery = entityManager.createStoredProcedureQuery("usp_stock_barcodes");
 
-        try {
-            StoredProcedureQuery procedureQuery = entityManager.createStoredProcedureQuery("usp_stock_barcodes");
+        procedureQuery.registerStoredProcedureParameter("p_item_id", Long.class, ParameterMode.IN);
+        procedureQuery.registerStoredProcedureParameter("p_branch_office_id", Long.class, ParameterMode.IN);
+        procedureQuery.registerStoredProcedureParameter("p_quantity", Integer.class, ParameterMode.IN);
+        procedureQuery.registerStoredProcedureParameter("p_barcodes", String[].class, ParameterMode.IN);
+        procedureQuery.registerStoredProcedureParameter("p_user_id", Long.class, ParameterMode.IN);
+        procedureQuery.registerStoredProcedureParameter("p_rows_affected", Integer.class, ParameterMode.OUT);
 
-            procedureQuery.registerStoredProcedureParameter("p_item_id", Long.class, ParameterMode.IN);
-            procedureQuery.registerStoredProcedureParameter("p_branch_office_id", Long.class, ParameterMode.IN);
-            procedureQuery.registerStoredProcedureParameter("p_quantity", Integer.class, ParameterMode.IN);
-            procedureQuery.registerStoredProcedureParameter("p_barcodes", String[].class, ParameterMode.IN);
-            procedureQuery.registerStoredProcedureParameter("p_rows_affected", Integer.class, ParameterMode.OUT);
+        procedureQuery.setParameter("p_item_id", newStock.getItemId());
+        procedureQuery.setParameter("p_branch_office_id", newStock.getBranchOfficeId());
+        procedureQuery.setParameter("p_quantity", newStock.getQuantity());
+        procedureQuery.setParameter("p_barcodes", newStock.getBarcodes());
+        procedureQuery.setParameter("p_user_id", newStock.getUserId());
 
-            procedureQuery.setParameter("p_item_id", newStock.getItemId());
-            procedureQuery.setParameter("p_branch_office_id", newStock.getBranchOfficeId());
-            procedureQuery.setParameter("p_quantity", newStock.getQuantity());
-            procedureQuery.setParameter("p_barcodes", newStock.getBarcodes());
-            procedureQuery.setParameter("p_rows_affected", rowsAffected);
+        procedureQuery.execute();
 
-            procedureQuery.execute();
-
-            rowsAffected = (int) procedureQuery.getOutputParameterValue("p_rows_affected");
-
-        } catch (Exception e) {
-
-            System.err.println("Error occurred while inserting new stock: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        return rowsAffected;
+        return (int) procedureQuery.getOutputParameterValue("p_rows_affected");
     }
 
 

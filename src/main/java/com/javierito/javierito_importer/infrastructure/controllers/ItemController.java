@@ -3,6 +3,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.IItemSerivce;
 import com.javierito.javierito_importer.domain.models.Item;
+import com.javierito.javierito_importer.domain.models.ItemModels.DeleteItem;
 import com.javierito.javierito_importer.domain.models.ItemModels.ItemUpdate;
 import com.javierito.javierito_importer.domain.models.ItemModels.NewItem;
 import com.javierito.javierito_importer.infrastructure.dtos.Item.InsertItemDTO;
@@ -85,17 +86,6 @@ public class ItemController {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-    @DeleteMapping("/removeItem")
-    public ResponseEntity<?> removeItem (@RequestBody Item item) {
-
-        var result = itemSerivce.deleteItem(item);
-
-        if (result != null)
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
-
-    }
-
     @PostMapping("/itemAcronym")
     public ResponseEntity<?> itemAcronym(@RequestBody ItemAcronymDTO itemDTO) {
 
@@ -130,4 +120,44 @@ public class ItemController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         return new ResponseEntity<>("Could not get items", HttpStatus.NOT_FOUND);
     }
+
+    @DeleteMapping("/removeItem")
+    public ResponseEntity<?> removeItem(@RequestBody DeleteItem item) {
+        try {
+
+            itemSerivce.deleteItem(item);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            
+        } catch (Exception e) {
+
+            return new ResponseEntity<>("No se pudo eliminar el ítem. Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/restoreItem")
+    public ResponseEntity<?> restoreItem(@RequestBody DeleteItem item) {
+        try {
+
+            itemSerivce.restoreItem(item);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (Exception e) {
+
+            return new ResponseEntity<>("No se pudo restaurar el ítem. Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/deleteItemPermanently")
+    public ResponseEntity<?> deleteItemPermanently(@RequestBody DeleteItem item) {
+        try {
+
+            itemSerivce.deleteItemPermanently(item);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+
+            return new ResponseEntity<>("No se pudo eliminar el ítem permanentemente. Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
