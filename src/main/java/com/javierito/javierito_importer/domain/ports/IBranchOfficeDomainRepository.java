@@ -10,7 +10,6 @@ import java.util.List;
 public interface IBranchOfficeDomainRepository {
     List<OfficeList> getAll(Pageable pageable, @Nullable String query, @Nullable Integer status);
     BranchOffice getById(int id);
-    BranchOffice createBranchOffice(BranchOffice branchOffice);
-    BranchOffice removeOrEditBranchOffice(BranchOffice branchOffice);
+    BranchOffice save(BranchOffice branchOffice);
     long countBranchOffices();
 }

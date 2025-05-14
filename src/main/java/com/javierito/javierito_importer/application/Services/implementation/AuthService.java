@@ -44,4 +44,14 @@ public class AuthService implements IAuthService {
         }
         return null;
     }
+
+    @Override
+    public User changeFirstLogin(long userId) {
+        User getUser = userDomainRepository.getById(userId);
+        if(getUser == null) {
+            return null;
+        }
+        getUser.setFirstLogin("0");
+        return userDomainRepository.saveUser(getUser);
+    }
 }

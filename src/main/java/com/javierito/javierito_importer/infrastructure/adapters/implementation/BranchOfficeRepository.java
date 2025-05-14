@@ -49,22 +49,15 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
 
     @Override
     public BranchOffice getById(int id) {
-        var branchOfficeEntity = branchOfficeRepository.getBranchOfficeById(id);
+        var branchOfficeEntity = branchOfficeRepository.findById(id);
         return branchOfficeMapper.toBranchOffice(branchOfficeEntity.get());
     }
 
     @Override
-    public BranchOffice createBranchOffice(BranchOffice branchOffice) {
+    public BranchOffice save(BranchOffice branchOffice) {
         var toEntity = branchOfficeMapper.toBranchOfficeEntity(branchOffice);
         var created = branchOfficeRepository.save(toEntity);
         return branchOfficeMapper.toBranchOffice(created);
-    }
-
-    @Override
-    public BranchOffice removeOrEditBranchOffice(BranchOffice branchOffice) {
-        BranchOfficeEntity toEntity = branchOfficeMapper.toBranchOfficeEntity(branchOffice);
-        BranchOfficeEntity saved = branchOfficeRepository.save(toEntity);
-        return branchOfficeMapper.toBranchOffice(saved);
     }
 
     @Override

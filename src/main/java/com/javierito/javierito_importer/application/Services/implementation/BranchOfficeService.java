@@ -44,7 +44,7 @@ public class BranchOfficeService implements IBranchOfficeService {
     @Override
     public BranchOffice createBranchOffice(BranchOffice branchOffice, ArrayList<String> pathImages) {
         List<BranchOfficeImage> images = new ArrayList<>();
-        var branchOfficeCreated = branchOfficeDomainRepository.createBranchOffice(branchOffice);
+        var branchOfficeCreated = branchOfficeDomainRepository.save(branchOffice);
         for(String pathImage : pathImages) {
             BranchOfficeImage image = BranchOfficeImage.builder()
                     .pathImage(pathImage)
@@ -61,7 +61,7 @@ public class BranchOfficeService implements IBranchOfficeService {
     @Override
     public BranchOffice updateBranchOffice(BranchOffice branchOffice) {
         branchOffice.setLastUpdate(LocalDateTime.now());
-        BranchOffice response = branchOfficeDomainRepository.removeOrEditBranchOffice(branchOffice);
+        BranchOffice response = branchOfficeDomainRepository.save(branchOffice);
         if(response != null){
             return response;
         }
@@ -86,7 +86,7 @@ public class BranchOfficeService implements IBranchOfficeService {
         if(getOffice != null) {
             getOffice.setStatus((short) 0);
             getOffice.setLastUpdate(LocalDateTime.now());
-            branchOfficeDomainRepository.removeOrEditBranchOffice(getOffice);
+            branchOfficeDomainRepository.save(getOffice);
             return true;
         }
         return false;
