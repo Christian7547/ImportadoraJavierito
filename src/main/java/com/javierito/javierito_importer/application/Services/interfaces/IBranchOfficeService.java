@@ -14,6 +14,6 @@ public interface IBranchOfficeService {
     BranchOffice createBranchOffice(BranchOffice branchOffice, ArrayList<String> pathImages);
     BranchOffice updateBranchOffice(BranchOffice branchOffice);
     Map<String, String> getCoordinatesByOffice(int branchOfficeId);
-    boolean removeBranchOffice(BranchOffice branchOffice);
+    boolean changeStatus(BranchOffice branchOffice);
     long countBranchOffices();
 }
