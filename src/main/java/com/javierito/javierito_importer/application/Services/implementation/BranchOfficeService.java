@@ -81,10 +81,10 @@ public class BranchOfficeService implements IBranchOfficeService {
     }
 
     @Override
-    public boolean removeBranchOffice(BranchOffice branchOffice) {
+    public boolean changeStatus(BranchOffice branchOffice) {
         BranchOffice getOffice = getById(branchOffice.getId());
         if(getOffice != null) {
-            getOffice.setStatus((short) 0);
+            getOffice.setStatus(branchOffice.getStatus());
             getOffice.setLastUpdate(LocalDateTime.now());
             branchOfficeDomainRepository.save(getOffice);
             return true;

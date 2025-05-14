@@ -99,12 +99,13 @@ public class BranchOfficeController {
         return new ResponseEntity<>(images,HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/removeBranchOffice/{id}")
-    public ResponseEntity<?> removeBranchOffice(@PathVariable short id){
+    @DeleteMapping("/changeStatus/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable short id, @RequestParam int status){
         BranchOffice office = BranchOffice.builder()
                 .id(id)
+                .status((short) status)
                 .build();
-        boolean success = branchOfficeService.removeBranchOffice(office);
+        boolean success = branchOfficeService.changeStatus(office);
         if(!success) {
             throw new ResourceNotFoundException("branchOffice", "id", Short.toString(id));
         }
