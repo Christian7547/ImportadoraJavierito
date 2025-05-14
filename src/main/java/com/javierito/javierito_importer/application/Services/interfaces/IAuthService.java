@@ -6,4 +6,5 @@ import org.springframework.data.util.Pair;
 public interface IAuthService {
     Pair<User, String> authenticate(String username, String password);
     User resetPassword(String email, String newPassword);
+    User changeFirstLogin(long userId);
 }

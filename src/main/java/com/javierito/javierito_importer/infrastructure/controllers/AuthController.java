@@ -5,6 +5,7 @@ import com.javierito.javierito_importer.application.Services.interfaces.IUserSer
 import com.javierito.javierito_importer.domain.models.userModels.User;
 import com.javierito.javierito_importer.infrastructure.dtos.auth.LoginDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.auth.ResetPasswordDTO;
+import com.javierito.javierito_importer.infrastructure.exception.types.BadRequestException;
 import com.javierito.javierito_importer.infrastructure.exception.types.ResourceNotFoundException;
 import com.javierito.javierito_importer.infrastructure.jwt.JwtService;
 import com.javierito.javierito_importer.infrastructure.mappers.UserMapper;
@@ -43,6 +44,7 @@ public class AuthController {
         var u = userMapper.toUserEntity(data.getFirst());
         String token = jwtService.generateToken(u);
         Map<String, Object> response = new HashMap<>();
+        response.put("firstLogin", data.getFirst().getFirstLogin());
         response.put("token", token);
         response.put("branchOffice", data.getSecond());
         return ResponseEntity.ok(response);
@@ -62,6 +64,15 @@ public class AuthController {
         User user = authService.resetPassword(data.getEmail(), data.getNewPassword());
         if(user == null){
             throw new ResourceNotFoundException("user", "email", data.getEmail());
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/changeFirstLogin/{userId}")
+    public ResponseEntity<?> changeFirstLogin(@PathVariable long userId) {
+        User user = authService.changeFirstLogin(userId);
+        if (user == null) {
+            throw new ResourceNotFoundException("user", "id", Long.toString(userId));
         }
         return ResponseEntity.noContent().build();
     }
