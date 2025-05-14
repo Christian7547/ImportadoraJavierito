@@ -40,6 +40,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "lastUpdate")
     private LocalDateTime lastUpdate;
 
+    @Column(name = "firstLogin", nullable = false)
+    private String firstLogin;
+
     @PrePersist
     private void onCreate(){
         if (this.registerDate == null) {
