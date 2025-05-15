@@ -18,4 +18,5 @@ public class User {
     private short status;
     private LocalDateTime registerDate;
     private LocalDateTime lastUpdate;
+    private String firstLogin;
 }
