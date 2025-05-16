@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,7 @@ public class BarcodeRepository implements IBarcodeDomainRepository {
             barcodeItem.setItemName((String) row[2]);
             barcodeItem.setBrandName((String) row[3]);
             barcodeItem.setItemModel((String) row[4]);
+            barcodeItem.setRegisterDate((Timestamp) row[5]);
             barcodeItems.add(barcodeItem);
         }
         return barcodeItems;
