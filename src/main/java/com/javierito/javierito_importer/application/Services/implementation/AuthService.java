@@ -51,7 +51,7 @@ public class AuthService implements IAuthService {
         if(getUser == null) {
             return null;
         }
-        getUser.setFirstLogin("0");
+        getUser.setFirstLogin("1");
         return userDomainRepository.saveUser(getUser);
     }
 }

@@ -16,4 +16,6 @@ public interface IUserService {
     Pair<User, String> getByEmail(String email);
     User getById(long id);
     long countUsers();
+    long countActiveUsers();
+    long countInactiveUsers();
 }
