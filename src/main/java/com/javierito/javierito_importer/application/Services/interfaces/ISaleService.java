@@ -5,15 +5,16 @@ import com.javierito.javierito_importer.domain.models.SaleModels.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.lang.Nullable;
 
 public interface ISaleService {
     long createSale(Sale sale) throws JsonProcessingException;
 
     List<SaleList> getAll(int limit,
                           int offset,
-                          LocalDateTime initDate,
-                          LocalDateTime finishDate,
-                          String params);
+                          @Nullable LocalDateTime initDate,
+                          @Nullable LocalDateTime finishDate,
+                          @Nullable String params);
 
     List<SaleReport> getSalesReport(LocalDateTime from, LocalDateTime to) throws JsonProcessingException;
 

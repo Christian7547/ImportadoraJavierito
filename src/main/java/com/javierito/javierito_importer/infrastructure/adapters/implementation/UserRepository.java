@@ -76,4 +76,12 @@ public class UserRepository implements IUserDomainRepository {
     public long countUsers() {
         return userRepository.count();
     }
+
+    public long countActiveUsers() {
+        return userRepository.countActiveUsers();
+    }
+
+    public long countInactiveUsers() {
+        return userRepository.countInactiveUsers();
+    }
 }
