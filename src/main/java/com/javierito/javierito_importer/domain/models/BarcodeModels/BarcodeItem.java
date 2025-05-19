@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -15,4 +17,5 @@ public class BarcodeItem {
     private String itemName;
     private String brandName;
     private String itemModel;
+    private Timestamp registerDate;
 }

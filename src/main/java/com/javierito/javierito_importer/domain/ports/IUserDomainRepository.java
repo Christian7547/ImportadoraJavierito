@@ -13,4 +13,6 @@ public interface IUserDomainRepository {
     User getByEmail(String email);
     User getById(long id);
     long countUsers();
+    long countActiveUsers();
+    long countInactiveUsers();
 }

@@ -49,6 +49,7 @@ public class UserEntity implements UserDetails {
             this.registerDate = LocalDateTime.now();
         }
         this.status = 1;
+        this.firstLogin = "0";
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.javierito.javierito_importer.infrastructure.exception.types.BadReques
 import com.javierito.javierito_importer.infrastructure.exception.types.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.javatuples.Quartet;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,9 @@ public class UserController {
             throw new ResourceNotFoundException("user");
         }
         long total = userService.countUsers();
-        Pair<List<UserList>, Long> data = Pair.of(users, total);
+        long actives = userService.countActiveUsers();
+        long inactives = userService.countInactiveUsers();
+        Quartet<List<UserList>, Long, Long, Long> data = Quartet.with(users, total, actives, inactives);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
