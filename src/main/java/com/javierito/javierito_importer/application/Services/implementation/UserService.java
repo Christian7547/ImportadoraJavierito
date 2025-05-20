@@ -99,6 +99,14 @@ public class UserService implements IUserService {
         return userDomainRepository.countUsers();
     }
 
+    public long countActiveUsers() {
+        return userDomainRepository.countActiveUsers();
+    }
+
+    public long countInactiveUsers() {
+        return userDomainRepository.countInactiveUsers();
+    }
+
     private String getNewUserName(String name, String lastName, String secondLastName){
         return Generator.generateUsername(name, lastName, secondLastName);
     }

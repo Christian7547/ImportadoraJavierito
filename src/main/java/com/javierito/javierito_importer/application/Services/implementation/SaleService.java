@@ -12,6 +12,7 @@ import com.javierito.javierito_importer.domain.ports.IStockDomainRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Array;
@@ -29,12 +30,15 @@ public class SaleService implements ISaleService {
 
     public List<SaleList> getAll(int limit,
                                  int offset,
-                                 LocalDateTime initDate,
-                                 LocalDateTime finishDate,
+                                 @Nullable LocalDateTime initDate,
+                                 @Nullable LocalDateTime finishDate,
                                  String params) {
         Pageable pageable = PageRequest.of(offset, limit);
-        finishDate = finishDate.plusDays(1);
-        initDate = initDate.minusDays(1);
+        if (initDate != null) {
+            initDate = initDate.minusDays(1);
+        } else if (finishDate != null) {
+            finishDate = finishDate.plusDays(1);
+        }
         return saleDomainRepository.getAll(pageable, initDate, finishDate, params);
     }
 
