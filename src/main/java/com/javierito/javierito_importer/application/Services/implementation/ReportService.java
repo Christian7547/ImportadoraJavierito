@@ -32,4 +32,19 @@ public class ReportService implements IReportService {
 
         return result;
     }
+
+    @Override
+    public Long countAll() {
+        return reportDomainRepository.countAll();
+    }
+
+    @Override
+    public Long countAllSales() {
+        return reportDomainRepository.countAllSales();
+    }
+
+    @Override
+    public Long countAllInventory() {
+        return reportDomainRepository.countAllInventory();
+    }
 }

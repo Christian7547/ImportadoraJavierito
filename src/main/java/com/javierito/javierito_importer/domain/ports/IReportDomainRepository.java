@@ -13,4 +13,7 @@ public interface IReportDomainRepository {
 
     int insertReport(InsertReport report);
 
+    Long countAll();
+    Long countAllSales();
+    Long countAllInventory();
 }

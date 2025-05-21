@@ -3,6 +3,7 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 import com.javierito.javierito_importer.domain.models.InsertReport;
 import com.javierito.javierito_importer.domain.models.Report;
 import com.javierito.javierito_importer.domain.ports.IReportDomainRepository;
+import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IReportsRepository;
 import com.javierito.javierito_importer.infrastructure.mappers.ReportMapper;
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ public class ReportRepository implements IReportDomainRepository {
 
     @Autowired
     private ReportMapper reportMapper;
+
+    private final IReportsRepository reportRepository;
 
     @Override
     public List<Report> getAllReports(int limit,
@@ -69,5 +72,20 @@ public class ReportRepository implements IReportDomainRepository {
         report.setAffectedRows(affectedRows);
 
         return affectedRows;
+    }
+
+    @Override
+    public Long countAll() {
+        return reportRepository.countAll();
+    }
+
+    @Override
+    public Long countAllSales() {
+        return reportRepository.countAllSales();
+    }
+
+    @Override
+    public Long countAllInventory() {
+        return reportRepository.countAllInventory();
     }
 }

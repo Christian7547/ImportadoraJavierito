@@ -4,7 +4,9 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 import com.javierito.javierito_importer.application.Services.interfaces.IReportService;
 import com.javierito.javierito_importer.domain.models.InsertReport;
 import com.javierito.javierito_importer.domain.models.Report;
+import com.javierito.javierito_importer.domain.models.userModels.UserList;
 import lombok.RequiredArgsConstructor;
+import org.javatuples.Quartet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +30,15 @@ public class ReportController {
                                         String order) {
 
         var reports = reportService.getReports(limit, offset, param, starDate, endDate, order);
+        long totalReports = reportService.countAll();
+        long totalReportSales = reportService.countAllSales();
+        long totalReportsInventory = reportService.countAllInventory();
+        Quartet<List<Report>, Long, Long, Long> data = Quartet.with(reports, totalReports, totalReportSales, totalReportsInventory);
+        if (data  == null) {
+            return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
 
-        if (reports != null)
-            return new ResponseEntity<>(reports, HttpStatus.OK);
-        return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @PostMapping("/insertReport")
