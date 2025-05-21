@@ -18,7 +18,7 @@ public interface ISaleDomainRepository {
                        @Nullable LocalDateTime initDate,
                        @Nullable LocalDateTime finishDate,
                        @Nullable String params);
-
+    Long countAll();
     List<SalesDetails> getSalesReport(LocalDateTime from, LocalDateTime to);
 
     Sale saveSale(Sale source);

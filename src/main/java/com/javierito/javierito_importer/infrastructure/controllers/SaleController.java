@@ -2,11 +2,13 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.ISaleService;
+import com.javierito.javierito_importer.domain.models.SaleModels.SaleList;
 import com.javierito.javierito_importer.domain.models.SaleModels.SaleReport;
 import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
 import com.javierito.javierito_importer.infrastructure.dtos.sale.SaleParamsDTO;
 import com.javierito.javierito_importer.infrastructure.exception.types.BadRequestException;
 import com.javierito.javierito_importer.infrastructure.exception.types.ResourceNotFoundException;
+import org.javatuples.Pair;
 import org.springframework.format.annotation.DateTimeFormat;
 import com.javierito.javierito_importer.domain.models.SaleModels.Sale;
 import com.javierito.javierito_importer.infrastructure.dtos.sale.SaleDTO;
@@ -31,10 +33,11 @@ public class SaleController {
     public ResponseEntity<?> getSales(@RequestParam(defaultValue = "5")int limit,
                                       @RequestParam(defaultValue = "1")int offset,
                                       @RequestBody SaleParamsDTO options){
-        var data = saleService.getAll(limit, offset, options.getInitDate(), options.getFinishDate(), options.getParams());
-        if(data.isEmpty()) {
-            throw new ResourceNotFoundException("sales");
-        }
+        var saleLists = saleService.getAll(limit, offset, options.getInitDate(), options.getFinishDate(), options.getParams());
+        long countTotal = saleService.countAll();
+        Pair<List<SaleList>, Long> data = Pair.with(saleLists, countTotal);
+
+
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 

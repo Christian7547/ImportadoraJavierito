@@ -132,4 +132,9 @@ public class SaleRepository implements ISaleDomainRepository {
         }
         return sales;
     }
+
+    @Override
+    public Long countAll() {
+        return saleRepository.countAllSales();
+    }
 }

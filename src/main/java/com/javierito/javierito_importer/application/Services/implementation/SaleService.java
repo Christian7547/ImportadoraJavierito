@@ -43,6 +43,11 @@ public class SaleService implements ISaleService {
     }
 
     @Override
+    public Long countAll() {
+        return saleDomainRepository.countAll();
+    }
+
+    @Override
     public long createSale(Sale sale) throws JsonProcessingException {
         String serializeDetails = jsonConverter.serializeCollection(sale.getDetails());
         return saleDomainRepository.createSale(sale.getTotal(),

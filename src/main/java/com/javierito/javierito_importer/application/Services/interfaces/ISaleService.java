@@ -16,6 +16,8 @@ public interface ISaleService {
                           @Nullable LocalDateTime finishDate,
                           @Nullable String params);
 
+    Long countAll();
+
     List<SaleReport> getSalesReport(LocalDateTime from, LocalDateTime to) throws JsonProcessingException;
 
     Sale getSaleById(long id);
