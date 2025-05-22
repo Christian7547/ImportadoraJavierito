@@ -1,11 +1,11 @@
 package com.javierito.javierito_importer.infrastructure.controllers;
 
-import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeImageService;
 import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeService;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOfficeDetails;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
-import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
 import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.*;
+import com.javierito.javierito_importer.infrastructure.exception.types.BadRequestException;
 import com.javierito.javierito_importer.infrastructure.exception.types.ResourceNotFoundException;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeImageMapper;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
@@ -29,7 +29,6 @@ public class BranchOfficeController {
     private final BranchOfficeImageMapper officeImageMapper;
 
     private final IBranchOfficeService branchOfficeService;
-    private final IBranchOfficeImageService imageService;
 
     @PostMapping("/getAll")
     public ResponseEntity<?> getBranchOffices(@RequestParam(defaultValue = "5")int limit,
@@ -41,7 +40,7 @@ public class BranchOfficeController {
                 params.getQuery(),
                 params.getStatus());
         if(offices.isEmpty()){
-            throw new ResourceNotFoundException("branchOffice");
+            throw new ResourceNotFoundException("branchOffices");
         }
         long totalOffices = branchOfficeService.countBranchOffices();
         Pair<List<OfficeList>, Long> data = Pair.of(offices, totalOffices);
@@ -50,23 +49,11 @@ public class BranchOfficeController {
 
     @GetMapping("/getBranchOfficeDetails/{branchOfficeId}")
     public ResponseEntity<?> getBranchOffice(@PathVariable int branchOfficeId){
-        BranchOffice branchOffice = branchOfficeService.getById(branchOfficeId);
-        if(branchOffice == null){
+        BranchOfficeDetails response = branchOfficeService.getDetails(branchOfficeId);
+        if(response == null) {
             throw new ResourceNotFoundException("branchOffice", "id", Integer.toString(branchOfficeId));
         }
-        List<BranchOfficeImage> source = imageService.getImagesByBranchOfficeId(branchOffice.getId());
-        ArrayList<OfficeImageEditableDTO> target = (ArrayList<OfficeImageEditableDTO>) officeImageMapper.toOfficeImageEditableDTOList(source);
-        BranchOfficeEditableDTO editableDTO = BranchOfficeEditableDTO
-                .builder()
-                .id(branchOffice.getId())
-                .name(branchOffice.getName())
-                .address(branchOffice.getAddress())
-                .latitude(branchOffice.getLatitude())
-                .longitude(branchOffice.getLongitude())
-                .registerDate(branchOffice.getRegisterDate())
-                .images(target)
-                .build();
-        return new ResponseEntity<>(editableDTO, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/createBranchOffice")
@@ -79,7 +66,10 @@ public class BranchOfficeController {
                 .ownerId(newBranchOfficeDTO.getOwnerId())
                 .status(newBranchOfficeDTO.getStatus())
                 .build();
-        var created = branchOfficeService.createBranchOffice(branchOffice, newBranchOfficeDTO.getPathImages());
+        var created = branchOfficeService.saveBranchOffice(branchOffice, newBranchOfficeDTO.getPathImages());
+        if(created == null) {
+            throw new BadRequestException("The branchOffice could not be created. Please try again later.");
+        }
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
@@ -91,25 +81,23 @@ public class BranchOfficeController {
                 .address(data.getAddress())
                 .latitude(data.getLatitude())
                 .longitude(data.getLongitude())
-                .registerDate(data.getRegisterDate())
+                .ownerId(data.getOwnerId())
+                .status(data.getStatus())
                 .build();
-        branchOfficeService.updateBranchOffice(branchOffice);
-        List<BranchOfficeImage> images = officeImageMapper.toOfficeImageFromEditableDTOList(data.getImages());
-        imageService.checkIfImagesStatus(images, branchOffice.getId());
-        return new ResponseEntity<>(images,HttpStatus.NO_CONTENT);
+        var updated = branchOfficeService.saveBranchOffice(branchOffice, (ArrayList<String>) data.getImages());
+        if(updated == null) {
+            throw new BadRequestException("The branchOffice could not be updated. Please try again later.");
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-    @DeleteMapping("/changeStatus/{id}")
-    public ResponseEntity<?> changeStatus(@PathVariable short id, @RequestParam int status){
-        BranchOffice office = BranchOffice.builder()
-                .id(id)
-                .status((short) status)
-                .build();
-        boolean success = branchOfficeService.changeStatus(office);
+    @DeleteMapping("/deleteOffice/{id}")
+    public ResponseEntity<?> deleteOffice(@PathVariable int id){
+        boolean success = branchOfficeService.deleteBranchOffice(id);
         if(!success) {
-            throw new ResourceNotFoundException("branchOffice", "id", Short.toString(id));
+            throw new ResourceNotFoundException("branchOffice", "id", Short.toString((short) id));
         }
-        return new ResponseEntity<>("Branch office removed", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/getCoordinates/{id}")

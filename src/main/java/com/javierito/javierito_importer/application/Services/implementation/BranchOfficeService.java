@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.application.Services.implementation;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeService;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOfficeDetails;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeDomainRepository;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,36 +36,24 @@ public class BranchOfficeService implements IBranchOfficeService {
     }
 
     @Override
+    public BranchOfficeDetails getDetails(int id) {
+        BranchOfficeDetails office = branchOfficeDomainRepository.getDetails(id);
+        var images = branchOfficeImageDomainRepository.getImagesByBranchOfficeId(office.getOfficeId())
+                .stream()
+                .map(BranchOfficeImage::getPathImage)
+                .toList();
+        office.setImages(images);
+        return office;
+    }
+
+    @Override
     public BranchOffice getById(int id) {
         return branchOfficeDomainRepository.getById(id);
     }
 
-    @Transactional
     @Override
-    public BranchOffice createBranchOffice(BranchOffice branchOffice, ArrayList<String> pathImages) {
-        List<BranchOfficeImage> images = new ArrayList<>();
-        var branchOfficeCreated = branchOfficeDomainRepository.save(branchOffice);
-        for(String pathImage : pathImages) {
-            BranchOfficeImage image = BranchOfficeImage.builder()
-                    .pathImage(pathImage)
-                    .branchOfficeID(branchOfficeCreated.getId())
-                    .build();
-            images.add(image);
-        }
-        for(BranchOfficeImage image : images) {
-            branchOfficeImageDomainRepository.createBranchOfficeImage(image);
-        }
-        return branchOfficeCreated;
-    }
-
-    @Override
-    public BranchOffice updateBranchOffice(BranchOffice branchOffice) {
-        branchOffice.setLastUpdate(LocalDateTime.now());
-        BranchOffice response = branchOfficeDomainRepository.save(branchOffice);
-        if(response != null){
-            return response;
-        }
-        throw new RuntimeException();
+    public BranchOffice saveBranchOffice(BranchOffice branchOffice, List<String> pathImages) {
+        return branchOfficeDomainRepository.save(branchOffice, pathImages);
     }
 
     @Override
@@ -81,12 +69,12 @@ public class BranchOfficeService implements IBranchOfficeService {
     }
 
     @Override
-    public boolean changeStatus(BranchOffice branchOffice) {
-        BranchOffice getOffice = getById(branchOffice.getId());
+    public boolean deleteBranchOffice(int id) {
+        BranchOffice getOffice = getById(id);
         if(getOffice != null) {
-            getOffice.setStatus(branchOffice.getStatus());
+            getOffice.setStatus((short) 2);
             getOffice.setLastUpdate(LocalDateTime.now());
-            branchOfficeDomainRepository.save(getOffice);
+            branchOfficeDomainRepository.changeStatus(getOffice);
             return true;
         }
         return false;

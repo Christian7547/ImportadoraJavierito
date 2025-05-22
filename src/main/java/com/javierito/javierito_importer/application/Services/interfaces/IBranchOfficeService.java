@@ -1,19 +1,21 @@
 package com.javierito.javierito_importer.application.Services.interfaces;
 
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOfficeDetails;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public interface IBranchOfficeService {
 
     ArrayList<OfficeList> getAll(int limit, int offset, @Nullable String query, @Nullable Integer status);
     BranchOffice getById(int id);
-    BranchOffice createBranchOffice(BranchOffice branchOffice, ArrayList<String> pathImages);
-    BranchOffice updateBranchOffice(BranchOffice branchOffice);
+    BranchOfficeDetails getDetails(int id);
+    BranchOffice saveBranchOffice(BranchOffice branchOffice, List<String> pathImages);
     Map<String, String> getCoordinatesByOffice(int branchOfficeId);
-    boolean changeStatus(BranchOffice branchOffice);
+    boolean deleteBranchOffice(int id);
     long countBranchOffices();
 }

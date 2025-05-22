@@ -29,6 +29,6 @@ public class NewBranchOfficeDTO {
 
     @Positive
     private int ownerId;
-    //images
+
     private ArrayList<String> pathImages;
 }

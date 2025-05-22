@@ -1,6 +1,8 @@
 package com.javierito.javierito_importer.infrastructure.dtos.BranchOffice;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,6 +25,12 @@ public class BranchOfficeEditableDTO {
 
     @NotBlank(message = "The branch longitude must not be empty or null")
     private String longitude;
-    private LocalDateTime registerDate;
-    List<OfficeImageEditableDTO> images;
+
+    @PositiveOrZero
+    private short status;
+
+    @Positive
+    private int ownerId;
+
+    private List<String> images;
 }

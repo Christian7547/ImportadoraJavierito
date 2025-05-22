@@ -21,29 +21,11 @@ public class BranchOfficeImageRepository implements IBranchOfficeImageDomainRepo
     private final IBranchOfficeImageRepository branchOfficeImageRepository;
 
     @Override
-    public BranchOfficeImage createBranchOfficeImage(BranchOfficeImage branchOfficeImage) {
-        var toEntity = branchOfficeImageMapper.toBranchOfficeImageEntity(branchOfficeImage);
-        var created = branchOfficeImageRepository.save(toEntity);
-        return branchOfficeImageMapper.toBranchOfficeImage(created);
-    }
-
-    @Override
     public List<BranchOfficeImage> getImagesByBranchOfficeId(int branchOfficeId) {
         var images = branchOfficeImageRepository.getImagesByBranchOfficeId(branchOfficeId);
         if(images.isEmpty()){
             return new ArrayList<>();
         }
-        List<BranchOfficeImage> toModels = branchOfficeImageMapper.toBranchOfficeImages(images);
-        return toModels;
-    }
-
-    @Override
-    public void removeBranchOfficeImage(int imageId) {
-        branchOfficeImageRepository.deleteById(imageId);
-    }
-
-    @Override
-    public boolean existsByPath(String path) {
-        return branchOfficeImageRepository.existsByPathBranchOffice(path);
+        return branchOfficeImageMapper.toBranchOfficeImages(images);
     }
 }

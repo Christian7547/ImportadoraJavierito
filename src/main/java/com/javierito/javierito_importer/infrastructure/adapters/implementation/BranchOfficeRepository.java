@@ -1,10 +1,10 @@
 package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOfficeDetails;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IBranchOfficeRepository;
-import com.javierito.javierito_importer.infrastructure.entities.BranchOfficeEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,15 +52,43 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
 
     @Override
     public BranchOffice getById(int id) {
-        var branchOfficeEntity = branchOfficeRepository.findById(id);
-        return branchOfficeMapper.toBranchOffice(branchOfficeEntity.get());
+        var result = branchOfficeRepository.findById(id);
+        return result.map(branchOfficeEntity -> branchOfficeMapper.toBranchOffice(branchOfficeEntity)).orElse(null);
     }
 
     @Override
-    public BranchOffice save(BranchOffice branchOffice) {
-        var toEntity = branchOfficeMapper.toBranchOfficeEntity(branchOffice);
-        var created = branchOfficeRepository.save(toEntity);
-        return branchOfficeMapper.toBranchOffice(created);
+    public BranchOfficeDetails getDetails(int id) {
+        String sql = "SELECT * FROM ufc_get_office_by_id(:p_id)";
+        Query query = entityManager.createNativeQuery(sql, BranchOfficeDetails.class);
+        query.setParameter("p_id", id);
+        return (BranchOfficeDetails) query.getSingleResult();
+    }
+
+    @Transactional
+    @Override
+    public BranchOffice save(BranchOffice branchOffice, List<String> images) {
+        String sql = "SELECT * FROM ufc_save_office(:p_name, :p_address, :p_latitude, :p_longitude, :p_owner_id, :p_paths, :p_status)";
+        Query query = entityManager.createNativeQuery(sql, BranchOffice.class);
+        if(branchOffice.getId() != null) {
+            sql = "SELECT * FROM ufc_save_office(:p_name, :p_address, :p_latitude, :p_longitude, :p_owner_id, :p_paths, :p_status, :p_id)";
+            query = entityManager.createNativeQuery(sql, BranchOffice.class);
+            query.setParameter("p_id", branchOffice.getId());
+        }
+        query.setParameter("p_name", branchOffice.getName());
+        query.setParameter("p_address", branchOffice.getAddress());
+        query.setParameter("p_latitude", branchOffice.getLatitude());
+        query.setParameter("p_longitude", branchOffice.getLongitude());
+        query.setParameter("p_owner_id", branchOffice.getOwnerId());
+        query.setParameter("p_paths", images.toArray(new String[0]));
+        query.setParameter("p_status", branchOffice.getStatus());
+
+        return (BranchOffice) query.getSingleResult();
+    }
+
+    @Override
+    public void changeStatus(BranchOffice branchOffice) {
+        var entity = branchOfficeMapper.toBranchOfficeEntity(branchOffice);
+        branchOfficeRepository.save(entity);
     }
 
     @Override

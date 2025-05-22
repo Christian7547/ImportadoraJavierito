@@ -56,11 +56,6 @@ public class BeansConfiguration {
     }
 
     @Bean
-    IBranchOfficeImageService branchOfficeImageService(IBranchOfficeImageDomainRepository branchOfficeImageDomainRepository){
-        return new BranchOfficeImageService(branchOfficeImageDomainRepository);
-    }
-
-    @Bean
     IBrandService brandService(IBrandDomainRepository brandDomainRepository){
         return new BrandService(brandDomainRepository);
     }
