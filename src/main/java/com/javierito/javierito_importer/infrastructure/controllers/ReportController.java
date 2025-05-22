@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 
 import com.javierito.javierito_importer.application.Services.interfaces.IReportService;
+import com.javierito.javierito_importer.domain.models.BarcodeModels.exception.ReportNotFoundException;
 import com.javierito.javierito_importer.domain.models.InsertReport;
 import com.javierito.javierito_importer.domain.models.Report;
 import com.javierito.javierito_importer.domain.models.userModels.UserList;
@@ -51,5 +52,16 @@ public class ReportController {
             return new ResponseEntity<>(result, HttpStatus.OK);
 
         return new ResponseEntity<>("Could not insert report", HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping("/deleteReport")
+    public ResponseEntity<?> deleteReport(@RequestBody Long reportId) {
+        try {
+            reportService.deleteReport(reportId);
+            return new ResponseEntity<>("Report deleted", HttpStatus.OK);
+        }
+        catch (ReportNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

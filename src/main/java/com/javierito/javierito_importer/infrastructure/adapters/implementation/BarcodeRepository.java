@@ -47,7 +47,8 @@ public class BarcodeRepository implements IBarcodeDomainRepository {
             barcodeItem.setItemName((String) row[2]);
             barcodeItem.setBrandName((String) row[3]);
             barcodeItem.setItemModel((String) row[4]);
-            barcodeItem.setRegisterDate((Timestamp) row[5]);
+            barcodeItem.setItemAlias((String) row[5]);
+            barcodeItem.setRegisterDate((Timestamp) row[6]);
             barcodeItems.add(barcodeItem);
         }
         return barcodeItems;

@@ -16,4 +16,6 @@ public interface IReportService {
     Long countAll();
     Long countAllSales();
     Long countAllInventory();
+
+    void deleteReport(Long reportId);
 }

@@ -17,5 +17,6 @@ public class BarcodeItem {
     private String itemName;
     private String brandName;
     private String itemModel;
+    private String itemAlias;
     private Timestamp registerDate;
 }

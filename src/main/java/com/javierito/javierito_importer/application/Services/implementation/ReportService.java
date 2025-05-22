@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.application.Services.implementation;
 
 
 import com.javierito.javierito_importer.application.Services.interfaces.IReportService;
+import com.javierito.javierito_importer.domain.models.BarcodeModels.exception.ReportNotFoundException;
 import com.javierito.javierito_importer.domain.models.InsertReport;
 import com.javierito.javierito_importer.domain.models.Report;
 import com.javierito.javierito_importer.domain.ports.IReportDomainRepository;
@@ -46,5 +47,12 @@ public class ReportService implements IReportService {
     @Override
     public Long countAllInventory() {
         return reportDomainRepository.countAllInventory();
+    }
+
+    @Override
+    public void deleteReport(Long reportId) {
+        int result = reportDomainRepository.deleteReport(reportId);
+        if (result == 0)
+            throw new ReportNotFoundException("Report Not Found: {reportId: ]" + reportId );
     }
 }

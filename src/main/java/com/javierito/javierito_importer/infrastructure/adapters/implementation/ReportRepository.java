@@ -75,6 +75,11 @@ public class ReportRepository implements IReportDomainRepository {
     }
 
     @Override
+    public int deleteReport(Long reportId) {
+        return reportRepository.deleteByReportId(reportId);
+    }
+
+    @Override
     public Long countAll() {
         return reportRepository.countAll();
     }
@@ -88,4 +93,6 @@ public class ReportRepository implements IReportDomainRepository {
     public Long countAllInventory() {
         return reportRepository.countAllInventory();
     }
+
+
 }
