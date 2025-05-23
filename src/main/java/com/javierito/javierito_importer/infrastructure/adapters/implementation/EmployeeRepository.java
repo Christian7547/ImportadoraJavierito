@@ -1,13 +1,19 @@
 package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
-import com.javierito.javierito_importer.domain.models.Employee;
+import com.javierito.javierito_importer.domain.models.EmployeeModels.Employee;
+import com.javierito.javierito_importer.domain.models.EmployeeModels.Manager;
 import com.javierito.javierito_importer.domain.ports.IEmployeeDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IEmployeeRepository;
 import com.javierito.javierito_importer.infrastructure.entities.EmployeeEntity;
 import com.javierito.javierito_importer.infrastructure.mappers.EmployeeMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,6 +23,9 @@ public class EmployeeRepository implements IEmployeeDomainRepository {
     private EmployeeMapper employeeMapper;
 
     private final IEmployeeRepository employeeRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public EmployeeRepository(IEmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -36,7 +45,13 @@ public class EmployeeRepository implements IEmployeeDomainRepository {
     }
 
     @Override
-    public void removeEmployee(Employee employee) {
-
+    public List<Manager> getManagers() {
+        String sql = "SELECT * FROM ufc_get_managers()";
+        Query query = entityManager.createNativeQuery(sql, Manager.class);
+        List<Manager> result = query.getResultList();
+        if(result.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return result;
     }
 }

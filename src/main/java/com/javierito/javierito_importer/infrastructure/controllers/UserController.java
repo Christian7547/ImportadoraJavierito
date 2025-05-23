@@ -2,7 +2,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IEmployeeService;
 import com.javierito.javierito_importer.application.Services.interfaces.IUserService;
-import com.javierito.javierito_importer.domain.models.Employee;
+import com.javierito.javierito_importer.domain.models.EmployeeModels.Employee;
 import com.javierito.javierito_importer.domain.models.userModels.User;
 import com.javierito.javierito_importer.domain.models.userModels.UserList;
 import com.javierito.javierito_importer.infrastructure.dtos.user.AccountDTO;
@@ -13,15 +13,12 @@ import com.javierito.javierito_importer.infrastructure.exception.types.ResourceN
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.javatuples.Quartet;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.prefs.BackingStoreException;
 
 @RestController
 @RequestMapping("/api/users")

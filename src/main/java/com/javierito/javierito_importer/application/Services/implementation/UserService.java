@@ -2,7 +2,7 @@ package com.javierito.javierito_importer.application.Services.implementation;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IUserService;
 import com.javierito.javierito_importer.application.Utils.*;
-import com.javierito.javierito_importer.domain.models.Employee;
+import com.javierito.javierito_importer.domain.models.EmployeeModels.Employee;
 import com.javierito.javierito_importer.domain.models.userModels.User;
 import com.javierito.javierito_importer.domain.models.userModels.UserList;
 import com.javierito.javierito_importer.domain.ports.IEmployeeDomainRepository;

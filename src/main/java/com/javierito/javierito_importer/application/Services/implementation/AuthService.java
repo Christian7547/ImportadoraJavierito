@@ -2,7 +2,7 @@ package com.javierito.javierito_importer.application.Services.implementation;
 
 import com.javierito.javierito_importer.application.Services.interfaces.IAuthService;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
-import com.javierito.javierito_importer.domain.models.Employee;
+import com.javierito.javierito_importer.domain.models.EmployeeModels.Employee;
 import com.javierito.javierito_importer.domain.models.userModels.User;
 import com.javierito.javierito_importer.domain.ports.IAuthDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeDomainRepository;
