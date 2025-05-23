@@ -16,12 +16,12 @@ public class BranchOfficeDetails {
     private String latitude;
     private String longitude;
     private Timestamp registerDate;
-    private Long ownerId;
+    private int ownerId;
     private String owner;
     private List<String> images;
 
 
-    public BranchOfficeDetails(int officeId, String name, String address, String latitude, String longitude, Timestamp registerDate, Long ownerId, String owner) {
+    public BranchOfficeDetails(int officeId, String name, String address, String latitude, String longitude, Timestamp registerDate, int ownerId, String owner) {
         this.officeId = officeId;
         this.name = name;
         this.address = address;
