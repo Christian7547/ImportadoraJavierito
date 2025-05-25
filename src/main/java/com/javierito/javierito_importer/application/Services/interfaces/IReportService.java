@@ -10,6 +10,9 @@ import java.util.List;
 public interface IReportService {
 
     List<Report> getReports(int limit, int offset, String param, Timestamp startDate, Timestamp endDate, String order);
+    List<Report> getAllReportSales(int limit, int offset, String param, Timestamp startDate, Timestamp endDate, String order);
+    List<Report> getAllReporInventories(int limit, int offset, String param, Timestamp startDate, Timestamp endDate, String order);
+
 
     int insertReport(InsertReport report);
 

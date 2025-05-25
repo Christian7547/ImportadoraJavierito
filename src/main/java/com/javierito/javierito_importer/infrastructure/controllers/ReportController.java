@@ -42,6 +42,46 @@ public class ReportController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
+    @GetMapping("/getReportSales")
+    public ResponseEntity<?> getReportSales(
+                                            @RequestParam(defaultValue = "5") int limit,
+                                            @RequestParam(defaultValue = "1") int offset,
+                                            String param,
+                                            Timestamp starDate,
+                                            Timestamp endDate,
+                                            String order) {
+        var reports = reportService.getAllReportSales(limit, offset, param, starDate, endDate, order);
+        long totalReports = reportService.countAll();
+        long totalReportSales = reportService.countAllSales();
+        long totalReportsInventory = reportService.countAllInventory();
+        Quartet<List<Report>, Long, Long, Long> data = Quartet.with(reports, totalReports, totalReportSales, totalReportsInventory);
+        if (data  == null) {
+            return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/getReportInventory")
+    public ResponseEntity<?> getReportInventory(
+            @RequestParam(defaultValue = "5") int limit,
+            @RequestParam(defaultValue = "1") int offset,
+            String param,
+            Timestamp starDate,
+            Timestamp endDate,
+            String order) {
+        var reports = reportService.getAllReporInventories(limit, offset, param, starDate, endDate, order);
+        long totalReports = reportService.countAll();
+        long totalReportSales = reportService.countAllSales();
+        long totalReportsInventory = reportService.countAllInventory();
+        Quartet<List<Report>, Long, Long, Long> data = Quartet.with(reports, totalReports, totalReportSales, totalReportsInventory);
+        if (data  == null) {
+            return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
     @PostMapping("/insertReport")
     public ResponseEntity<?> insertReport(@RequestBody InsertReport report) {
 

@@ -27,6 +27,20 @@ public class ReportService implements IReportService {
     }
 
     @Override
+    public List<Report> getAllReportSales(int limit, int offset, String param, Timestamp startDate, Timestamp endDate, String order) {
+        var result = reportDomainRepository.getAllReportSales(limit, offset, param, startDate, endDate, order);
+
+        return result;
+    }
+
+    @Override
+    public List<Report> getAllReporInventories(int limit, int offset, String param, Timestamp startDate, Timestamp endDate, String order) {
+        var result = reportDomainRepository.getAllReporInventories(limit, offset, param, startDate, endDate, order);
+
+        return result;
+    }
+
+    @Override
     public int insertReport(InsertReport report) {
 
         var result = reportDomainRepository.insertReport(report);
