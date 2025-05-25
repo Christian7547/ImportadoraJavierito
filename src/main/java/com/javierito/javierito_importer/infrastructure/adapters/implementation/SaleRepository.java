@@ -87,6 +87,15 @@ public class SaleRepository implements ISaleDomainRepository {
     }
 
     @Override
+    public String getSaleWithDetails(long id) {
+        String sql = "SELECT * FROM ufc_get_sale_by_id(:p_id)";
+
+        Query query = entityManager.createNativeQuery(sql, String.class);
+        query.setParameter("p_id", id);
+        return query.getSingleResult().toString();
+    }
+
+    @Override
     public SaleDetail getDetailsBySaleId(long saleId) {
         Optional<SaleDetailEntity> entity = saleDetailRepository.getBySaleId(saleId);
         if(entity.isEmpty()){

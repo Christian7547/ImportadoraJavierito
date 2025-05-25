@@ -2,15 +2,12 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.ISaleService;
-import com.javierito.javierito_importer.domain.models.SaleModels.SaleList;
-import com.javierito.javierito_importer.domain.models.SaleModels.SaleReport;
-import com.javierito.javierito_importer.domain.models.SaleModels.SalesDetails;
+import com.javierito.javierito_importer.domain.models.SaleModels.*;
 import com.javierito.javierito_importer.infrastructure.dtos.sale.SaleParamsDTO;
 import com.javierito.javierito_importer.infrastructure.exception.types.BadRequestException;
 import com.javierito.javierito_importer.infrastructure.exception.types.ResourceNotFoundException;
 import org.javatuples.Pair;
 import org.springframework.format.annotation.DateTimeFormat;
-import com.javierito.javierito_importer.domain.models.SaleModels.Sale;
 import com.javierito.javierito_importer.infrastructure.dtos.sale.SaleDTO;
 import com.javierito.javierito_importer.infrastructure.mappers.SaleMapper;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +36,16 @@ public class SaleController {
 
 
         return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping("/getSale/{id}")
+    public ResponseEntity<?> getSale(@PathVariable long id) throws JsonProcessingException {
+        Sale getSale = saleService.getSaleById(id);
+        if(getSale == null) {
+            throw new ResourceNotFoundException("sale", "id", Long.toString(id));
+        }
+        SingleSaleWithDetails details = saleService.getSaleWithDetails(id);
+        return new ResponseEntity<>(details, HttpStatus.OK);
     }
 
     @PostMapping("/newSale")
@@ -71,6 +78,15 @@ public class SaleController {
     @PatchMapping("/deleteSale/{id}")
     public ResponseEntity<?> deleteSale(@PathVariable long id, @RequestParam int newStatus){
         boolean success = saleService.deleteSale(id, (short) newStatus);
+        if(!success) {
+            throw new ResourceNotFoundException("sale", "id", Long.toString(id));
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/changeStatus/{id}")
+    public ResponseEntity<?> changeStatus (@PathVariable long id) {
+        boolean success = saleService.changeStatus(id);
         if(!success) {
             throw new ResourceNotFoundException("sale", "id", Long.toString(id));
         }
