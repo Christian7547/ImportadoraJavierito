@@ -27,4 +27,8 @@ public interface ISaleService {
     void refund(long saleId) throws JsonProcessingException;
 
     SaleDetail getDetailsBySaleId(long saleId);
+
+    boolean changeStatus(long saleId);
+
+    SingleSaleWithDetails getSaleWithDetails(long id) throws JsonProcessingException;
 }

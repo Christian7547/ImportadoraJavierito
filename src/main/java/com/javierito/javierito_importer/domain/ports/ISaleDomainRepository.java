@@ -25,6 +25,8 @@ public interface ISaleDomainRepository {
 
     Sale getSaleById(long id);
 
+    String getSaleWithDetails(long id);
+
     void deleteDetailBySaleId(long saleId);
 
     boolean refund(long saleId, String[] barcodes);

@@ -114,4 +114,20 @@ public class SaleService implements ISaleService {
         return saleDomainRepository.getDetailsBySaleId(saleId);
     }
 
+    @Override
+    public boolean changeStatus(long saleId) {
+        Sale getSale = getSaleById(saleId);
+        if(getSale == null) {
+            return false;
+        }
+        getSale.setStatus((short) 1);
+        saleDomainRepository.saveSale(getSale);
+        return true;
+    }
+
+    @Override
+    public SingleSaleWithDetails getSaleWithDetails(long id) throws JsonProcessingException {
+        String json = saleDomainRepository.getSaleWithDetails(id);
+        return jsonConverter.deserializeObject(json, SingleSaleWithDetails.class);
+    }
 }
