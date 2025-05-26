@@ -77,7 +77,6 @@ public class ReportController {
         Quartet<List<Report>, Long, Long, Long> data = Quartet.with(reports, totalReports, totalReportSales, totalReportsInventory);
         if (data  == null) {
             return new ResponseEntity<>("Could not get item", HttpStatus.NOT_FOUND);
-
         }
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
