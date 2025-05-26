@@ -9,6 +9,9 @@ import java.util.Optional;
 public interface IUserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
 
+    @Query("SELECT COUNT(*) FROM UserEntity u WHERE u.status > 0")
+    long count();
+
     @Query("SELECT COUNT(*) FROM UserEntity u WHERE u.status = 1")
     long countActiveUsers();
 
