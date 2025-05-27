@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -19,7 +20,7 @@ public class ReportService implements IReportService {
     private final IReportDomainRepository reportDomainRepository;
 
     @Override
-    public List<Report> getReports(int limit, int offset, String param, Timestamp startDate, Timestamp endDate, String order) {
+    public List<Report> getReports(int limit, int offset, String param, LocalDateTime startDate, LocalDateTime endDate, String order) {
 
         var result = reportDomainRepository.getAllReports(limit, offset, param, startDate, endDate, order);
 
@@ -27,14 +28,14 @@ public class ReportService implements IReportService {
     }
 
     @Override
-    public List<Report> getAllReportSales(int limit, int offset, String param, Timestamp startDate, Timestamp endDate, String order) {
+    public List<Report> getAllReportSales(int limit, int offset, String param, LocalDateTime startDate, LocalDateTime endDate, String order) {
         var result = reportDomainRepository.getAllReportSales(limit, offset, param, startDate, endDate, order);
 
         return result;
     }
 
     @Override
-    public List<Report> getAllReporInventories(int limit, int offset, String param, Timestamp startDate, Timestamp endDate, String order) {
+    public List<Report> getAllReporInventories(int limit, int offset, String param, LocalDateTime startDate, LocalDateTime endDate, String order) {
         var result = reportDomainRepository.getAllReporInventories(limit, offset, param, startDate, endDate, order);
 
         return result;

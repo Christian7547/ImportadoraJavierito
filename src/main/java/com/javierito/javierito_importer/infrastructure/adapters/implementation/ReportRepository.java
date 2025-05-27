@@ -13,6 +13,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +33,8 @@ public class ReportRepository implements IReportDomainRepository {
     public List<Report> getAllReports(int limit,
                                       int offset,
                                       @Nullable String param,
-                                      @Nullable Timestamp startDate,
-                                      @Nullable Timestamp endDate,
+                                      @Nullable LocalDateTime startDate,
+                                      @Nullable LocalDateTime endDate,
                                       @Nullable String order) {
         String sql = "SELECT * FROM ufc_get_reports(:p_limit, :p_offset, :p_param, :p_start_date, :p_end_date, :p_order)";
 
@@ -50,7 +51,7 @@ public class ReportRepository implements IReportDomainRepository {
     }
 
     @Override
-    public List<Report> getAllReportSales(int limit, int offset, @Nullable String param, @Nullable Timestamp startDate, @Nullable Timestamp endDate, @Nullable String order) {
+    public List<Report> getAllReportSales(int limit, int offset, @Nullable String param, @Nullable LocalDateTime startDate, @Nullable LocalDateTime endDate, @Nullable String order) {
         String sql = "SELECT * FROM ufc_get_report_sales(:p_limit, :p_offset, :p_param, :p_start_date, :p_end_date, :p_order)";
 
         Query query = entityManager.createNativeQuery(sql, Report.class);
@@ -66,7 +67,7 @@ public class ReportRepository implements IReportDomainRepository {
     }
 
     @Override
-    public List<Report> getAllReporInventories(int limit, int offset, @Nullable String param, @Nullable Timestamp startDate, @Nullable Timestamp endDate, @Nullable String order) {
+    public List<Report> getAllReporInventories(int limit, int offset, @Nullable String param, @Nullable LocalDateTime startDate, @Nullable LocalDateTime endDate, @Nullable String order) {
         String sql = "SELECT * FROM ufc_get_report_inventory(:p_limit, :p_offset, :p_param, :p_start_date, :p_end_date, :p_order)";
 
         Query query = entityManager.createNativeQuery(sql, Report.class);

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,8 @@ public class ReportController {
     public ResponseEntity<?> getReports(@RequestParam(defaultValue = "5") int limit,
                                         @RequestParam(defaultValue = "1") int offset,
                                         String param,
-                                        Timestamp starDate,
-                                        Timestamp endDate,
+                                        LocalDateTime starDate,
+                                        LocalDateTime endDate,
                                         String order) {
 
         var reports = reportService.getReports(limit, offset, param, starDate, endDate, order);
@@ -47,8 +48,8 @@ public class ReportController {
                                             @RequestParam(defaultValue = "5") int limit,
                                             @RequestParam(defaultValue = "1") int offset,
                                             String param,
-                                            Timestamp starDate,
-                                            Timestamp endDate,
+                                            LocalDateTime starDate,
+                                            LocalDateTime endDate,
                                             String order) {
         var reports = reportService.getAllReportSales(limit, offset, param, starDate, endDate, order);
         long totalReports = reportService.countAll();
@@ -67,8 +68,8 @@ public class ReportController {
             @RequestParam(defaultValue = "5") int limit,
             @RequestParam(defaultValue = "1") int offset,
             String param,
-            Timestamp starDate,
-            Timestamp endDate,
+            LocalDateTime starDate,
+            LocalDateTime endDate,
             String order) {
         var reports = reportService.getAllReporInventories(limit, offset, param, starDate, endDate, order);
         long totalReports = reportService.countAll();
