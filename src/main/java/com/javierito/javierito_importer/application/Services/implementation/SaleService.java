@@ -2,10 +2,8 @@ package com.javierito.javierito_importer.application.Services.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.ISaleService;
-import com.javierito.javierito_importer.domain.models.BarcodeModels.Barcode;
 import com.javierito.javierito_importer.domain.models.SaleModels.*;
 import com.javierito.javierito_importer.application.Utils.JsonConverter;
-import com.javierito.javierito_importer.domain.models.Stock;
 import com.javierito.javierito_importer.domain.ports.IBarcodeDomainRepository;
 import com.javierito.javierito_importer.domain.ports.ISaleDomainRepository;
 import com.javierito.javierito_importer.domain.ports.IStockDomainRepository;
@@ -15,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Array;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,5 +127,25 @@ public class SaleService implements ISaleService {
     public SingleSaleWithDetails getSaleWithDetails(long id) throws JsonProcessingException {
         String json = saleDomainRepository.getSaleWithDetails(id);
         return jsonConverter.deserializeObject(json, SingleSaleWithDetails.class);
+    }
+
+    @Override
+    public BigDecimal getTotalInDateRange(LocalDateTime startDate, LocalDateTime finishDate) {
+        if (startDate != null) {
+            startDate.minusDays(1);
+        } else if (finishDate != null) {
+            finishDate.plusDays(1);
+        }
+        return saleDomainRepository.getTotalInDateRange(startDate, finishDate);
+    }
+
+    @Override
+    public Long getSoldItemsInDateRange(LocalDateTime startDate, LocalDateTime finishDate) {
+        if (startDate != null) {
+            startDate.minusDays(1);
+        } else if (finishDate != null) {
+            finishDate.plusDays(1);
+        }
+        return saleDomainRepository.getSoldItemsInDateRange(startDate, finishDate);
     }
 }

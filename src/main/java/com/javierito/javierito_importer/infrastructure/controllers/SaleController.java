@@ -3,6 +3,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.javierito.javierito_importer.application.Services.interfaces.ISaleService;
 import com.javierito.javierito_importer.domain.models.SaleModels.*;
+import com.javierito.javierito_importer.infrastructure.dtos.sale.DateRangeDTO;
 import com.javierito.javierito_importer.infrastructure.dtos.sale.SaleParamsDTO;
 import com.javierito.javierito_importer.infrastructure.exception.types.BadRequestException;
 import com.javierito.javierito_importer.infrastructure.exception.types.ResourceNotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -101,5 +103,23 @@ public class SaleController {
         } catch (Exception e){
             throw new BadRequestException(e.getMessage());
         }
+    }
+
+    @GetMapping("/getTotalInDateRange")
+    public ResponseEntity<?> getTotalInDateRange(@RequestBody DateRangeDTO params) {
+        BigDecimal total = saleService.getTotalInDateRange(params.getStartDate(), params.getFinishDate());
+        if(total == null) {
+            throw new ResourceNotFoundException("Total in range date");
+        }
+        return new ResponseEntity<>(total, HttpStatus.OK);
+    }
+
+    @GetMapping("/getSoldItemsInDateRange")
+    public ResponseEntity<?> getSoldItemsInDateRange(@RequestBody DateRangeDTO params) {
+        Long total = saleService.getSoldItemsInDateRange(params.getStartDate(), params.getFinishDate());
+        if(total == null) {
+            throw new ResourceNotFoundException("Sold items in range date");
+        }
+        return new ResponseEntity<>(total, HttpStatus.OK);
     }
 }
