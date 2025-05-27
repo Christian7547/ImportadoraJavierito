@@ -98,4 +98,9 @@ public class BeansConfiguration {
     IReportService reportService(IReportDomainRepository reportDomainRepository){
         return new ReportService(reportDomainRepository);
     }
+
+    @Bean
+    IClientService clientService(IClientDomainRepository clientDomainRepository){
+        return new ClientService(clientDomainRepository);
+    }
 }

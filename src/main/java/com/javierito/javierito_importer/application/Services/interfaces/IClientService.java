@@ -1,16 +1,13 @@
-package com.javierito.javierito_importer.domain.ports;
+package com.javierito.javierito_importer.application.Services.interfaces;
 
-import com.javierito.javierito_importer.domain.models.Client;
 import com.javierito.javierito_importer.domain.models.ClientModels.ListClients;
 import com.javierito.javierito_importer.domain.models.ClientModels.NewClient;
 
 import java.util.List;
 
-public interface IClientDomainRepository {
-
-    Client createClient(Client client);
-    void removeClient(Client client);
+public interface IClientService {
 
     boolean insertClient(NewClient client);
     List<ListClients> getClient(String ci);
+
 }
