@@ -9,6 +9,12 @@ import java.util.Optional;
 
 public interface IBranchOfficeRepository extends JpaRepository<BranchOfficeEntity, Integer> {
 
-    @Query("SELECT COUNT(b) FROM BranchOfficeEntity b WHERE b.status < 2")
+    @Query("SELECT COUNT(b.id) FROM BranchOfficeEntity b WHERE b.status < 2")
     long countBranchOffices();
+
+    @Query("SELECT COUNT(b.id) FROM BranchOfficeEntity b WHERE b.status = 0")
+    long countInactivesBranchOffices();
+
+    @Query("SELECT COUNT(b.id) FROM BranchOfficeEntity b WHERE b.status = 1")
+    long countActivesBranchOffices();
 }

@@ -26,4 +26,9 @@ public class StockService implements IStockService {
 
         return stockDomainRepository.insertNewStock(newStock);
     }
+
+    @Override
+    public long sumActiveItemsQuantity() {
+        return stockDomainRepository.sumActiveItemsQuantity();
+    }
 }

@@ -32,4 +32,8 @@ public interface ISaleDomainRepository {
     boolean refund(long saleId, String[] barcodes);
 
     SaleDetail getDetailsBySaleId(long saleId);
+
+    BigDecimal getTotalInDateRange(LocalDateTime startDate, LocalDateTime finishDate);
+
+    Long getSoldItemsInDateRange(LocalDateTime startDate, LocalDateTime finishDate);
 }

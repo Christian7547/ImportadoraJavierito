@@ -18,4 +18,6 @@ public interface IBranchOfficeService {
     Map<String, String> getCoordinatesByOffice(int branchOfficeId);
     boolean deleteBranchOffice(int id);
     long countBranchOffices();
+    long countInactives();
+    long countActives();
 }

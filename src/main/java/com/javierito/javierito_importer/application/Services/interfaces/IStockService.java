@@ -6,4 +6,5 @@ public interface IStockService {
 
     int insertNewStock(NewStock newStock);
 
+    long sumActiveItemsQuantity();
 }

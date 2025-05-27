@@ -95,4 +95,14 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
     public long countBranchOffices() {
         return branchOfficeRepository.countBranchOffices();
     }
+
+    @Override
+    public long countInactives() {
+        return branchOfficeRepository.countActivesBranchOffices();
+    }
+
+    @Override
+    public long countActives() {
+        return branchOfficeRepository.countInactivesBranchOffices();
+    }
 }

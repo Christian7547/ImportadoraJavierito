@@ -15,4 +15,6 @@ public interface IBranchOfficeDomainRepository {
     BranchOffice save(BranchOffice branchOffice, List<String> images);
     void changeStatus(BranchOffice branchOffice);
     long countBranchOffices();
+    long countInactives();
+    long countActives();
 }

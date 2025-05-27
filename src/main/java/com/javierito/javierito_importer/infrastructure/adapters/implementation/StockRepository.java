@@ -80,5 +80,10 @@ public class StockRepository implements IStockDomainRepository {
         return (int) procedureQuery.getOutputParameterValue("p_rows_affected");
     }
 
-
+    @Override
+    public long sumActiveItemsQuantity() {
+        String sql = "SELECT * FROM ufc_sum_active_items_quantity()";
+        Query query = entityManager.createNativeQuery(sql, Long.class);
+        return (Long) query.getSingleResult();
+    }
 }

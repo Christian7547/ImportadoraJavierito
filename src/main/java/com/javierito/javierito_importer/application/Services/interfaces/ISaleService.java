@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.application.Services.interfaces;
 
 import com.javierito.javierito_importer.domain.models.SaleModels.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,4 +32,8 @@ public interface ISaleService {
     boolean changeStatus(long saleId);
 
     SingleSaleWithDetails getSaleWithDetails(long id) throws JsonProcessingException;
+
+    BigDecimal getTotalInDateRange(@Nullable LocalDateTime startDate, @Nullable LocalDateTime finishDate);
+
+    Long getSoldItemsInDateRange(LocalDateTime startDate, LocalDateTime finishDate);
 }

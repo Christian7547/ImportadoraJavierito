@@ -11,7 +11,7 @@ import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeImage
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.util.Pair;
+import org.javatuples.Quartet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +43,9 @@ public class BranchOfficeController {
             throw new ResourceNotFoundException("branchOffices");
         }
         long totalOffices = branchOfficeService.countBranchOffices();
-        Pair<List<OfficeList>, Long> data = Pair.of(offices, totalOffices);
+        long actives = branchOfficeService.countActives();
+        long inactives = branchOfficeService.countInactives();
+        Quartet<List<OfficeList>, Long, Long, Long> data = Quartet.with(offices, totalOffices, actives, inactives);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 

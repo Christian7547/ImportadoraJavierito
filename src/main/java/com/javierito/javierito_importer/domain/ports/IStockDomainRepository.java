@@ -12,7 +12,6 @@ public interface IStockDomainRepository {
     Stock getStock(Long stockId);
     Stock editStock(Stock stock);
     void removeStock(Stock stock);
-
     int insertNewStock(NewStock newStock);
-
+    long sumActiveItemsQuantity();
 }
