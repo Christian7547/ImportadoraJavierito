@@ -25,7 +25,6 @@ public class ItemAuditRepository implements IItemAuditDomainRepository {
         System.out.println(excelReportsDTO);
         return this.itemAuditMapper.toItemAudits(this.itemAuditRepository.findAll())
                 .stream()
-                .filter(itemAudit -> "INSERT".equals(itemAudit.getActionType()))
                 .filter(itemAudit -> {
 
                     if (excelReportsDTO.getStartDate() != null && excelReportsDTO.getEndDate() != null) {
