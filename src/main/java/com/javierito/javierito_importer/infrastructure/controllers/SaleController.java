@@ -105,7 +105,7 @@ public class SaleController {
         }
     }
 
-    @GetMapping("/getTotalInDateRange")
+    @PostMapping("/getTotalInDateRange")
     public ResponseEntity<?> getTotalInDateRange(@RequestBody DateRangeDTO params) {
         BigDecimal total = saleService.getTotalInDateRange(params.getStartDate(), params.getFinishDate());
         if(total == null) {
@@ -114,7 +114,7 @@ public class SaleController {
         return new ResponseEntity<>(total, HttpStatus.OK);
     }
 
-    @GetMapping("/getSoldItemsInDateRange")
+    @PostMapping("/getSoldItemsInDateRange")
     public ResponseEntity<?> getSoldItemsInDateRange(@RequestBody DateRangeDTO params) {
         Long total = saleService.getSoldItemsInDateRange(params.getStartDate(), params.getFinishDate());
         if(total == null) {
