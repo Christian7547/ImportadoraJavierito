@@ -33,9 +33,9 @@ public class SaleService implements ISaleService {
                                  String params) {
         Pageable pageable = PageRequest.of(offset, limit);
         if (initDate != null) {
-            initDate = initDate.minusDays(1);
+            initDate.minusDays(1);
         } else if (finishDate != null) {
-            finishDate = finishDate.plusDays(1);
+            finishDate.plusDays(1);
         }
         return saleDomainRepository.getAll(pageable, initDate, finishDate, params);
     }
