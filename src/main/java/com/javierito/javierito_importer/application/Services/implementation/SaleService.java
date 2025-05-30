@@ -142,9 +142,9 @@ public class SaleService implements ISaleService {
     @Override
     public Long getSoldItemsInDateRange(LocalDateTime startDate, LocalDateTime finishDate) {
         if (startDate != null) {
-            startDate.minusDays(1);
+            //startDate.minusDays(1);
         } else if (finishDate != null) {
-            finishDate.plusDays(1);
+           //finishDate.plusDays(1);
         }
         return saleDomainRepository.getSoldItemsInDateRange(startDate, finishDate);
     }

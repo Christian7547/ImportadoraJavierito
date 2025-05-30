@@ -154,10 +154,10 @@ public class SaleRepository implements ISaleDomainRepository {
     @Override
     public Long getSoldItemsInDateRange(LocalDateTime startDate, LocalDateTime finishDate) {
         String sql = "SELECT * FROM ufc_get_sold_items_in_date_range(:p_start_date, :p_finish_date)";
-        Query query = entityManager.createNativeQuery(sql, BigDecimal.class);
+        Query query = entityManager.createNativeQuery(sql, Long.class);
         query.setParameter("p_start_date", startDate);
         query.setParameter("p_finish_date", finishDate);
-        return ((BigDecimal) query.getSingleResult()).toBigInteger().longValue();
+        return (Long) query.getSingleResult();
     }
 
     @Override
