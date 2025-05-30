@@ -15,6 +15,15 @@ public class ItemAuditService implements IItemAuditService {
 
 
     @Override
-    public ArrayList<ItemAudit> excelReports(ExcelReportsDTO excelReportsDTO) { return itemAuditDomainRepository.excelReports(excelReportsDTO); }
+    public ArrayList<ItemAudit> excelReports(ExcelReportsDTO excelReportsDTO) {
+
+        if (excelReportsDTO.getStartDate() != null) {
+            excelReportsDTO.getStartDate().minusDays(1);
+        } else if (excelReportsDTO.getEndDate() != null) {
+            excelReportsDTO.getEndDate().plusDays(1);
+        }
+
+        return itemAuditDomainRepository.excelReports(excelReportsDTO);
+    }
 
 }
