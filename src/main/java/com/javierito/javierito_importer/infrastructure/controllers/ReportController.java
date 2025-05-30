@@ -8,6 +8,7 @@ import com.javierito.javierito_importer.domain.models.Report;
 import com.javierito.javierito_importer.domain.models.userModels.UserList;
 import lombok.RequiredArgsConstructor;
 import org.javatuples.Quartet;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +28,11 @@ public class ReportController {
     public ResponseEntity<?> getReports(@RequestParam(defaultValue = "5") int limit,
                                         @RequestParam(defaultValue = "1") int offset,
                                         String param,
-                                        LocalDateTime starDate,
-                                        LocalDateTime endDate,
+                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime startDate,
+                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
                                         String order) {
 
-        var reports = reportService.getReports(limit, offset, param, starDate, endDate, order);
+        var reports = reportService.getReports(limit, offset, param, startDate, endDate, order);
         long totalReports = reportService.countAll();
         long totalReportSales = reportService.countAllSales();
         long totalReportsInventory = reportService.countAllInventory();
@@ -48,10 +49,10 @@ public class ReportController {
                                             @RequestParam(defaultValue = "5") int limit,
                                             @RequestParam(defaultValue = "1") int offset,
                                             String param,
-                                            LocalDateTime starDate,
-                                            LocalDateTime endDate,
-                                            String order) {
-        var reports = reportService.getAllReportSales(limit, offset, param, starDate, endDate, order);
+                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime startDate,
+                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
+                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)String order) {
+        var reports = reportService.getAllReportSales(limit, offset, param, startDate, endDate, order);
         long totalReports = reportService.countAll();
         long totalReportSales = reportService.countAllSales();
         long totalReportsInventory = reportService.countAllInventory();
@@ -68,10 +69,10 @@ public class ReportController {
             @RequestParam(defaultValue = "5") int limit,
             @RequestParam(defaultValue = "1") int offset,
             String param,
-            LocalDateTime starDate,
-            LocalDateTime endDate,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime startDate,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime endDate,
             String order) {
-        var reports = reportService.getAllReporInventories(limit, offset, param, starDate, endDate, order);
+        var reports = reportService.getAllReporInventories(limit, offset, param, startDate, endDate, order);
         long totalReports = reportService.countAll();
         long totalReportSales = reportService.countAllSales();
         long totalReportsInventory = reportService.countAllInventory();

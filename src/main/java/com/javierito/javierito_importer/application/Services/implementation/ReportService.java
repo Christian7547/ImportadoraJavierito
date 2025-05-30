@@ -22,6 +22,11 @@ public class ReportService implements IReportService {
     @Override
     public List<Report> getReports(int limit, int offset, String param, LocalDateTime startDate, LocalDateTime endDate, String order) {
 
+        if (startDate != null) {
+            startDate.minusDays(1);
+        } else if (endDate != null) {
+            endDate.plusDays(1);
+        }
         var result = reportDomainRepository.getAllReports(limit, offset, param, startDate, endDate, order);
 
         return result;
@@ -29,6 +34,11 @@ public class ReportService implements IReportService {
 
     @Override
     public List<Report> getAllReportSales(int limit, int offset, String param, LocalDateTime startDate, LocalDateTime endDate, String order) {
+        if (startDate != null) {
+            startDate.minusDays(1);
+        } else if (endDate != null) {
+            endDate.plusDays(1);
+        }
         var result = reportDomainRepository.getAllReportSales(limit, offset, param, startDate, endDate, order);
 
         return result;
@@ -36,6 +46,11 @@ public class ReportService implements IReportService {
 
     @Override
     public List<Report> getAllReporInventories(int limit, int offset, String param, LocalDateTime startDate, LocalDateTime endDate, String order) {
+        if (startDate != null) {
+            startDate.minusDays(1);
+        } else if (endDate != null) {
+            endDate.plusDays(1);
+        }
         var result = reportDomainRepository.getAllReporInventories(limit, offset, param, startDate, endDate, order);
 
         return result;
