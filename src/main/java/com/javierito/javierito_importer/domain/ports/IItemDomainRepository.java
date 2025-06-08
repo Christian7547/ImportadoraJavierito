@@ -18,6 +18,7 @@ public interface IItemDomainRepository {
     ItemWithImages getItemById(Long itemID);
 
     List<RecycleBin> getRecycleBin(int limit, int offset, String param, String subCategory, String brand, String itemStatus);
+    Long countAllItemsRecycleBin();
 
     ItemUpdate updateItemById(ItemUpdate update);
     String findLastBarcodeByAcronym(String acronym);

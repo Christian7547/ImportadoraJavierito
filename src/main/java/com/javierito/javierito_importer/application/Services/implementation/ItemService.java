@@ -123,9 +123,10 @@ public class ItemService implements IItemSerivce {
     }
 
     @Override
-    public List<RecycleBin> getRecycleBin(int limit, int offset, String param, String subCategory, String brand, String itemStatus) {
+    public Tuple<List<RecycleBin>, Long> getRecycleBin(int limit, int offset, String param, String subCategory, String brand, String itemStatus) {
         var result = itemDomainRepository.getRecycleBin(limit, offset, param, subCategory, brand, itemStatus);
-        return result;
+        Long totalCount = itemDomainRepository.countAllItemsRecycleBin();
+        return new Tuple<List<RecycleBin>, Long>(result, totalCount);
     }
 
     @Override

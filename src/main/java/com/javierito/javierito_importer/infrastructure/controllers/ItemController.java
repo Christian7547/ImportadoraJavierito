@@ -117,7 +117,7 @@ public class ItemController {
         var result = itemSerivce.getRecycleBin(limit, offset, param, subCategory, brand, itemStatus);
 
         if(result != null)
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(new Object(){ public final Object data = result._1(); public final long total = result._2();}, HttpStatus.OK);
         return new ResponseEntity<>("Could not get items", HttpStatus.NOT_FOUND);
     }
 

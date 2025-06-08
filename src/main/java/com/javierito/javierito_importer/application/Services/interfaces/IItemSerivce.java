@@ -27,6 +27,6 @@ public interface IItemSerivce {
 
     BarcodeItemInfo getItemBarcodeInfo(String barcode);
 
-    List<RecycleBin> getRecycleBin(int limit, int offset, String param, String subCategory, String brand, String itemStatus);
+    Tuple<List<RecycleBin>, Long> getRecycleBin(int limit, int offset, String param, String subCategory, String brand, String itemStatus);
 
 }

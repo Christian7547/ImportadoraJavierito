@@ -216,6 +216,12 @@ public class ItemRepository implements IItemDomainRepository {
         return listItems.isEmpty() ? new ArrayList<>() : listItems;
     }
 
+    @Override
+    public Long countAllItemsRecycleBin() {
+        long totalItems = itemRepository.countAllInRecycleBin();
+        return totalItems;
+    }
+
 
     @Override
     public ItemUpdate updateItemById(ItemUpdate itemDTO) {
