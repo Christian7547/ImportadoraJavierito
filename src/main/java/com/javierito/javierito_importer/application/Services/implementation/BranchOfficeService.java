@@ -3,6 +3,7 @@ package com.javierito.javierito_importer.application.Services.implementation;
 import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeService;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOfficeDetails;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.ItemsByOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import com.javierito.javierito_importer.domain.models.BranchOfficeImage;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeDomainRepository;
@@ -29,7 +30,7 @@ public class BranchOfficeService implements IBranchOfficeService {
                                         int offset,
                                         @Nullable String query,
                                         @Nullable Integer status) {
-        Pageable pageable = PageRequest.of(offset, limit);;
+        Pageable pageable = PageRequest.of(offset, limit);
         return (ArrayList<OfficeList>) branchOfficeDomainRepository.getAll(pageable,
                 query,
                 status);
@@ -93,5 +94,16 @@ public class BranchOfficeService implements IBranchOfficeService {
     @Override
     public long countActives() {
         return branchOfficeDomainRepository.countActives();
+    }
+
+    @Override
+    public List<ItemsByOffice> getItemsByOfficeId(int limit, int offset, int officeId, @Nullable String param) {
+        Pageable pageable = PageRequest.of(offset, limit);
+        return branchOfficeDomainRepository.getItemsByOfficeId(pageable, officeId, param);
+    }
+
+    @Override
+    public long countItemsByOfficeId(int officeId) {
+        return branchOfficeDomainRepository.countItemsByOfficeId(officeId);
     }
 }

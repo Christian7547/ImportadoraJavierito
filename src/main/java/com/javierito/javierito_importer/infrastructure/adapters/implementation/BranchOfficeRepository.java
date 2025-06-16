@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.infrastructure.adapters.implementation;
 
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOfficeDetails;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.ItemsByOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import com.javierito.javierito_importer.domain.ports.IBranchOfficeDomainRepository;
 import com.javierito.javierito_importer.infrastructure.adapters.interfaces.IBranchOfficeRepository;
@@ -104,5 +105,25 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
     @Override
     public long countActives() {
         return branchOfficeRepository.countInactivesBranchOffices();
+    }
+
+    @Override
+    public List<ItemsByOffice> getItemsByOfficeId(Pageable pageable, int officeId, @Nullable String param) {
+        String sql = "SELECT * FROM ufc_get_items_by_office(:p_limit, :p_offset, :p_office_id, :p_param)";
+        Query query = entityManager.createNativeQuery(sql, ItemsByOffice.class);
+        query.setParameter("p_limit", pageable.getPageSize());
+        query.setParameter("p_offset", pageable.getPageNumber());
+        query.setParameter("p_office_id", officeId);
+        query.setParameter("p_param", param);
+        List<ItemsByOffice> result = query.getResultList();
+        if(result.isEmpty()){
+            return new ArrayList<>();
+        }
+        return result;
+    }
+
+    @Override
+    public long countItemsByOfficeId(int officeId) {
+        return branchOfficeRepository.countItemsByOfficeId(officeId);
     }
 }

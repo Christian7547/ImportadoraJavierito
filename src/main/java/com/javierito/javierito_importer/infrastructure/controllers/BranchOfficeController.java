@@ -3,6 +3,7 @@ package com.javierito.javierito_importer.infrastructure.controllers;
 import com.javierito.javierito_importer.application.Services.interfaces.IBranchOfficeService;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOfficeDetails;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.ItemsByOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import com.javierito.javierito_importer.infrastructure.dtos.BranchOffice.*;
 import com.javierito.javierito_importer.infrastructure.exception.types.BadRequestException;
@@ -11,6 +12,7 @@ import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeImage
 import com.javierito.javierito_importer.infrastructure.mappers.BranchOfficeMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -108,5 +110,18 @@ public class BranchOfficeController {
         if(coordinates.isEmpty())
             throw new ResourceNotFoundException("branchOffice", "id", Integer.toString(id));
         return new ResponseEntity<>(coordinates, HttpStatus.OK);
+    }
+
+    @PostMapping("/getItemsByOfficeId")
+    public ResponseEntity<?> getItemsByOfficeId(@RequestParam(defaultValue = "5")int limit,
+                                                @RequestParam(defaultValue = "1")int offset,
+                                                @RequestBody ItemsByOfficeDTO body){
+        long total = branchOfficeService.countItemsByOfficeId(body.getOfficeId());
+        if(total <= 0) {
+            throw new ResourceNotFoundException("Items in this branch office");
+        }
+        var items = branchOfficeService.getItemsByOfficeId(limit, offset, body.getOfficeId(), body.getParam());
+        Pair<List<ItemsByOffice>, Long> data = Pair.with(items, total);
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

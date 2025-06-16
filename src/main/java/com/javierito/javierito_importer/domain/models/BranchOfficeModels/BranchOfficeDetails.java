@@ -16,12 +16,13 @@ public class BranchOfficeDetails {
     private String latitude;
     private String longitude;
     private Timestamp registerDate;
+    private short status;
     private int ownerId;
     private String owner;
     private List<String> images;
 
 
-    public BranchOfficeDetails(int officeId, String name, String address, String latitude, String longitude, Timestamp registerDate, int ownerId, String owner) {
+    public BranchOfficeDetails(int officeId, String name, String address, String latitude, String longitude, Timestamp registerDate, short status, int ownerId, String owner) {
         this.officeId = officeId;
         this.name = name;
         this.address = address;
@@ -30,5 +31,6 @@ public class BranchOfficeDetails {
         this.registerDate = registerDate;
         this.owner = owner;
         this.ownerId = ownerId;
+        this.status = status;
     }
 }

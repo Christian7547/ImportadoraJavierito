@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.application.Services.interfaces;
 
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOfficeDetails;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.ItemsByOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import org.springframework.lang.Nullable;
 
@@ -20,4 +21,6 @@ public interface IBranchOfficeService {
     long countBranchOffices();
     long countInactives();
     long countActives();
+    List<ItemsByOffice> getItemsByOfficeId(int limit, int offset, int officeId, @Nullable String param);
+    long countItemsByOfficeId(int officeId);
 }

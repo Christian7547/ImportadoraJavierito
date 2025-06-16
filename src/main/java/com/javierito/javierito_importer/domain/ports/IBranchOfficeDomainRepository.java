@@ -2,6 +2,7 @@ package com.javierito.javierito_importer.domain.ports;
 
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.BranchOfficeDetails;
+import com.javierito.javierito_importer.domain.models.BranchOfficeModels.ItemsByOffice;
 import com.javierito.javierito_importer.domain.models.BranchOfficeModels.OfficeList;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -17,4 +18,6 @@ public interface IBranchOfficeDomainRepository {
     long countBranchOffices();
     long countInactives();
     long countActives();
+    List<ItemsByOffice> getItemsByOfficeId(Pageable pageable, int officeId, @Nullable String param);
+    long countItemsByOfficeId(int officeId);
 }
