@@ -108,13 +108,15 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
     }
 
     @Override
-    public List<ItemsByOffice> getItemsByOfficeId(Pageable pageable, int officeId, @Nullable String param) {
-        String sql = "SELECT * FROM ufc_get_items_by_office(:p_limit, :p_offset, :p_office_id, :p_param)";
+    public List<ItemsByOffice> getItemsByOfficeId(Pageable pageable, int officeId, @Nullable String param, @Nullable String brand, @Nullable Short status) {
+        String sql = "SELECT * FROM ufc_get_items_by_office(:p_limit, :p_offset, :p_office_id, :p_param, :p_brand, :p_status)";
         Query query = entityManager.createNativeQuery(sql, ItemsByOffice.class);
         query.setParameter("p_limit", pageable.getPageSize());
         query.setParameter("p_offset", pageable.getPageNumber());
         query.setParameter("p_office_id", officeId);
         query.setParameter("p_param", param);
+        query.setParameter("p_brand", brand);
+        query.setParameter("p_status", status);
         List<ItemsByOffice> result = query.getResultList();
         if(result.isEmpty()){
             return new ArrayList<>();

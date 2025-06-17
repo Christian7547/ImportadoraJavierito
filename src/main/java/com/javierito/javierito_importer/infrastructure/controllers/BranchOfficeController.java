@@ -120,7 +120,13 @@ public class BranchOfficeController {
         if(total <= 0) {
             throw new ResourceNotFoundException("Items in this branch office");
         }
-        var items = branchOfficeService.getItemsByOfficeId(limit, offset, body.getOfficeId(), body.getParam());
+        var items = branchOfficeService.getItemsByOfficeId(
+                limit,
+                offset,
+                body.getOfficeId(),
+                body.getParam(),
+                body.getBrand(),
+                body.getStatus());
         Pair<List<ItemsByOffice>, Long> data = Pair.with(items, total);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }

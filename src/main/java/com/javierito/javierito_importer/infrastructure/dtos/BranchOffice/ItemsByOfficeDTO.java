@@ -16,6 +16,12 @@ public class ItemsByOfficeDTO {
     @Nullable
     private String param;
 
+    @Nullable
+    private String brand;
+
+    @Nullable
+    private Short status;
+
     @Positive
     @Min(1)
     private int officeId;

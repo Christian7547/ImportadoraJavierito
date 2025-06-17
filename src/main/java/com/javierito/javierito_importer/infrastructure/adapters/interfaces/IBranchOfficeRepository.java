@@ -24,6 +24,6 @@ public interface IBranchOfficeRepository extends JpaRepository<BranchOfficeEntit
     @NativeQuery("SELECT COUNT(I.id) " +
             "FROM \"Item\" I " +
             "INNER JOIN \"Stock\" S ON S.\"itemID\" = I.id " +
-            "WHERE S.\"branchOfficeID\" = :officeId AND I.status = 1")
-    long countItemsByOfficeId(@Param("officeId") int officeId);
+            "WHERE S.\"branchOfficeID\" = :officeId AND I.status = :status")
+    long countItemsByOfficeId(@Param("officeId") int officeId, @Param("status") short status);
 }
