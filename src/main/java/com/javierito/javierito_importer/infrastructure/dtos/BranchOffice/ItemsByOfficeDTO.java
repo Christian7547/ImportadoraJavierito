@@ -20,7 +20,7 @@ public class ItemsByOfficeDTO {
     private String brand;
 
     @Nullable
-    private Short status;
+    private String status;
 
     @Positive
     @Min(1)

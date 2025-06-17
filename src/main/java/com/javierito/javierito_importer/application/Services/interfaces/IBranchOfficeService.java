@@ -21,6 +21,6 @@ public interface IBranchOfficeService {
     long countBranchOffices();
     long countInactives();
     long countActives();
-    List<ItemsByOffice> getItemsByOfficeId(int limit, int offset, int officeId, @Nullable String param, @Nullable String brand, @Nullable Short status);
+    List<ItemsByOffice> getItemsByOfficeId(int limit, int offset, int officeId, @Nullable String param, @Nullable String brand, @Nullable String status);
     long countItemsByOfficeId(int officeId);
 }

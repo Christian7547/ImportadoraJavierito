@@ -18,6 +18,6 @@ public interface IBranchOfficeDomainRepository {
     long countBranchOffices();
     long countInactives();
     long countActives();
-    List<ItemsByOffice> getItemsByOfficeId(Pageable pageable, int officeId, @Nullable String param, @Nullable String brand, @Nullable Short status);
+    List<ItemsByOffice> getItemsByOfficeId(Pageable pageable, int officeId, @Nullable String param, @Nullable String brand, @Nullable String status);
     long countItemsByOfficeId(int officeId);
 }

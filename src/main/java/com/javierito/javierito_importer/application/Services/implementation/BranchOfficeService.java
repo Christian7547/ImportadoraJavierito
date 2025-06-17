@@ -97,7 +97,7 @@ public class BranchOfficeService implements IBranchOfficeService {
     }
 
     @Override
-    public List<ItemsByOffice> getItemsByOfficeId(int limit, int offset, int officeId, @Nullable String param, @Nullable String brand, @Nullable Short status) {
+    public List<ItemsByOffice> getItemsByOfficeId(int limit, int offset, int officeId, @Nullable String param, @Nullable String brand, @Nullable String status) {
         Pageable pageable = PageRequest.of(offset, limit);
         return branchOfficeDomainRepository.getItemsByOfficeId(pageable, officeId, param, brand, status);
     }

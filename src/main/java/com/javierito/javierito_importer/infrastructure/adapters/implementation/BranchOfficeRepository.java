@@ -108,7 +108,7 @@ public class BranchOfficeRepository implements IBranchOfficeDomainRepository {
     }
 
     @Override
-    public List<ItemsByOffice> getItemsByOfficeId(Pageable pageable, int officeId, @Nullable String param, @Nullable String brand, @Nullable Short status) {
+    public List<ItemsByOffice> getItemsByOfficeId(Pageable pageable, int officeId, @Nullable String param, @Nullable String brand, @Nullable String status) {
         String sql = "SELECT * FROM ufc_get_items_by_office(:p_limit, :p_offset, :p_office_id, :p_param, :p_brand, :p_status)";
         Query query = entityManager.createNativeQuery(sql, ItemsByOffice.class);
         query.setParameter("p_limit", pageable.getPageSize());

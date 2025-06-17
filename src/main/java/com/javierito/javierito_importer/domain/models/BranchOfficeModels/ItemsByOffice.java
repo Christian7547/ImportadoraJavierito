@@ -23,5 +23,5 @@ public class ItemsByOffice {
     private String brand;
     private String model;
     private int year;
-    private short status;
+    private String status;
 }
