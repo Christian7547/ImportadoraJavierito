@@ -25,7 +25,7 @@ public class EmailBody {
                                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
                             }
                             h2 {
-                                color: #4a90e2;
+                                color: #f97316;
                             }
                             .content {
                                 line-height: 1.6;
@@ -42,7 +42,7 @@ public class EmailBody {
                                 padding: 10px 20px;
                                 margin-top: 20px;
                                 color: #ffffff;
-                                background-color: #4a90e2;
+                                background-color: #f97316;
                                 text-decoration: none;
                                 border-radius: 5px;
                                 font-size: 16px;
